@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "warehouse-management-api-NourM", "warehouse-management-api-NourM\warehouse-management-api-NourM.csproj", "{EEC3D26A-4763-4BF3-944D-7539BBF7904E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEC3D26A-4763-4BF3-944D-7539BBF7904E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC3D26A-4763-4BF3-944D-7539BBF7904E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC3D26A-4763-4BF3-944D-7539BBF7904E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC3D26A-4763-4BF3-944D-7539BBF7904E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

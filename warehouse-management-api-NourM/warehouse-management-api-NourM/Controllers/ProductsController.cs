@@ -185,5 +185,63 @@ public class ProductsController : ControllerBase
         }
         return NotFound("There is no product with the specified id");
     }
+    
+    //7. Upload Image
+    [HttpPost("{id}/image")]
+    public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile image)
+    {
+        // Check if the Id provided is a valid GUID
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The entered Id is not valid");
+        }
+
+        // Check if the product exists
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                // Check if the uploaded file is empty
+                if (image == null || image.Length == 0)
+                {
+                    return BadRequest("Please upload an image.");
+                }
+
+                // Check the image extension
+                string extension = Path.GetExtension(image.FileName).ToLower();
+
+                if (extension != ".jpg" &&
+                    extension != ".jpeg" &&
+                    extension != ".png")
+                {
+                    return BadRequest("Only JPG and PNG images are allowed.");
+                }
+
+                // Check the image size (maximum 2 MB)
+                if (image.Length > 2 * 1024 * 1024)
+                {
+                    return BadRequest("Image size cannot exceed 2 MB.");
+                }
+
+                // Create the uploads folder if it doesn't exist
+                string folder = "wwwroot/uploads";
+                Directory.CreateDirectory(folder);
+
+                // Save the image
+                string path = Path.Combine(folder, image.FileName);
+
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+
+                return Ok("Image uploaded successfully.");
+            }
+        }
+
+        return NotFound("There is no product with the specified id.");
+    }
+    
+    
 }
     

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using warehouse_management_api_NourM.Contracts;
 using warehouse_management_api_NourM.Models;
 
@@ -241,7 +242,63 @@ public class ProductsController : ControllerBase
 
         return NotFound("There is no product with the specified id.");
     }
-    
+
+    //8. Delete product 
+    [HttpDelete("{id}")]
+    public ActionResult DeleteProduct([FromRoute] string id)
+    {
+        // Check if the Id provided is a valid GUID
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The entered Id is not valid");
+        }
+        
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                if (p.IsArchived)
+                {
+                    return Ok("Product is already deleted (archived)");
+                }
+                p.IsArchived = true;
+                // Since the product is being archived (soft deleted), update the LastUpdatedAt property.
+                p.LastUpdatedAt = DateTime.Now;
+                return Ok("Product Deleted (Archived)");
+            }
+        }
+        return NotFound("There is no product with the specified id.");
+    }
+
+    [HttpGet("server-time")]
+    public ActionResult GetServerTime([FromHeader(Name = "Accept-Language")] string language)
+    {
+        if (language != "en-US" &&
+            language != "fr-FR" &&
+            language != "ar-LB")
+        {
+            return BadRequest("The specified language is not supported");
+        }
+        CultureInfo culture;
+
+        if (language == "fr-FR")
+        {
+            culture = new CultureInfo("fr-FR");
+        }
+        else if (language == "ar-LB")
+        {
+            culture = new CultureInfo("ar-LB");
+        }
+        else
+        {
+            culture = new CultureInfo("en-US");
+        }
+
+        string currentTime = DateTime.Now.ToString("F", culture);
+
+        return Ok(currentTime);
+    }
+   
     
 }
     

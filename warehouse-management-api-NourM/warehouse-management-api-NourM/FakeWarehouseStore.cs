@@ -4,7 +4,7 @@ namespace warehouse_management_api_NourM;
 
 public class FakeWarehouseStore
 {
-    private List<Product> products = new List<Product>()
+    public List<Product> products = new List<Product>()
     {
         new Product
         {

@@ -62,5 +62,44 @@ public class ProductsController : ControllerBase
 
         return BadRequest("The entered Id is not a valid GUID");
     }
+    
+    //3. Search products 
+    [HttpGet("search")]
+    //The query parameters can be null, in case the user wants to provide one parameter only
+    public ActionResult GetProductsBySearch([FromQuery] string? name, [FromQuery] string? supplier)
+    {
+        //If both parameters are empty, we return BadRequest
+        if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(supplier))
+        {
+            return BadRequest("Please provide at least the item name or the supplier name.");
+        }
+
+        List<Product> result = new List<Product>();
+
+        //We search all products and return those that match every search
+        //filter the user provided (name, supplier, or both), while ignoring any filter that the user didn't provide.
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            bool matchesName = true;
+            bool matchesSupplier = true;
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                matchesName = p.Name.ToLower().Contains(name.ToLower());
+            }
+
+            if (!string.IsNullOrWhiteSpace(supplier))
+            {
+                matchesSupplier = p.SupplierName.ToLower().Contains(supplier.ToLower());
+            }
+
+            if (matchesName && matchesSupplier)
+            {
+                result.Add(p);
+            }
+        }
+
+        return Ok(result);
+    }
 }
     

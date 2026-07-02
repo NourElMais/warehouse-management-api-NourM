@@ -7,6 +7,7 @@ namespace warehouse_management_api_NourM.Controllers;
 [Route("api/products")]
 public class ProductsController : ControllerBase
 {
+    //1. Get all products
     [HttpGet]
     public ActionResult GetProducts([FromQuery] bool onlyAvailable = false)
     {
@@ -40,6 +41,26 @@ public class ProductsController : ControllerBase
             .ToList();
 
         return Ok(toReturn);
+    }
+    
+    //2. Get product by id
+    [HttpGet("{id}")]
+    public ActionResult GetProductById([FromRoute] string id)
+    {
+        //If the id is a valid GUID, we search the products list, else we return status code 400 (BadRequest) because the Id is not a valid GUID
+        if(Guid.TryParse(id, out var guid))
+        {
+            foreach (Product p in FakeWarehouseStore.Products)
+            {
+                if (p.Id == id)
+                {
+                    return Ok(p);
+                }
+            }
+            return NotFound("There is no product with the specified id");
+        }
+
+        return BadRequest("The entered Id is not a valid GUID");
     }
 }
     

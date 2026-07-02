@@ -1,6 +1,19 @@
 var builder = WebApplication.CreateBuilder(args);
+
+// Register controllers
+builder.Services.AddControllers();
+
+// Register Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+// To enable Swagger UI
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// To map controller endpoints
+app.MapControllers();
 
 app.Run();

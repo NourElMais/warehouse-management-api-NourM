@@ -13,7 +13,7 @@ public class FakeWarehouseStore
         SKU = "LAP/101/SLV",
         Description = "15 inch silver Lenovo laptop with 128GB SSD.",
         Price = 750,
-        QuantityInStock = 12,
+        QuantityInStock = 18,
         SupplierName = "Zahi Nakad",
         ExpiryDate = DateTime.Now.AddYears(10),
         IsArchived = false,

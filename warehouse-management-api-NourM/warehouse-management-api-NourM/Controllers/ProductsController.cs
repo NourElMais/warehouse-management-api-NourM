@@ -8,32 +8,38 @@ namespace warehouse_management_api_NourM.Controllers;
 public class ProductsController : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult> GetProducts()
+    public ActionResult GetProducts([FromQuery] bool onlyAvailable = false)
     {
-        var store = new FakeWarehouseStore();
-        return Ok(store.products);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult> GetProduct(string id)
-    {
-        var store = new FakeWarehouseStore();
-        List<Product> products = store.products;
-        foreach (Product p in products)
+        //The assumption for this method is that it will return only active products (where IsArchived = false)
+        var products = new List<Product>();
+        foreach (Product p in FakeWarehouseStore.Products)
         {
-            if (p.Id == id)
+            if (!p.IsArchived)
             {
-                return Ok(p);
+                products.Add(p);
             }
         }
-        return NotFound("No product found with this Id");
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> CreateProduct([FromBody] Product product)
-    {
         
+        //If the user specified that he wants only available products, we filter the products list
+        //and keep only products that are in stock
+        if (onlyAvailable)
+        {
+            var availableProducts  = new List<Product>();
+            foreach (Product p in products)
+            {
+                if (p.QuantityInStock > 0)
+                {
+                    availableProducts.Add(p);
+                }
+            }
+            products = availableProducts;
+        }
+
+        List<Product> toReturn = products
+            .OrderByDescending(p => p.CreatedAt)
+            .ToList();
+
+        return Ok(toReturn);
     }
-    
 }
     

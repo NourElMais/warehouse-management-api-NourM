@@ -136,7 +136,7 @@ public class ProductsController : ControllerBase
     
     //5. Update quantity
     [HttpPost("{id}/quantity")]
-    public ActionResult UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest quantity)
+    public ActionResult UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest req)
     {
         //Check if the Id provided is a valid GUID
         if (!Guid.TryParse(id, out var guid))
@@ -149,9 +149,37 @@ public class ProductsController : ControllerBase
             if (p.Id == id)
             {
                 //The quantity cannot be negative since I added a validation attribute in the UpdateProductQuantityRequest class
-                p.QuantityInStock = quantity.QuantityInStock;
+                p.QuantityInStock = req.QuantityInStock;
                 p.LastUpdatedAt = DateTime.Now;
                 return Ok("Quantity in Stock Updated");
+            }
+            
+        }
+        return NotFound("There is no product with the specified id");
+    }
+    
+    //6. Update Price
+    [HttpPost("{id}/price")]
+    public ActionResult UpdatePrice([FromRoute] string id, [FromBody] UpdateProductPriceRequest req)
+    {
+        //Check if the Id provided is a valid GUID
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The entered Id is not valid");
+        }
+        
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                //The quantity cannot be negative since I added a validation attribute in the UpdateProductQuantityRequest class
+                //Logging (old vs new price)
+                Console.WriteLine($"Price of {p.Name} updated from {p.Price} to {req.Price}");
+                
+                //After logging, we update the prices
+                p.Price = req.Price;
+                p.LastUpdatedAt = DateTime.Now;
+                return Ok("Price Updated");
             }
             
         }

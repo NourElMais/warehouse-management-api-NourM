@@ -134,6 +134,28 @@ public class ProductsController : ControllerBase
         return Ok("New product is added");
     }
     
-    
+    //5. Update quantity
+    [HttpPost("{id}/quantity")]
+    public ActionResult UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest quantity)
+    {
+        //Check if the Id provided is a valid GUID
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The entered Id is not valid");
+        }
+        
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                //The quantity cannot be negative since I added a validation attribute in the UpdateProductQuantityRequest class
+                p.QuantityInStock = quantity.QuantityInStock;
+                p.LastUpdatedAt = DateTime.Now;
+                return Ok("Quantity in Stock Updated");
+            }
+            
+        }
+        return NotFound("There is no product with the specified id");
+    }
 }
     

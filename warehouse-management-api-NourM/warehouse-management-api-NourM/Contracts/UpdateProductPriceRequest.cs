@@ -1,6 +1,10 @@
-﻿namespace warehouse_management_api_NourM.Contracts;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace warehouse_management_api_NourM.Contracts;
 
 public class UpdateProductPriceRequest
 {
-    public int Price {get; set;}
+    [Required]
+    [Range(0.01, double.MaxValue)]
+    public decimal Price {get; set;}
 }

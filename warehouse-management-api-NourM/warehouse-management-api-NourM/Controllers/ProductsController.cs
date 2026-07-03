@@ -301,5 +301,61 @@ public class ProductsController : ControllerBase
         return Ok(currentTime);
     }
     
+    // Task 2: Assigning supplier to product
+    [HttpPost("{id}/assign-supplier/{supplierId}")]
+    //// This method assigns the specified supplier to the specified product after validating that both exist and that the product is not archived.
+    public ActionResult AssignSupplierToProduct(
+        [FromRoute] string id,
+        [FromRoute] string supplierId)
+    {
+        //First, we check if both ids are valid GUIDs
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The product Id is not valid.");
+        }
+
+        if (!Guid.TryParse(supplierId, out _))
+        {
+            return BadRequest("The supplier Id is not valid.");
+        }
+        
+        //Search for the product using its Id
+
+        Product? product = null;
+
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                product = p;
+                break;
+            }
+        }
+
+        if (product == null)
+        {
+            return NotFound("Product not found.");
+        }
+
+        if (product.IsArchived)
+        {
+            return BadRequest("Archived products cannot be assigned to a supplier.");
+        }
+        
+        //Search for the supplier using their Id
+        foreach (Supplier s in FakeSupplierStore.Suppliers)
+        {
+            if (s.Id == supplierId)
+            {
+                product.SupplierName = s.Name;
+                product.LastUpdatedAt = DateTime.Now;
+
+                return Ok("Supplier assigned to product.");
+            }
+        }
+
+        return NotFound("Supplier not found.");
+    }
+    
 }
     

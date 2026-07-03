@@ -197,7 +197,7 @@ public class ProductsController : ControllerBase
             return BadRequest("The product Id is not valid.");
         }
 
-        if (!Guid.TryParse(supplierId, out var guid))
+        if (!Guid.TryParse(supplierId, out var g))
         {
             return BadRequest("The supplier Id is not valid.");
         }

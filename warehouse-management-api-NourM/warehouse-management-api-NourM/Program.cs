@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 
 //Register the Supplier Service
 builder.Services.AddSingleton<SupplierService>();
+builder.Services.AddSingleton<ProductService>();
 var app = builder.Build();
 
 // To enable Swagger UI

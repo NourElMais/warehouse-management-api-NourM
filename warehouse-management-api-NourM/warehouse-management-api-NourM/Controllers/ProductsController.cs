@@ -270,6 +270,8 @@ public class ProductsController : ControllerBase
         return NotFound("There is no product with the specified id.");
     }
 
+    
+    //9. Get warehouse server time
     [HttpGet("server-time")]
     public ActionResult GetServerTime([FromHeader(Name = "Accept-Language")] string language)
     {
@@ -298,7 +300,6 @@ public class ProductsController : ControllerBase
 
         return Ok(currentTime);
     }
-   
     
 }
     

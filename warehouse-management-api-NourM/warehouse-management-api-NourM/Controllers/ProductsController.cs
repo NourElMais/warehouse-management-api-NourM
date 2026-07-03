@@ -350,7 +350,7 @@ public class ProductsController : ControllerBase
                 product.SupplierName = s.Name;
                 product.LastUpdatedAt = DateTime.Now;
 
-                return Ok("Supplier assigned to product.");
+                return Ok($"Supplier '{s.Name}' has been successfully assigned to the product '{product.Name}'");
             }
         }
 

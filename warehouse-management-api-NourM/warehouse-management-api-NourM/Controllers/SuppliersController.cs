@@ -81,4 +81,48 @@ public class SuppliersController:ControllerBase
 
         return NotFound("There is no supplier found with the specified Id");
     }
+    
+    // Extra endpoint to get supplier statistics
+    [HttpGet("statistics")]
+    public ActionResult GetSupplierStatistics()
+    {
+        int totalSuppliers = FakeSupplierStore.Suppliers.Count;
+        int activeSuppliers = 0;
+        int inactiveSuppliers = 0;
+
+        List<string> countries = new List<string>();
+
+        foreach (Supplier s in FakeSupplierStore.Suppliers)
+        {
+            if (s.IsActive)
+            {
+                activeSuppliers++;
+            }
+            else
+            {
+                inactiveSuppliers++;
+            }
+
+            if (!countries.Contains(s.Country))
+            {
+                countries.Add(s.Country);
+            }
+        }
+
+        string countriesList = "";
+        for (int i = 0; i < countries.Count; i++)
+        {
+            countriesList += countries[i];
+
+            if (i != countries.Count - 1)
+            {
+                countriesList += ", ";
+            }
+        }
+        return Ok($"Total Suppliers: {totalSuppliers}\n" +
+                  $"Active Suppliers: {activeSuppliers}\n" +
+                  $"Inactive Suppliers: {inactiveSuppliers}\n" +
+                  $"Supplier Countries: {countriesList}");
+    }
+
 }

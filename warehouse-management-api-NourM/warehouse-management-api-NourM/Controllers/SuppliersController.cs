@@ -1,29 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using warehouse_management_api_NourM.Contracts;
 using warehouse_management_api_NourM.Models;
+using warehouse_management_api_NourM.Services;
 
 namespace warehouse_management_api_NourM.Controllers;
 
 [ApiController]
 [Route("api/suppliers")]
-public class SuppliersController:ControllerBase
+public class SuppliersController : ControllerBase
 {
+    private readonly SupplierService _supplierService;
+    public SuppliersController(SupplierService supplierService)
+    {
+        _supplierService = supplierService;
+    }
+
     [HttpGet]
     public ActionResult GetAllSuppliers()
     {
-        List<Supplier> activeSuppliers = new List<Supplier>();
-        foreach (Supplier s in FakeSupplierStore.Suppliers)
-        {
-            if (s.IsActive)
-            {
-                activeSuppliers.Add(s);
-            }
-        }
-        return Ok(activeSuppliers);
+        return Ok(_supplierService.GetAllActiveSuppliers());
     }
 
     [HttpGet("{id}")]
-    public ActionResult GetSupplierById(string id)
+    public ActionResult GetSupplierById([FromRoute] string id)
     {
         //First, we check if the Id is a valid GUID
         if (!Guid.TryParse(id, out var guid))
@@ -31,34 +30,25 @@ public class SuppliersController:ControllerBase
             return BadRequest("The provided Id is not valid");
         }
 
-        foreach (Supplier s in FakeSupplierStore.Suppliers)
+        Supplier? supplier = _supplierService.GetSupplierById(id);
+
+        if (supplier == null)
         {
-            if (s.Id == id)
-            {
-                return Ok(s);
-            }
+            return NotFound("There is no supplier found with the specified Id");
         }
-        return NotFound("There is no supplier found with the specified Id");
+
+        return Ok(supplier);
     }
 
     [HttpPost]
     public ActionResult CreateSupplier([FromBody] CreateSupplierRequest supplier)
     {
-        Supplier s = new Supplier
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = supplier.Name,
-            Country = supplier.Country,
-            ContactEmail = supplier.ContactEmail,
-            PhoneNumber = supplier.PhoneNumber,
-            IsActive = true
-        };
-        FakeSupplierStore.Suppliers.Add(s);
+        _supplierService.CreateSupplier(supplier);
         return Ok("Supplier Created");
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteSupplier(string id)
+    public ActionResult DeleteSupplier([FromRoute] string id)
     {
         //First, we check if the Id is a valid GUID
         if (!Guid.TryParse(id, out var guid))
@@ -66,63 +56,25 @@ public class SuppliersController:ControllerBase
             return BadRequest("The provided Id is not valid");
         }
 
-        foreach (Supplier s in FakeSupplierStore.Suppliers)
+        string result = _supplierService.DeactivateSupplier(id);
+
+        if (result == "not found")
         {
-            if (s.Id == id)
-            {
-                if (!s.IsActive)
-                {
-                    return Ok("Supplier is already deactivated");
-                }
-                s.IsActive = false;
-                return Ok("Supplier Deleted (Deactivated)");
-            }
+            return NotFound("There is no supplier found with the specified Id");
         }
 
-        return NotFound("There is no supplier found with the specified Id");
+        if (result == "already deactivated")
+        {
+            return Ok("Supplier is already deactivated");
+        }
+
+        return Ok("Supplier Deleted (Deactivated)");
     }
-    
+
     // Extra endpoint to get supplier statistics
     [HttpGet("statistics")]
     public ActionResult GetSupplierStatistics()
     {
-        int totalSuppliers = FakeSupplierStore.Suppliers.Count;
-        int activeSuppliers = 0;
-        int inactiveSuppliers = 0;
-
-        List<string> countries = new List<string>();
-
-        foreach (Supplier s in FakeSupplierStore.Suppliers)
-        {
-            if (s.IsActive)
-            {
-                activeSuppliers++;
-            }
-            else
-            {
-                inactiveSuppliers++;
-            }
-
-            if (!countries.Contains(s.Country))
-            {
-                countries.Add(s.Country);
-            }
-        }
-
-        string countriesList = "";
-        for (int i = 0; i < countries.Count; i++)
-        {
-            countriesList += countries[i];
-
-            if (i != countries.Count - 1)
-            {
-                countriesList += ", ";
-            }
-        }
-        return Ok($"Total Suppliers: {totalSuppliers}\n" +
-                  $"Active Suppliers: {activeSuppliers}\n" +
-                  $"Inactive Suppliers: {inactiveSuppliers}\n" +
-                  $"Supplier Countries: {countriesList}");
+        return Ok(_supplierService.GetSupplierStatistics());
     }
-
 }

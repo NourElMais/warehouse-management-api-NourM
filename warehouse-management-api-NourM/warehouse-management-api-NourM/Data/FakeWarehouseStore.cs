@@ -15,10 +15,10 @@ public class FakeWarehouseStore
         Price = 750,
         QuantityInStock = 18,
         SupplierName = "Zahi Nakad",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -30,10 +30,10 @@ public class FakeWarehouseStore
         Price = 18,
         QuantityInStock = 20,
         SupplierName = "Moussa Khoury",
-        ExpiryDate = DateTime.Now.AddYears(5),
+        ExpiryDate = DateTime.UtcNow.AddYears(5),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -45,10 +45,10 @@ public class FakeWarehouseStore
         Price = 45,
         QuantityInStock = 17,
         SupplierName = "Emilia Nassar",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -60,10 +60,10 @@ public class FakeWarehouseStore
         Price = 160,
         QuantityInStock = 11,
         SupplierName = "Nour Maiss",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -75,10 +75,10 @@ public class FakeWarehouseStore
         Price = 220,
         QuantityInStock = 9,
         SupplierName = "Sara Safadi",
-        ExpiryDate = DateTime.Now.AddYears(7),
+        ExpiryDate = DateTime.UtcNow.AddYears(7),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -90,10 +90,10 @@ public class FakeWarehouseStore
         Price = 200,
         QuantityInStock = 25,
         SupplierName = "Andrea Jabbour",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -105,10 +105,10 @@ public class FakeWarehouseStore
         Price = 830,
         QuantityInStock = 17,
         SupplierName = "Samir Hamad",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -120,10 +120,10 @@ public class FakeWarehouseStore
         Price = 55,
         QuantityInStock = 13,
         SupplierName = "Lea Noun",
-        ExpiryDate = DateTime.Now.AddYears(5),
+        ExpiryDate = DateTime.UtcNow.AddYears(5),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -135,10 +135,10 @@ public class FakeWarehouseStore
         Price = 22,
         QuantityInStock = 20,
         SupplierName = "Johnny Abou Rjeily",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     },
 
     new Product
@@ -150,10 +150,10 @@ public class FakeWarehouseStore
         Price = 160,
         QuantityInStock = 18,
         SupplierName = "Mia Mrad",
-        ExpiryDate = DateTime.Now.AddYears(10),
+        ExpiryDate = DateTime.UtcNow.AddYears(10),
         IsArchived = false,
-        CreatedAt = DateTime.Now,
-        LastUpdatedAt = DateTime.Now,
+        CreatedAt = DateTime.UtcNow,
+        LastUpdatedAt = DateTime.UtcNow,
     }
 };
 }

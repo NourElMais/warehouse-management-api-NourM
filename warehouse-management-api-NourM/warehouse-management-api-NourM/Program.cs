@@ -13,7 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<SupplierService>();
 builder.Services.AddSingleton<ProductService>();
 var app = builder.Build();
-
 // To enable Swagger UI
 app.UseSwagger();
 app.UseSwaggerUI();

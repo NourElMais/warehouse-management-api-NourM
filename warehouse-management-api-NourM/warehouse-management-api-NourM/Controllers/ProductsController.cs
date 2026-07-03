@@ -357,5 +357,79 @@ public class ProductsController : ControllerBase
         return NotFound("Supplier not found.");
     }
     
+    // Extra endpoints (Not mentioned in the lab)
+    // 1- Restore archived product
+    [HttpPost("{id}/restore")]
+    public ActionResult RestoreProduct([FromRoute] string id)
+    {
+        if (!Guid.TryParse(id, out var guid))
+        {
+            return BadRequest("The entered Id is not valid");
+        }
+
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.Id == id)
+            {
+                if (!p.IsArchived)
+                {
+                    return Ok("Product is already active");
+                }
+
+                p.IsArchived = false;
+                p.LastUpdatedAt = DateTime.Now;
+
+                return Ok("Product restored successfully");
+            }
+        }
+
+        return NotFound("There is no product with the specified id");
+    }
+    
+    //2- Get low stock products
+    // Returns all active products that are running low on stock based on the specified threshold (default value for the threshold is 5)
+    [HttpGet("low-stock")]
+    public ActionResult GetLowStockProducts([FromQuery] int threshold = 5)
+    {
+        List<Product> lowStockProducts = new List<Product>();
+
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (!p.IsArchived && p.QuantityInStock <= threshold)
+            {
+                lowStockProducts.Add(p);
+            }
+        }
+
+        return Ok(lowStockProducts);
+    }
+    
+    // 3- Get general warehouse statistics about products.
+    [HttpGet("statistics")]
+    public ActionResult GetProductStatistics()
+    {
+        int totalProducts = FakeWarehouseStore.Products.Count;
+        int activeProducts = 0;
+        int archivedProducts = 0;
+        int totalStock = 0;
+
+        foreach (Product p in FakeWarehouseStore.Products)
+        {
+            if (p.IsArchived)
+            {
+                archivedProducts++;
+            }
+            else
+            {
+                activeProducts++;
+            }
+
+            totalStock += p.QuantityInStock;
+        }
+
+        return Ok($"Total Products: {totalProducts}, Active Products: {activeProducts}, Archived Products: {archivedProducts}, Total Number of Products in Stock: {totalStock}");
+
+    }
+    
 }
     

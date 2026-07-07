@@ -13,7 +13,8 @@ public class Supplier
         string name,
         string country,
         string contactEmail,
-        string phoneNumber)
+        string phoneNumber,
+        string? id = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Supplier name is required.");
@@ -27,7 +28,7 @@ public class Supplier
         if (string.IsNullOrWhiteSpace(phoneNumber))
             throw new ArgumentException("Supplier phone number is required.");
 
-        Id = Guid.NewGuid().ToString();
+        Id = id ?? Guid.NewGuid().ToString();
         Name = name;
         Country = country;
         ContactEmail = contactEmail;

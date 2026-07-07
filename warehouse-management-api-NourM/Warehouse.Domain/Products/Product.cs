@@ -21,7 +21,8 @@ public class Product
         decimal price,
         int quantityInStock,
         string supplierName,
-        DateTime expiryDate)
+        DateTime expiryDate,
+        string? id = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name is required.");
@@ -35,7 +36,7 @@ public class Product
         if (quantityInStock < 0)
             throw new ArgumentException("Quantity cannot be negative.");
 
-        Id = Guid.NewGuid().ToString();
+        Id = id ?? Guid.NewGuid().ToString();
         Name = name;
         SKU = sku;
         Description = description;

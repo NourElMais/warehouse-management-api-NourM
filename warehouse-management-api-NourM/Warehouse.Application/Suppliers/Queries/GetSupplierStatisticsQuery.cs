@@ -1,6 +1,7 @@
-﻿namespace Warehouse.Application.Suppliers.Queries;
+﻿using MediatR;
 
-public class GetSupplierStatisticsQuery
+namespace Warehouse.Application.Suppliers.Queries;
+
+public class GetSupplierStatisticsQuery : IRequest<object>
 {
-    
 }

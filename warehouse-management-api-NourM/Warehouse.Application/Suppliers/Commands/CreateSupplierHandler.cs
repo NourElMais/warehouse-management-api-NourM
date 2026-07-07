@@ -1,9 +1,10 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using MediatR;
+using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
-public class CreateSupplierHandler
+public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supplier>
 {
     private readonly ISupplierRepository _supplierRepository;
 
@@ -12,17 +13,17 @@ public class CreateSupplierHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Supplier Handle(CreateSupplierCommand command)
+    public Task<Supplier> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
     {
         var supplier = new Supplier(
-            command.Name,
-            command.Country,
-            command.ContactEmail,
-            command.PhoneNumber
+            request.Name,
+            request.Country,
+            request.ContactEmail,
+            request.PhoneNumber
         );
 
         _supplierRepository.Add(supplier);
 
-        return supplier;
+        return Task.FromResult(supplier);
     }
 }

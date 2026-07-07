@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using MediatR;
+using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
-public class DeactivateSupplierHandler
+public class DeactivateSupplierHandler 
+    : IRequestHandler<DeactivateSupplierCommand, Supplier?>
 {
     private readonly ISupplierRepository _supplierRepository;
 
@@ -12,17 +14,19 @@ public class DeactivateSupplierHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Supplier? Handle(DeactivateSupplierCommand command)
+    public Task<Supplier?> Handle(
+        DeactivateSupplierCommand request,
+        CancellationToken cancellationToken)
     {
-        var supplier = _supplierRepository.GetById(command.SupplierId);
+        var supplier = _supplierRepository.GetById(request.SupplierId);
 
         if (supplier is null)
-            return null;
+            return Task.FromResult<Supplier?>(null);
 
         supplier.Deactivate();
 
         _supplierRepository.Update(supplier);
 
-        return supplier;
+        return Task.FromResult<Supplier?>(supplier);
     }
 }

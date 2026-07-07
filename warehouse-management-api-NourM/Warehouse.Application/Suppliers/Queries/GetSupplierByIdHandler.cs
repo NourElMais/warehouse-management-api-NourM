@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using MediatR;
+using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Queries;
 
 public class GetSupplierByIdHandler
+    : IRequestHandler<GetSupplierByIdQuery, Supplier?>
 {
     private readonly ISupplierRepository _supplierRepository;
 
@@ -12,8 +14,12 @@ public class GetSupplierByIdHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Supplier? Handle(GetSupplierByIdQuery query)
+    public Task<Supplier?> Handle(
+        GetSupplierByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        return _supplierRepository.GetById(query.Id);
+        Supplier? supplier = _supplierRepository.GetById(request.Id);
+
+        return Task.FromResult(supplier);
     }
 }

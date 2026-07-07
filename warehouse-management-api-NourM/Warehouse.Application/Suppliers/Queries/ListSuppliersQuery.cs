@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Suppliers.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Suppliers;
 
-public class ListSuppliersQuery
+namespace Warehouse.Application.Suppliers.Queries;
+
+public class ListSuppliersQuery : IRequest<List<Supplier>>
 {
-    
 }

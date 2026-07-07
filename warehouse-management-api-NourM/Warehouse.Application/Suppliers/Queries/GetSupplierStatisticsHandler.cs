@@ -1,8 +1,10 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using MediatR;
+using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Suppliers.Queries;
 
 public class GetSupplierStatisticsHandler
+    : IRequestHandler<GetSupplierStatisticsQuery, object>
 {
     private readonly ISupplierRepository _supplierRepository;
 
@@ -11,15 +13,37 @@ public class GetSupplierStatisticsHandler
         _supplierRepository = supplierRepository;
     }
 
-    public object Handle(GetSupplierStatisticsQuery query)
+    public Task<object> Handle(
+        GetSupplierStatisticsQuery request,
+        CancellationToken cancellationToken)
     {
         var suppliers = _supplierRepository.GetAll();
 
-        return new
+        int totalSuppliers = 0;
+        int activeSuppliers = 0;
+        int inactiveSuppliers = 0;
+
+        foreach (var supplier in suppliers)
         {
-            TotalSuppliers = suppliers.Count,
-            ActiveSuppliers = suppliers.Count(s => s.IsActive),
-            InactiveSuppliers = suppliers.Count(s => !s.IsActive)
+            totalSuppliers++;
+
+            if (supplier.IsActive)
+            {
+                activeSuppliers++;
+            }
+            else
+            {
+                inactiveSuppliers++;
+            }
+        }
+
+        object statistics = new
+        {
+            TotalSuppliers = totalSuppliers,
+            ActiveSuppliers = activeSuppliers,
+            InactiveSuppliers = inactiveSuppliers
         };
+
+        return Task.FromResult(statistics);
     }
 }

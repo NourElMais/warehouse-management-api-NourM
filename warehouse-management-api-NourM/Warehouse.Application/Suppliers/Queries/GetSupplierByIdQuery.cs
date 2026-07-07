@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Suppliers.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Suppliers;
 
-public class GetSupplierByIdQuery
+namespace Warehouse.Application.Suppliers.Queries;
+
+public class GetSupplierByIdQuery : IRequest<Supplier?>
 {
     public string Id { get; set; }
 

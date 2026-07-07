@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Suppliers.Commands;
+﻿using MediatR;
+using Warehouse.Domain.Suppliers;
 
-public class CreateSupplierCommand
+namespace Warehouse.Application.Suppliers.Commands;
+
+public class CreateSupplierCommand : IRequest<Supplier>
 {
     public string Name { get; set; }
     public string Country { get; set; }

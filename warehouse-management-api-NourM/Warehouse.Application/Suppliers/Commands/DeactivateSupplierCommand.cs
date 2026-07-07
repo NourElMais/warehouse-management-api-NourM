@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Suppliers.Commands;
+﻿using MediatR;
+using Warehouse.Domain.Suppliers;
 
-public class DeactivateSupplierCommand
+namespace Warehouse.Application.Suppliers.Commands;
+
+public class DeactivateSupplierCommand : IRequest<Supplier?>
 {
     public string SupplierId { get; set; }
 

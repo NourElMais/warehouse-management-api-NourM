@@ -2,8 +2,8 @@
 
 public class ISupplierRepository
 {
-    List<Supplier> GetAll();
-    Supplier? GetById(string id);
-    void Add(Supplier supplier);
-    void Update(Supplier supplier);
+    public List<Supplier> GetAll();
+    public Supplier? GetById(string id);
+    public void Add(Supplier supplier);
+    public void Update(Supplier supplier);
 }

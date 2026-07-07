@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace warehouse_management_api_NourM.Contracts;
+namespace Warehouse.Presentation.Contracts;
 
 public class UpdateProductPriceRequest
 {

@@ -1,38 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using warehouse_management_api_NourM.Contracts;
-using warehouse_management_api_NourM.Models;
-using warehouse_management_api_NourM.Services;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Warehouse.Application.Suppliers.Commands;
+using Warehouse.Application.Suppliers.Queries;
+using Warehouse.Presentation.Contracts;
 
-namespace warehouse_management_api_NourM.Controllers;
+namespace Warehouse.Presentation.Controllers;
 
 [ApiController]
 [Route("api/suppliers")]
 public class SuppliersController : ControllerBase
 {
-    private readonly SupplierService _supplierService;
-    public SuppliersController(SupplierService supplierService)
+    private readonly IMediator _mediator;
+
+    public SuppliersController(IMediator mediator)
     {
-        _supplierService = supplierService;
+        _mediator = mediator;
     }
 
+    // 1. Get all suppliers
     [HttpGet]
-    public ActionResult GetAllSuppliers()
+    public async Task<ActionResult> GetAllSuppliers()
     {
-        return Ok(_supplierService.GetAllActiveSuppliers());
+        var suppliers = await _mediator.Send(new ListSuppliersQuery());
+
+        return Ok(suppliers);
     }
 
+    // 2. Get supplier by Id
     [HttpGet("{id}")]
-    public ActionResult GetSupplierById([FromRoute] string id)
+    public async Task<ActionResult> GetSupplierById([FromRoute] string id)
     {
-        //First, we check if the Id is a valid GUID
-        if (!Guid.TryParse(id, out var guid))
+        if (!Guid.TryParse(id, out _))
         {
             return BadRequest("The provided Id is not valid");
         }
 
-        Supplier? supplier = _supplierService.GetSupplierById(id);
+        var supplier = await _mediator.Send(new GetSupplierByIdQuery(id));
 
-        if (supplier == null)
+        if (supplier is null)
         {
             return NotFound("There is no supplier found with the specified Id");
         }
@@ -40,41 +45,48 @@ public class SuppliersController : ControllerBase
         return Ok(supplier);
     }
 
+    // 3. Create supplier
     [HttpPost]
-    public ActionResult CreateSupplier([FromBody] CreateSupplierRequest supplier)
+    public async Task<ActionResult> CreateSupplier([FromBody] CreateSupplierRequest request)
     {
-        _supplierService.CreateSupplier(supplier);
-        return Ok("Supplier Created");
+        var command = new CreateSupplierCommand
+        {
+            Name = request.Name,
+            Country = request.Country,
+            ContactEmail = request.ContactEmail,
+            PhoneNumber = request.PhoneNumber
+        };
+
+        var supplier = await _mediator.Send(command);
+
+        return Ok(supplier);
     }
 
+    // 4. Deactivate supplier
     [HttpDelete("{id}")]
-    public ActionResult DeleteSupplier([FromRoute] string id)
+    public async Task<ActionResult> DeleteSupplier([FromRoute] string id)
     {
-        //First, we check if the Id is a valid GUID
-        if (!Guid.TryParse(id, out var guid))
+        if (!Guid.TryParse(id, out _))
         {
             return BadRequest("The provided Id is not valid");
         }
 
-        string result = _supplierService.DeactivateSupplier(id);
+        var supplier = await _mediator.Send(new DeactivateSupplierCommand(id));
 
-        if (result == "not found")
+        if (supplier is null)
         {
             return NotFound("There is no supplier found with the specified Id");
-        }
-
-        if (result == "already deactivated")
-        {
-            return Ok("Supplier is already deactivated");
         }
 
         return Ok("Supplier Deleted (Deactivated)");
     }
 
-    // Extra endpoint to get supplier statistics
+    // 5. Supplier statistics
     [HttpGet("statistics")]
-    public ActionResult GetSupplierStatistics()
+    public async Task<ActionResult> GetSupplierStatistics()
     {
-        return Ok(_supplierService.GetSupplierStatistics());
+        var statistics = await _mediator.Send(new GetSupplierStatisticsQuery());
+
+        return Ok(statistics);
     }
 }

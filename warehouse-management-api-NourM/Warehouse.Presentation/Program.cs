@@ -1,23 +1,27 @@
-using warehouse_management_api_NourM.Services;
+using Warehouse.Application.Products.Queries;
+using Warehouse.Domain.Repositories;
+using Warehouse.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register controllers
 builder.Services.AddControllers();
 
-// Register Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Register the Supplier Service
-builder.Services.AddSingleton<SupplierService>();
-builder.Services.AddSingleton<ProductService>();
+// Register repositories
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<ISupplierRepository, SupplierRepository>();
+
+// Register MediatR handlers from Application project
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(ListProductsHandler).Assembly));
+
 var app = builder.Build();
-// To enable Swagger UI
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// To map controller endpoints
 app.MapControllers();
 
 app.Run();

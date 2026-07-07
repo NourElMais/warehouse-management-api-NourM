@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 
-public class ArchiveProductCommand
+namespace Warehouse.Application.Products.Commands;
+
+public class ArchiveProductCommand : IRequest<Product?>
 {
     public string ProductId { get; set; }
 

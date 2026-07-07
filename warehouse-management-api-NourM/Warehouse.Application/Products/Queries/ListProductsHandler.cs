@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Queries;
 
-public class ListProductsHandler
+public class ListProductsHandler 
+    : IRequestHandler<ListProductsQuery, List<Product>>
 {
     private readonly IProductRepository _productRepository;
 
@@ -12,13 +14,27 @@ public class ListProductsHandler
         _productRepository = productRepository;
     }
 
-    public List<Product> Handle(ListProductsQuery query)
+    public Task<List<Product>> Handle(
+        ListProductsQuery query,
+        CancellationToken cancellationToken)
     {
-        var products = _productRepository.GetAll();
+        List<Product> products = _productRepository.GetAll();
 
-        if (query.OnlyAvailable)
-            return products.Where(p => !p.IsArchived).ToList();
+        if (!query.OnlyAvailable)
+        {
+            return Task.FromResult(products);
+        }
 
-        return products;
+        List<Product> availableProducts = new List<Product>();
+
+        foreach (Product product in products)
+        {
+            if (!product.IsArchived)
+            {
+                availableProducts.Add(product);
+            }
+        }
+
+        return Task.FromResult(availableProducts);
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using Warehouse.Domain.Products;
 
-public class CreateProductCommand
+namespace Warehouse.Application.Products.Commands;
+using MediatR;
+public class CreateProductCommand: IRequest<Product>
 {
     public string Name { get; set; }
     public string SKU { get; set; }

@@ -1,9 +1,10 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
-public class CreateProductHandler
+public class CreateProductHandler : IRequestHandler<CreateProductCommand, Product>
 {
     private readonly IProductRepository _productRepository;
 
@@ -12,7 +13,9 @@ public class CreateProductHandler
         _productRepository = productRepository;
     }
 
-    public Product Handle(CreateProductCommand command)
+    public Task<Product> Handle(
+        CreateProductCommand command,
+        CancellationToken cancellationToken)
     {
         var product = new Product(
             command.Name,
@@ -26,6 +29,6 @@ public class CreateProductHandler
 
         _productRepository.Add(product);
 
-        return product;
+        return Task.FromResult(product);
     }
 }

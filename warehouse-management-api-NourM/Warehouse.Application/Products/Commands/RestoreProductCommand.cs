@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using Warehouse.Domain.Products;
 
-public class RestoreProductCommand
+namespace Warehouse.Application.Products.Commands;
+using MediatR;
+public class RestoreProductCommand: IRequest<Product?>
 {
     public string ProductId { get; set; }
 

@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using Warehouse.Domain.Products;
 
-public class UpdateProductQuantityCommand
+namespace Warehouse.Application.Products.Commands;
+using MediatR;
+public class UpdateProductQuantityCommand: IRequest<Product?>
 {
     public string ProductId { get; set; }
     public int NewQuantity { get; set; }

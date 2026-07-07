@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Queries;
 
-public class GetProductByIdHandler
+public class GetProductByIdHandler 
+    : IRequestHandler<GetProductByIdQuery, Product?>
 {
     private readonly IProductRepository _productRepository;
 
@@ -12,8 +14,12 @@ public class GetProductByIdHandler
         _productRepository = productRepository;
     }
 
-    public Product? Handle(GetProductByIdQuery query)
+    public Task<Product?> Handle(
+        GetProductByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        return _productRepository.GetById(query.Id);
+        Product? product = _productRepository.GetById(request.Id);
+
+        return Task.FromResult(product);
     }
 }

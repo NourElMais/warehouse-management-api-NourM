@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using Warehouse.Domain.Products;
 
-public class UpdateProductPriceCommand
+namespace Warehouse.Application.Products.Commands;
+using MediatR;
+public class UpdateProductPriceCommand: IRequest<Product?>
 {
     public string ProductId { get; set; }
     public decimal NewPrice { get; set; }

@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Products.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 
-public class GetProductByIdQuery
+namespace Warehouse.Application.Products.Queries;
+
+public class GetProductByIdQuery : IRequest<Product?>
 {
     public string Id { get; set; }
 

@@ -1,8 +1,10 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using MediatR;
+using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Queries;
 
 public class GetProductsStatisticsHandler
+    : IRequestHandler<GetProductsStatisticsQuery, object>
 {
     private readonly IProductRepository _productRepository;
 
@@ -11,16 +13,44 @@ public class GetProductsStatisticsHandler
         _productRepository = productRepository;
     }
 
-    public object Handle(GetProductsStatisticsQuery query)
+    public Task<object> Handle(
+        GetProductsStatisticsQuery request,
+        CancellationToken cancellationToken)
     {
         var products = _productRepository.GetAll();
 
-        return new
+        int totalProducts = 0;
+        int activeProducts = 0;
+        int archivedProducts = 0;
+        int lowStockProducts = 0;
+
+        foreach (var product in products)
         {
-            TotalProducts = products.Count,
-            ActiveProducts = products.Count(p => !p.IsArchived),
-            ArchivedProducts = products.Count(p => p.IsArchived),
-            LowStockProducts = products.Count(p => !p.IsArchived && p.QuantityInStock <= 5),
+            totalProducts++;
+
+            if (product.IsArchived)
+            {
+                archivedProducts++;
+            }
+            else
+            {
+                activeProducts++;
+
+                if (product.QuantityInStock <= 5)
+                {
+                    lowStockProducts++;
+                }
+            }
+        }
+
+        object statistics = new
+        {
+            TotalProducts = totalProducts,
+            ActiveProducts = activeProducts,
+            ArchivedProducts = archivedProducts,
+            LowStockProducts = lowStockProducts
         };
+
+        return Task.FromResult(statistics);
     }
 }

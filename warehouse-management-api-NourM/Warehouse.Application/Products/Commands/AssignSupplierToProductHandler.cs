@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
-public class AssignSupplierToProductHandler
+public class AssignSupplierToProductHandler 
+    : IRequestHandler<AssignSupplierToProductCommand, Product?>
 {
     private readonly IProductRepository _productRepository;
     private readonly ISupplierRepository _supplierRepository;
@@ -16,22 +18,24 @@ public class AssignSupplierToProductHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Product? Handle(AssignSupplierToProductCommand command)
+    public Task<Product?> Handle(
+        AssignSupplierToProductCommand command,
+        CancellationToken cancellationToken)
     {
         var product = _productRepository.GetById(command.ProductId);
 
         if (product is null)
-            return null;
+            return Task.FromResult<Product?>(null);
 
         var supplier = _supplierRepository.GetById(command.SupplierId);
 
         if (supplier is null)
-            return null;
+            return Task.FromResult<Product?>(null);
 
         product.AssignSupplier(supplier.Name, supplier.IsActive);
 
         _productRepository.Update(product);
 
-        return product;
+        return Task.FromResult<Product?>(product);
     }
 }

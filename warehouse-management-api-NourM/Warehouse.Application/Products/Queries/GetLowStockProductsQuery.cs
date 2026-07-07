@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Products.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 
-public class GetLowStockProductsQuery
+namespace Warehouse.Application.Products.Queries;
+
+public class GetLowStockProductsQuery : IRequest<List<Product>>
 {
     public int Threshold { get; set; }
 

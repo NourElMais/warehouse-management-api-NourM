@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Products.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 
-public class SearchProductsQuery
+namespace Warehouse.Application.Products.Queries;
+
+public class SearchProductsQuery : IRequest<List<Product>>
 {
     public string? Name { get; set; }
     public string? Supplier { get; set; }

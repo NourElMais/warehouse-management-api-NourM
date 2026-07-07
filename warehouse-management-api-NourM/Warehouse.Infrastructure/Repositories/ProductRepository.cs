@@ -17,16 +17,27 @@ public class ProductRepository:IProductRepository
             .FirstOrDefault(p => p.Id == id);
     }
 
-    public List<Product> Search(string searchTerm)
+    public List<Product> Search(string? name, string? supplier)
     {
-        return FakeWarehouseStore.Products
-            .Where(p =>
-                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                p.SKU.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-            .ToList();
-    }
+        List<Product> products = FakeWarehouseStore.Products;
+        List<Product> result = new List<Product>();
 
+        foreach (Product product in products)
+        {
+            bool nameMatches = string.IsNullOrWhiteSpace(name) ||
+                               product.Name.Contains(name, StringComparison.OrdinalIgnoreCase);
+
+            bool supplierMatches = string.IsNullOrWhiteSpace(supplier) ||
+                                   product.SupplierName.Contains(supplier, StringComparison.OrdinalIgnoreCase);
+
+            if (nameMatches && supplierMatches)
+            {
+                result.Add(product);
+            }
+        }
+
+        return result;
+    }
     public void Add(Product product)
     {
         FakeWarehouseStore.Products.Add(product);

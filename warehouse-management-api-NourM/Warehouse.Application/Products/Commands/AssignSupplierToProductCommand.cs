@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Application.Products.Commands;
+﻿using Warehouse.Domain.Products;
 
-public class AssignSupplierToProductCommand
+namespace Warehouse.Application.Products.Commands;
+using MediatR;
+public class AssignSupplierToProductCommand : IRequest<Product?>
 {
     public string ProductId { get; set; }
     public string SupplierId { get; set; }

@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
-public class UpdateProductPriceHandler
+public class UpdateProductPriceHandler 
+    : IRequestHandler<UpdateProductPriceCommand, Product?>
 {
     private readonly IProductRepository _productRepository;
 
@@ -12,17 +14,19 @@ public class UpdateProductPriceHandler
         _productRepository = productRepository;
     }
 
-    public Product? Handle(UpdateProductPriceCommand command)
+    public Task<Product?> Handle(
+        UpdateProductPriceCommand command,
+        CancellationToken cancellationToken)
     {
         var product = _productRepository.GetById(command.ProductId);
 
         if (product is null)
-            return null;
+            return Task.FromResult<Product?>(null);
 
         product.UpdatePrice(command.NewPrice);
 
         _productRepository.Update(product);
 
-        return product;
+        return Task.FromResult<Product?>(product);
     }
 }

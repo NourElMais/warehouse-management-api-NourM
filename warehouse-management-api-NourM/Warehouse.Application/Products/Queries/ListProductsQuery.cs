@@ -1,6 +1,9 @@
-﻿namespace Warehouse.Application.Products.Queries;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 
-public class ListProductsQuery
+namespace Warehouse.Application.Products.Queries;
+
+public class ListProductsQuery : IRequest<List<Product>>
 {
     public bool OnlyAvailable { get; set; }
 

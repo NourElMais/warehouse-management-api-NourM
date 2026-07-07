@@ -1,6 +1,6 @@
 ﻿using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
-
+using MediatR;
 namespace Warehouse.Application.Products.Commands;
 
 public class ArchiveProductHandler

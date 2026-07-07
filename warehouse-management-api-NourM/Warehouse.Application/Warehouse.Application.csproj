@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Warehouse.Domain\Warehouse.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Products\Queries\" />
+      <Folder Include="Suppliers\Commands\" />
+      <Folder Include="Suppliers\Queries\" />
+    </ItemGroup>
+
 </Project>

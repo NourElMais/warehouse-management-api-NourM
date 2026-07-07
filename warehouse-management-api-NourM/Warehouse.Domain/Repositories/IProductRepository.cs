@@ -7,6 +7,6 @@ public class IProductRepository
     List<Product> GetAll();
     Product? GetById(string id);
     List<Product> Search(string searchTerm);
-    void Add(Product product);
-    void Update(Product product);
+    public void Add(Product product);
+    public void Update(Product product);
 }

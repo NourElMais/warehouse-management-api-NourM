@@ -92,4 +92,14 @@ public class Product
         if (IsArchived)
             throw new InvalidOperationException("Archived products cannot be updated.");
     }
+    
+    public void Restore()
+    {
+        //we verify if it is alreaady active
+        if (!IsArchived)
+            throw new InvalidOperationException("Product is already active.");
+
+        IsArchived = false;
+        LastUpdatedAt = DateTime.UtcNow;
+    }
 }

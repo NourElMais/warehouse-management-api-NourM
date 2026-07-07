@@ -2,7 +2,7 @@
 
 namespace Warehouse.Domain.Repositories;
 
-public class IProductRepository
+public interface IProductRepository
 {
     public List<Product> GetAll();
     public Product? GetById(string id);

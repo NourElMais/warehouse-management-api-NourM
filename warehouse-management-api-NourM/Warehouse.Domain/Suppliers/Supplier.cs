@@ -1,4 +1,4 @@
-﻿namespace Warehouse.Domain.Supplier;
+﻿namespace Warehouse.Domain.Suppliers;
 
 public class Supplier
 {

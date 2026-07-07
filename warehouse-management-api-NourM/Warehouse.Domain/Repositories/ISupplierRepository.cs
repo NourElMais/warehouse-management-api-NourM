@@ -1,6 +1,8 @@
-﻿namespace Warehouse.Domain.Repositories;
+﻿using Warehouse.Domain.Suppliers;
 
-public class ISupplierRepository
+namespace Warehouse.Domain.Repositories;
+
+public interface ISupplierRepository
 {
     public List<Supplier> GetAll();
     public Supplier? GetById(string id);

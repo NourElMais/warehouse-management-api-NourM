@@ -158,4 +158,38 @@ public class ProductsController : ControllerBase
         var statistics = await _mediator.Send(new GetProductsStatisticsQuery());
         return Ok(statistics);
     }
+    
+    [HttpGet("server-time")]
+    public async Task<ActionResult> GetServerTime([FromHeader(Name = "Accept-Language")] string language)
+    {
+        if (language != "en-US" && language != "fr-FR" && language != "ar-LB")
+            return BadRequest("The specified language is not supported");
+
+        var result = await _mediator.Send(new GetServerTimeQuery(language));
+        return Ok(result);
+    }
+    
+    [HttpPost("{id}/image")]
+    public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile image)
+    {
+        if (!Guid.TryParse(id, out var guid))
+            return BadRequest("The entered Id is not valid");
+
+        var result = await _mediator.Send(
+            new UploadProductImageCommand(id, image.FileName, image.Length));
+
+        if (result == "empty image")
+            return BadRequest("Please upload an image.");
+
+        if (result == "invalid extension")
+            return BadRequest("Only JPG and PNG images are allowed.");
+
+        if (result == "too large")
+            return BadRequest("Image size cannot exceed 2 MB.");
+
+        if (result == "not found")
+            return NotFound("There is no product with the specified id.");
+
+        return Ok("Image uploaded successfully.");
+    }
 }

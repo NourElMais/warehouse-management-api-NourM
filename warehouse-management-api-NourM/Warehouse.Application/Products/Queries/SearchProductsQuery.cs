@@ -2,10 +2,12 @@
 
 public class SearchProductsQuery
 {
-    public string SearchTerm { get; set; }
+    public string? Name { get; set; }
+    public string? Supplier { get; set; }
 
-    public SearchProductsQuery(string searchTerm)
+    public SearchProductsQuery(string? name, string? supplier)
     {
-        SearchTerm = searchTerm;
+        Name = name;
+        Supplier = supplier;
     }
 }

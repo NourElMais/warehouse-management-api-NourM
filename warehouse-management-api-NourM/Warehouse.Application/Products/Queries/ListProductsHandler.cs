@@ -14,6 +14,11 @@ public class ListProductsHandler
 
     public List<Product> Handle(ListProductsQuery query)
     {
-        return _productRepository.GetAll();
+        var products = _productRepository.GetAll();
+
+        if (query.OnlyAvailable)
+            return products.Where(p => !p.IsArchived).ToList();
+
+        return products;
     }
 }

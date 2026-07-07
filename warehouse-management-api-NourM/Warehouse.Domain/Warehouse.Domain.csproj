@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="ProductImages\" />
       <Folder Include="StockMovements\" />
       <Folder Include="WareHouseItems\" />
     </ItemGroup>

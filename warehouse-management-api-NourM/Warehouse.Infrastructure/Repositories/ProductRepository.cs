@@ -45,7 +45,5 @@ public class ProductRepository:IProductRepository
 
     public void Update(Product product)
     {
-        // In-memory list stores the same object reference,
-        // so no extra code is needed for now.
     }
 }

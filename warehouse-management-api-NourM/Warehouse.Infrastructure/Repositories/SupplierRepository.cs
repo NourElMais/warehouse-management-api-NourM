@@ -1,9 +1,10 @@
-﻿using Warehouse.Domain.Suppliers;
+﻿using Warehouse.Domain.Repositories;
+using Warehouse.Domain.Suppliers;
 using Warehouse.Infrastructure.Data;
 
 namespace Warehouse.Infrastructure.Repositories;
 
-public class SupplierRepository
+public class SupplierRepository : ISupplierRepository
 {
     public List<Supplier> GetAll()
     {
@@ -12,8 +13,15 @@ public class SupplierRepository
 
     public Supplier? GetById(string id)
     {
-        return FakeSupplierStore.Suppliers
-            .FirstOrDefault(s => s.Id == id);
+        foreach (Supplier supplier in FakeSupplierStore.Suppliers)
+        {
+            if (supplier.Id == id)
+            {
+                return supplier;
+            }
+        }
+
+        return null;
     }
 
     public void Add(Supplier supplier)
@@ -23,7 +31,5 @@ public class SupplierRepository
 
     public void Update(Supplier supplier)
     {
-        // In-memory list stores the same object reference,
-        // so no extra code is needed for now.
     }
 }

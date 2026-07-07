@@ -23,10 +23,15 @@ public class UpdateProductPriceHandler
         if (product is null)
             return Task.FromResult<Product?>(null);
 
+        decimal oldPrice = product.Price;
+
         product.UpdatePrice(command.NewPrice);
 
         _productRepository.Update(product);
 
+        Console.WriteLine(
+            $"Product {product.Name} price changed from {oldPrice} to {product.Price}");
+
         return Task.FromResult<Product?>(product);
-    }
+        }
 }

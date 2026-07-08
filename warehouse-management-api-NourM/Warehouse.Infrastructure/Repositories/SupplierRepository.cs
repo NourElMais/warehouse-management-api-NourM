@@ -31,5 +31,6 @@ public class SupplierRepository : ISupplierRepository
 
     public void Update(Supplier supplier)
     {
+        throw new NotImplementedException();
     }
 }

@@ -156,14 +156,12 @@ This structure separates the API, business logic, domain models, data access, an
 
 ## Test Results
 
-Basic unit tests were added to verify both the business rules in the Domain layer and the behavior 
-of the Application layer.
+Basic unit tests were added to verify both the business rules in the Domain layer and the behavior of the Application layer.
 
-For the Domain tests, `Product` objects were created and different methods were called to verify that the business rules behave correctly. 
-The tests check that the appropriate exceptions are thrown when invalid operations are performed, such as setting a negative price or updating an archived product.
+For the Domain tests, `Product` objects were created and different methods were called to verify that the business rules behave correctly. The tests ensure that the appropriate exceptions are thrown when invalid operations are performed, such as setting a negative price or updating an archived product.
 
-For the Application tests, a **FakeProductRepository** was created to simulate the real repository. 
-Instead of using the actual data store, the fake repository allowed the handlers to be tested in isolation. This made it possible to verify that:
+For the Application tests, a **FakeProductRepository** was created to simulate the real repository. This allowed the handlers to be tested independently from the actual data store. Using the fake repository, it was verified that:
+
 - The `CreateProductHandler` calls the repository's `Add()` method when creating a product.
 - The `GetProductByIdHandler` returns `null` when the requested product does not exist, allowing the controller to return a **404 Not Found** response.
 
@@ -174,8 +172,25 @@ The following tests were implemented:
 - Archived products cannot be updated.
 - Inactive suppliers cannot be assigned.
 - Create product use case calls the repository.
-- Get product by ID returns not found when the product does not exist.
+- Get product by ID returns `null` when the product does not exist.
 
-These tests help verify that both the business rules and the application use cases continue to work correctly after future changes to the project.
+These tests help ensure that both the business rules and the application use cases continue to work correctly as the project evolves.
 
-**Note:** All screenshots demonstrating the implemented endpoints, Swagger interface, and test results are available in the **Screenshots** folder (in WareHouse.Presentation).
+---
+
+## Bonus Challenges
+
+The following bonus challenges were completed as part of this lab:
+
+### Challenge 1 – Domain Events
+
+A simple **ProductArchivedEvent** was added to the Domain layer. Whenever a product is archived, a domain event is recorded inside the product to represent that an important business action has occurred.
+
+### Challenge 2 – Architecture Test
+
+An architecture test was added to verify that the **Domain** project does not depend on the **Infrastructure** project. 
+The test inspects the Domain assembly and confirms that it has no reference to the Infrastructure assembly, ensuring that the dependency rules of the Clean Architecture are respected.
+
+---
+
+**Note:** All screenshots demonstrating the implemented endpoints, Swagger interface, and unit test results can be found in the **Screenshots** folder (Session03(Jhonny)) inside the **Warehouse.Presentation** project.

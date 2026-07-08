@@ -1,4 +1,6 @@
-﻿namespace Warehouse.Domain.Products;
+﻿using Warehouse.Domain.DomainEvents;
+
+namespace Warehouse.Domain.Products;
 
 public class Product
 {
@@ -13,6 +15,8 @@ public class Product
     public bool IsArchived { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime LastUpdatedAt { get; private set; }
+    
+    public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
 
     public Product(
         string name,
@@ -75,6 +79,8 @@ public class Product
     {
         IsArchived = true;
         LastUpdatedAt = DateTime.UtcNow;
+
+        DomainEvents.Add(new ProductArchivedEvent(Id));
     }
 
     public void AssignSupplier(string supplierName, bool supplierIsActive)

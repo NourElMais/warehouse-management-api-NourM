@@ -26,9 +26,4 @@
       <ProjectReference Include="..\Warehouse.Domain\Warehouse.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Applications\" />
-      <Folder Include="Suppliers\" />
-    </ItemGroup>
-
 </Project>

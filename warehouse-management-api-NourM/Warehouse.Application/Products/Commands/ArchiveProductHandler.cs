@@ -1,9 +1,11 @@
-﻿using Warehouse.Domain.Products;
+﻿using MediatR;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
-using MediatR;
+
 namespace Warehouse.Application.Products.Commands;
 
-public class ArchiveProductHandler
+public class ArchiveProductHandler 
+    : IRequestHandler<ArchiveProductCommand, Product?>
 {
     private readonly IProductRepository _productRepository;
 
@@ -12,17 +14,19 @@ public class ArchiveProductHandler
         _productRepository = productRepository;
     }
 
-    public Product? Handle(ArchiveProductCommand command)
+    public Task<Product?> Handle(
+        ArchiveProductCommand command,
+        CancellationToken cancellationToken)
     {
         var product = _productRepository.GetById(command.ProductId);
 
         if (product is null)
-            return null;
+            return Task.FromResult<Product?>(null);
 
         product.Archive();
 
         _productRepository.Update(product);
 
-        return product;
+        return Task.FromResult<Product?>(product);
     }
 }

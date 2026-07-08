@@ -100,7 +100,7 @@ public class ProductsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduct([FromRoute] string id)
     {
-        if (!Guid.TryParse(id, out _))
+        if (!Guid.TryParse(id, out var guid))
             return BadRequest("The entered Id is not valid");
 
         var product = await _mediator.Send(new ArchiveProductCommand(id));

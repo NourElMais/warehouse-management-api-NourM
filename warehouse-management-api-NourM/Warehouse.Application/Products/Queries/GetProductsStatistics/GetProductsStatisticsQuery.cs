@@ -1,7 +1,8 @@
-﻿namespace Warehouse.Application.Products.Queries;
-using MediatR;
+﻿using MediatR;
+using Warehouse.Application.Products.Queries;
 
-public class GetProductsStatisticsQuery:IRequest<object>
+namespace Warehouse.Application.Products.GetProductsStatistics;
+
+public class GetProductsStatisticsQuery : IRequest<GetProductsStatisticsResponse>
 {
-    
 }

@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 
-namespace Warehouse.Application.Products.Queries;
+namespace Warehouse.Application.Products.GetProductsStatistics;
 
 public class GetProductsStatisticsHandler
-    : IRequestHandler<GetProductsStatisticsQuery, object>
+    : IRequestHandler<GetProductsStatisticsQuery, GetProductsStatisticsResponse>
 {
     private readonly IProductRepository _productRepository;
 
@@ -13,7 +14,7 @@ public class GetProductsStatisticsHandler
         _productRepository = productRepository;
     }
 
-    public Task<object> Handle(
+    public Task<GetProductsStatisticsResponse> Handle(
         GetProductsStatisticsQuery request,
         CancellationToken cancellationToken)
     {
@@ -43,7 +44,7 @@ public class GetProductsStatisticsHandler
             }
         }
 
-        object statistics = new
+        var statistics = new GetProductsStatisticsResponse
         {
             TotalProducts = totalProducts,
             ActiveProducts = activeProducts,

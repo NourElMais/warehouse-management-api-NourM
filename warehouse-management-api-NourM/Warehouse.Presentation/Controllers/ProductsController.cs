@@ -175,6 +175,9 @@ public class ProductsController : ControllerBase
         if (!Guid.TryParse(id, out var guid))
             return BadRequest("The entered Id is not valid");
 
+        if (image is null)
+            return BadRequest("Please upload an image.");
+
         var result = await _mediator.Send(
             new UploadProductImageCommand(id, image.FileName, image.Length));
 
@@ -189,6 +192,16 @@ public class ProductsController : ControllerBase
 
         if (result == "not found")
             return NotFound("There is no product with the specified id.");
+
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+        if (!Directory.Exists(uploadsFolder))
+            Directory.CreateDirectory(uploadsFolder);
+
+        var filePath = Path.Combine(uploadsFolder, image.FileName);
+
+        await using var stream = new FileStream(filePath, FileMode.Create);
+        await image.CopyToAsync(stream);
 
         return Ok("Image uploaded successfully.");
     }

@@ -30,4 +30,8 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\Samsung Monitor.png" />
+    </ItemGroup>
+
 </Project>

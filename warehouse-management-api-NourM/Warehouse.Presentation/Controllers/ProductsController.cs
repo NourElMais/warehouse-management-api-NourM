@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Warehouse.Application.Products.Commands;
+using Warehouse.Application.Products.GetProductsStatistics;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Presentation.Contracts;
 
@@ -68,7 +69,8 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost("{id}/quantity")]
-    public async Task<ActionResult> UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest request)
+    public async Task<ActionResult> UpdateQuantity([FromRoute] string id,
+        [FromBody] UpdateProductQuantityRequest request)
     {
         if (!Guid.TryParse(id, out _))
             return BadRequest("The entered Id is not valid");
@@ -158,7 +160,7 @@ public class ProductsController : ControllerBase
         var statistics = await _mediator.Send(new GetProductsStatisticsQuery());
         return Ok(statistics);
     }
-    
+
     [HttpGet("server-time")]
     public async Task<ActionResult> GetServerTime([FromHeader(Name = "Accept-Language")] string language)
     {
@@ -168,7 +170,7 @@ public class ProductsController : ControllerBase
         var result = await _mediator.Send(new GetServerTimeQuery(language));
         return Ok(result);
     }
-    
+
     [HttpPost("{id}/image")]
     public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile image)
     {
@@ -181,16 +183,16 @@ public class ProductsController : ControllerBase
         var result = await _mediator.Send(
             new UploadProductImageCommand(id, image.FileName, image.Length));
 
-        if (result == "empty image")
+        if (result == UploadProductImageResult.EmptyImage)
             return BadRequest("Please upload an image.");
 
-        if (result == "invalid extension")
+        if (result == UploadProductImageResult.InvalidExtension)
             return BadRequest("Only JPG and PNG images are allowed.");
 
-        if (result == "too large")
+        if (result == UploadProductImageResult.FileTooLarge)
             return BadRequest("Image size cannot exceed 2 MB.");
 
-        if (result == "not found")
+        if (result == UploadProductImageResult.ProductNotFound)
             return NotFound("There is no product with the specified id.");
 
         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");

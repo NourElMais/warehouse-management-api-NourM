@@ -1,0 +1,196 @@
+﻿# Session 1 (Lea Noun)
+## Implemented Features
+- Created and configured the `.gitignore` file.
+- Initialized the Git repository.
+- Connected the local repository to GitHub.
+- Practiced Git branching, pushing, and creating Pull Requests.
+
+## Run Instructions
+1. Clone the repository.
+2. Open the solution in Rider.
+3. Build and run the project.
+
+## API Endpoints Added
+No API endpoints were implemented during this session.
+
+---
+
+# Session 2 (Andrea Jabbour)
+
+## Implemented Features
+- Created and configured the ASP.NET Core Web API project.
+- Implemented the `Product` and `Supplier` domain models.
+- Created DTOs for product and supplier requests.
+- Added in-memory data stores for products and suppliers.
+- Implemented product management endpoints.
+- Implemented supplier management endpoints.
+- Implemented product-supplier assignment.
+- Added product image upload with validation.
+- Implemented soft delete and restore functionality.
+- Added warehouse utility endpoints for products and suppliers.
+- Configured and tested the API using Swagger.
+
+## Run Instructions
+
+1. Clone the repository.
+2. Open the solution in Rider.
+3. Restore the NuGet packages.
+4. Build and run the project.
+5. Open Swagger to test the API (http://localhost:5000/swagger/index.html)
+
+## API Endpoints Added
+
+### Products
+- `GET /api/products`
+- `GET /api/products/{id}`
+- `GET /api/products/search`
+- `POST /api/products`
+- `POST /api/products/{id}/quantity`
+- `POST /api/products/{id}/price`
+- `POST /api/products/{id}/image`
+- `DELETE /api/products/{id}`
+- `GET /api/products/server-time`
+- `POST /api/products/{id}/assign-supplier/{supplierId}`
+
+### Suppliers
+- `GET /api/suppliers`
+- `GET /api/suppliers/{id}`
+- `POST /api/suppliers`
+- `DELETE /api/suppliers/{id}`
+
+### Additional Product Endpoints
+- `POST /api/products/{id}/restore`
+- `GET /api/products/low-stock`
+- `GET /api/products/statistics`
+
+### Additional Supplier Endpoints
+- `GET /api/suppliers/statistics`
+
+# Swagger Screenshots
+The **Screenshots** folder contains screenshots of the Swagger interface and all implemented API endpoints.
+---
+
+# Session 3 (Jhonny Abou Rjeily)
+
+## Implemented Features
+
+In this session, the project was refactored from a simple architecture into a Clean Architecture following DDD and CQRS principles.
+
+The following changes were implemented:
+
+- The solution was split into four main layers:
+  - Presentation
+  - Application
+  - Domain
+  - Infrastructure
+  
+- Moved business logic from Services into Application Handlers.
+- Added Commands and Queries for all product and supplier use cases.
+- Integrated MediatR to dispatch Commands and Queries from controllers.
+- Implemented the Repository Pattern using repository interfaces in the Domain layer and repository implementations in the Infrastructure layer.
+- Moved the fake data stores (FakeWarehouseStore and FakeSupplierStore) into the Infrastructure layer.
+- Refactored controllers to use MediatR instead of directly calling services.
+- Added basic unit tests for core business rules.
+
+## Project Structure
+
+Warehouse
+│
+├── Warehouse.Presentation
+├── Warehouse.Application
+├── Warehouse.Domain
+├── Warehouse.Infrastructure
+└── Warehouse.Tests
+
+This structure separates the API, business logic, domain models, data access, and tests into independent layers, making the project easier to maintain.
+
+### Layer Responsibilities
+
+- **Presentation:** Handles HTTP requests and sends Commands/Queries through MediatR.
+- **Application:** Contains Commands, Queries, and Handlers that implement the application's use cases.
+- **Domain:** Contains the business entities, business rules, and repository interfaces.
+- **Infrastructure:** Implements repository interfaces and handles data access using the in-memory fake stores.
+
+---
+
+## Run Instructions
+
+1. Open the solution in Rider.
+2. Build the solution.
+3. Run the **Warehouse.Presentation** project.
+4. Open Swagger (http://localhost:5000/swagger/index.html)
+5. Test the available API endpoints.
+
+---
+
+## API Endpoints
+
+### Products
+
+- GET `/api/products`
+- GET `/api/products/{id}`
+- GET `/api/products/search`
+- POST `/api/products`
+- POST `/api/products/{id}/quantity`
+- POST `/api/products/{id}/price`
+- POST `/api/products/{id}/image`
+- DELETE `/api/products/{id}`
+- GET `/api/products/server-time`
+- POST `/api/products/{id}/assign-supplier/{supplierId}`
+
+### Suppliers
+
+- GET `/api/suppliers`
+- GET `/api/suppliers/{id}`
+- POST `/api/suppliers`
+- DELETE `/api/suppliers/{id}`
+
+### Additional Endpoints (Were added in Lab 2)
+
+- POST `/api/products/{id}/restore`
+- GET `/api/products/low-stock`
+- GET `/api/products/statistics`
+- GET `/api/suppliers/statistics`
+
+---
+
+## Test Results
+
+Basic unit tests were added to verify both the business rules in the Domain layer and the behavior of the Application layer.
+
+For the Domain tests, `Product` objects were created and different methods were called to verify that the business rules behave correctly. The tests ensure that the appropriate exceptions are thrown when invalid operations are performed, such as setting a negative price or updating an archived product.
+
+For the Application tests, a **FakeProductRepository** was created to simulate the real repository. This allowed the handlers to be tested independently from the actual data store. Using the fake repository, it was verified that:
+
+- The `CreateProductHandler` calls the repository's `Add()` method when creating a product.
+- The `GetProductByIdHandler` returns `null` when the requested product does not exist, allowing the controller to return a **404 Not Found** response.
+
+The following tests were implemented:
+
+- Product price cannot be zero or negative.
+- Product quantity cannot be negative.
+- Archived products cannot be updated.
+- Inactive suppliers cannot be assigned.
+- Create product use case calls the repository.
+- Get product by ID returns `null` when the product does not exist.
+
+These tests help ensure that both the business rules and the application use cases continue to work correctly as the project evolves.
+
+---
+
+## Bonus Challenges
+
+The following bonus challenges were completed as part of this lab:
+
+### Challenge 1 – Domain Events
+
+A simple **ProductArchivedEvent** was added to the Domain layer. Whenever a product is archived, a domain event is recorded inside the product to represent that an important business action has occurred.
+
+### Challenge 2 – Architecture Test
+
+An architecture test was added to verify that the **Domain** project does not depend on the **Infrastructure** project. 
+The test inspects the Domain assembly and confirms that it has no reference to the Infrastructure assembly, ensuring that the dependency rules of the Clean Architecture are respected.
+
+---
+
+**Note:** All screenshots demonstrating the implemented endpoints, Swagger interface, and unit test results can be found in the **Screenshots** folder (Session03(Jhonny)) inside the **Warehouse.Presentation** project.

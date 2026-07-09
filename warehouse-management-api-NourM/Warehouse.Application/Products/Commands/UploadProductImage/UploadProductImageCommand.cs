@@ -2,7 +2,7 @@
 
 namespace Warehouse.Application.Products.Commands;
 
-public class UploadProductImageCommand : IRequest<string>
+public class UploadProductImageCommand : IRequest<UploadProductImageResult>
 {
     public string ProductId { get; set; }
     public string FileName { get; set; }

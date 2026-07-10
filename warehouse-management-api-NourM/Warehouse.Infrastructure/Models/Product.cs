@@ -17,7 +17,7 @@ public partial class Product
 
     public int QuantityInStock { get; set; }
 
-    public DateTime? Expirydate { get; set; }
+    public DateTime Expirydate { get; set; }
 
     public bool Isarchived { get; set; }
 

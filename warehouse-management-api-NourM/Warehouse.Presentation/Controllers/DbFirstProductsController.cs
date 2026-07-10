@@ -29,5 +29,19 @@ public class DbFirstProductsController:ControllerBase
 
         return Ok(products.ToList());
     }
+
+    [HttpGet("groupByExpiryYear")]
+    public IActionResult GroupByExpiryYear()
+    {
+        var grouped = _db.Products.GroupBy(p => p.Expirydate.Year)
+            .Select(g => new
+            {
+                ExpiryYear = g.Key,
+                Products = g.ToList()
+            })
+            .ToList();
+
+        return Ok(grouped);
+    }
     
 }

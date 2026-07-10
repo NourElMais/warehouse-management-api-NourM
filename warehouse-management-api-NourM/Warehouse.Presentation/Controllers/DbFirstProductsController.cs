@@ -16,18 +16,18 @@ public class DbFirstProductsController:ControllerBase
     
     [HttpGet("bySuppName")]
     public IActionResult GetProductsBySupplierName([FromQuery] string supplierName,[FromQuery] string order = "desc")
-    {
-        List<Product> products = _db.Products.Where(p=> p.Supplier.Name == supplierName).ToList();
+    { 
+        var products = _db.Products.Where(p=> p.Supplier.Name.ToLower() == supplierName.ToLower());
         if (order == "desc")
         {
-            products = products.OrderByDescending(p => p.CreatedAt).ToList();
+            products = products.OrderByDescending(p => p.CreatedAt);
         }
         else
         {
-            products = products.OrderBy(p => p.CreatedAt).ToList();
+            products = products.OrderBy(p => p.CreatedAt);
         }
 
-        return Ok(products.ToList());
+        return Ok(products.Select(p => p.Name).ToList());
     }
 
     [HttpGet("groupByExpiryYear")]
@@ -37,14 +37,14 @@ public class DbFirstProductsController:ControllerBase
             .Select(g => new
             {
                 ExpiryYear = g.Key,
-                Products = g.Select(p => p.Name)
+                Products = g.Select(p => p.Name).ToList()
             })
             .ToList();
 
         return Ok(grouped);
     }
 
-    [HttpGet("groupByExpiryYear&SupplierCountry")]
+    [HttpGet("groupByExpiryYearAndSupplierCountry")]
     public IActionResult GroupByExpiryYearAndSupplierCountry()
     {
         var grouped = _db.Products.GroupBy(p => new
@@ -53,12 +53,12 @@ public class DbFirstProductsController:ControllerBase
                 p.Supplier.Country
             }).Select(g => new
             {
-                ExpiryYearAndSupplierCountry = g.Key,
-                Products = g.Select(p => p.Name)
+                ExpiryYear = g.Key.Year,
+                SupplierCountry = g.Key.Country,
+                Products = g.Select(p => p.Name).ToList()
             })
             .ToList();
 
         return Ok(grouped);
     }
-    
 }

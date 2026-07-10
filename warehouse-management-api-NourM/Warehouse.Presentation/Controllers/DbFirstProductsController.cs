@@ -67,4 +67,21 @@ public class DbFirstProductsController:ControllerBase
     {
         return Ok(_db.Products.Count());
     }
+    
+    [HttpGet("byPageNbr")]
+    public IActionResult GetProductsByPageNbr([FromQuery] int pageNbr, [FromQuery] int pageSize)
+    {
+        if (pageNbr < 1)
+        {
+            return BadRequest("Page Nbr must be greater than 1");
+        }
+
+        if (pageSize < 1)
+        {
+            return BadRequest("Page Size must be greater than 1");
+        }
+        int ProductsToSkip = (pageNbr-1)*pageSize;
+        var products = _db.Products.Skip(ProductsToSkip).Take(pageSize);
+        return Ok(products.ToList());
+    }
 }

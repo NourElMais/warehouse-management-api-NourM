@@ -61,4 +61,10 @@ public class DbFirstProductsController:ControllerBase
 
         return Ok(grouped);
     }
+    
+    [HttpGet("totalProducts")]
+    public IActionResult TotalProducts()
+    {
+        return Ok(_db.Products.Count());
+    }
 }

@@ -4,7 +4,7 @@ using Warehouse.Infrastructure.Models;
 namespace Warehouse.Presentation.Controllers;
 
 [ApiController]
-[Route("/dbfirst")]
+[Route("dbfirst")]
 public class DbFirstProductsController:ControllerBase
 {
     private readonly WarehouseDbFirstContext _db;
@@ -18,6 +18,12 @@ public class DbFirstProductsController:ControllerBase
     public IActionResult GetProductsBySupplierName([FromQuery] string supplierName,[FromQuery] string order = "desc")
     { 
         var products = _db.Products.Where(p=> p.Supplier.Name.ToLower() == supplierName.ToLower());
+        order = order.ToLower();
+
+        if (order != "asc" && order != "desc")
+        {
+            return BadRequest("Order must be 'asc' or 'desc'");
+        }
         if (order == "desc")
         {
             products = products.OrderByDescending(p => p.CreatedAt);
@@ -73,12 +79,12 @@ public class DbFirstProductsController:ControllerBase
     {
         if (pageNbr < 1)
         {
-            return BadRequest("Page Nbr must be greater than 1");
+            return BadRequest("Page Nbr must be at least 1");
         }
 
         if (pageSize < 1)
         {
-            return BadRequest("Page Size must be greater than 1");
+            return BadRequest("Page Size must be at least 1");
         }
         int ProductsToSkip = (pageNbr-1)*pageSize;
         var products = _db.Products.Skip(ProductsToSkip).Take(pageSize);

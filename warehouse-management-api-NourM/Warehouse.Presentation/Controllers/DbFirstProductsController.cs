@@ -37,7 +37,24 @@ public class DbFirstProductsController:ControllerBase
             .Select(g => new
             {
                 ExpiryYear = g.Key,
-                Products = g.ToList()
+                Products = g.Select(p => p.Name)
+            })
+            .ToList();
+
+        return Ok(grouped);
+    }
+
+    [HttpGet("groupByExpiryYear&SupplierCountry")]
+    public IActionResult GroupByExpiryYearAndSupplierCountry()
+    {
+        var grouped = _db.Products.GroupBy(p => new
+            {
+                p.Expirydate.Year,
+                p.Supplier.Country
+            }).Select(g => new
+            {
+                ExpiryYearAndSupplierCountry = g.Key,
+                Products = g.Select(p => p.Name)
             })
             .ToList();
 

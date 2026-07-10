@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
+using Warehouse.Infrastructure.Models;
 using Warehouse.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,9 @@ builder.Services.AddSingleton<ISupplierRepository, SupplierRepository>();
 // Register MediatR handlers from Application project
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ListProductsHandler).Assembly));
+
+builder.Services.AddDbContext<WarehouseDbFirstContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

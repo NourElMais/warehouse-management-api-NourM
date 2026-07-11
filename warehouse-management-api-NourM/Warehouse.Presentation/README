@@ -194,3 +194,99 @@ The test inspects the Domain assembly and confirms that it has no reference to t
 ---
 
 **Note:** All screenshots demonstrating the implemented endpoints, Swagger interface, and unit test results can be found in the **Screenshots** folder (Session03(Jhonny)) inside the **Warehouse.Presentation** project.
+
+# Session 4 (Lea)
+
+## Implemented Features
+
+### Database First
+- Created the **WarehouseDbFirst** PostgreSQL database.
+- Scaffolded the database to generate EF Core entities and `DbContext`.
+- Implemented LINQ-based queries:
+  - Retrieve products by supplier name.
+  - Sort products by creation date (ascending or descending).
+  - Group products by expiry year.
+  - Group products by expiry year and supplier country.
+  - Count the total number of products.
+  - Implement server-side pagination using `Skip()` and `Take()`.
+
+### Code First
+- Designed the database using the **Code First** approach.
+- Created the `WarehouseDbContext`.
+- Generated the database using EF Core migrations.
+- Added navigation properties between:
+  - Products and Suppliers
+  - Products and Product Images
+  - Products and Stock Movements
+- Replaced the in-memory repositories with Entity Framework Core repositories.
+- Connected the application to a PostgreSQL database.
+- Implemented CRUD operations for Products and Suppliers.
+- Added AutoMapper profiles to map domain entities to ViewModels.
+- Updated all handlers to return ViewModels instead of domain entities.
+- Added OData endpoints for Products and Suppliers .
+
+---
+
+## Run Instructions
+
+1. Clone the repository.
+2. Start the PostgreSQL Docker container.
+3. Update the PostgreSQL connection string in `appsettings.json` if needed.
+4. Apply the Code First migrations:
+dotnet ef migrations add InitialMigration --project Warehouse.Infrastructure --startup-project Warehouse.Presentation
+dotnet ef database update InitialMigration --project Warehouse.Infrastructure --startup-project Warehouse.Presentation
+
+6. Build and run the project.
+
+7. Open Swagger:
+https://localhost:<port>/swagger
+
+---
+
+## API Endpoints Added
+### Database First (LINQ)
+
+#### Products
+- `GET /api/products/search`
+- `GET /api/products/group-by-expiry-year`
+- `GET /api/products/group-by-expiry-year-country`
+- `GET /api/products/count`
+- `GET /api/products/pagination`
+
+### Code First
+
+#### Products
+- `GET /api/products`
+- `GET /api/products/{id}`
+- `GET /api/products/search`
+- `GET /api/products/low-stock`
+- `GET /api/products/statistics`
+- `POST /api/products`
+- `POST /api/products/{id}/price`
+- `POST /api/products/{id}/quantity`
+- `POST /api/products/{id}/archive`
+- `POST /api/products/{id}/restore`
+- `POST /api/products/{id}/assign-supplier`
+- `POST /api/products/{id}/image`
+
+#### Suppliers
+- `GET /api/suppliers`
+- `GET /api/suppliers/{id}`
+- `GET /api/suppliers/statistics`
+- `POST /api/suppliers`
+- `POST /api/suppliers/{id}/deactivate`
+
+### OData (Challenge, Bonus)
+
+#### Products
+- `GET /odata/products`
+
+#### Suppliers
+- `GET /odata/suppliers`
+
+---
+
+## Notes
+**OData endpoints were tested directly through the browser using OData query URLs, 
+as Swagger does not provide built-in support for entering OData query options such as `$filter`, 
+`$orderby`, and `$top`**

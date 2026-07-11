@@ -32,7 +32,7 @@ public class AssignSupplierToProductHandler
         if (supplier is null)
             return Task.FromResult<Product?>(null);
 
-        product.AssignSupplier(supplier.Name, supplier.IsActive);
+        product.AssignSupplier(supplier);
 
         _productRepository.Update(product);
 

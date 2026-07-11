@@ -1,4 +1,5 @@
 ﻿using Warehouse.Domain.Products;
+using Warehouse.Domain.Suppliers;
 
 namespace WareHouse.tests.Products;
 
@@ -13,7 +14,7 @@ public class ProductTests
             "Gaming laptop",
             1000,
             5,
-            "Dell",
+            "s1",
             DateTime.Now.AddYears(1));
         
         Assert.Throws<ArgumentException>(() =>
@@ -31,7 +32,7 @@ public class ProductTests
             "Gaming laptop",
             1000,
             5,
-            "Dell",
+            "S2",
             DateTime.UtcNow.AddYears(1));
 
         Assert.Throws<ArgumentException>(() => { product.UpdatePrice(-100); });
@@ -45,7 +46,7 @@ public class ProductTests
             "Gaming laptop",
             1000,
             5,
-            "Dell",
+            "S1",
             DateTime.UtcNow.AddYears(1));
 
         Assert.Throws<ArgumentException>(() =>
@@ -70,6 +71,7 @@ public class ProductTests
 
         Assert.Throws<InvalidOperationException>(() => { product.UpdatePrice(2000); });
     }
+    
     [Test]
     public void InactiveSupplier_CannotBeAssigned()
     {
@@ -82,9 +84,15 @@ public class ProductTests
             "Dell",
             DateTime.UtcNow.AddYears(1));
 
+        Supplier S1 = new Supplier("Nour",
+            "Lebanon",
+            "nour@gmail.com",
+            "03421605",
+            "id123");
+        S1.Deactivate();
         Assert.Throws<InvalidOperationException>(() =>
         {
-            product.AssignSupplier("ABC Supplier", false);
+            product.AssignSupplier(S1);
         });
     }
 }

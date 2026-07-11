@@ -12,7 +12,7 @@ public class StockMovement
     //We add the navigation property:
     public virtual Product? Product { get; private set; }
 
-    public StockMovement(string? id, string? productId, int quantityChanged)
+    public StockMovement(string? productId, int quantityChanged, string? id = null)
     {
         if (string.IsNullOrWhiteSpace(productId))
             throw new ArgumentException("Product Id is required.");

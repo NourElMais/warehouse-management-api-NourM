@@ -28,7 +28,7 @@ public class ProductRepository:IProductRepository
                                product.Name.Contains(name, StringComparison.OrdinalIgnoreCase);
 
             bool supplierMatches = string.IsNullOrWhiteSpace(supplier) ||
-                                   product.SupplierName.Contains(supplier, StringComparison.OrdinalIgnoreCase);
+                                   product.Supplier.Name.Contains(supplier, StringComparison.OrdinalIgnoreCase);
 
             if (nameMatches && supplierMatches)
             {

@@ -1,5 +1,4 @@
-﻿using Warehouse.Domain.DomainEvents;
-using Warehouse.Domain.ProductImages;
+﻿using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.StockMovements;
 using Warehouse.Domain.Suppliers;
 
@@ -24,7 +23,6 @@ public class Product
     
     //New navigation property: to be able to access the images of a certain product (I considered that 1 product can have many images)
     public virtual ICollection<ProductImage> ProductImages { get; private set; } = new List<ProductImage>();
-    public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
 
     //New navigation property: to be able to access the stock movements of a certain product
     public virtual List<StockMovement> StockMovements { get; private set; }
@@ -35,9 +33,9 @@ public class Product
         string description,
         decimal price,
         int quantityInStock,
-        string supplierid,
+        string supplierId,
         DateTime expiryDate,
-        string? id)
+        string? id =null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name is required.");
@@ -50,6 +48,9 @@ public class Product
 
         if (quantityInStock < 0)
             throw new ArgumentException("Quantity cannot be negative.");
+        
+        if (string.IsNullOrWhiteSpace(supplierId))
+            throw new ArgumentException("Supplier Id is required.");
 
         Id = id ?? Guid.NewGuid().ToString();
         Name = name;
@@ -57,7 +58,7 @@ public class Product
         Description = description;
         Price = price;
         QuantityInStock = quantityInStock;
-        SupplierId = supplierid;
+        SupplierId = supplierId;
         ExpiryDate = expiryDate;
         IsArchived = false;
         CreatedAt = DateTime.UtcNow;
@@ -90,8 +91,6 @@ public class Product
     {
         IsArchived = true;
         LastUpdatedAt = DateTime.UtcNow;
-
-        DomainEvents.Add(new ProductArchivedEvent(Id));
     }
 
     public void AssignSupplier(Supplier supplier)

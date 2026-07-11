@@ -1,4 +1,5 @@
-﻿using Warehouse.Domain.Products;
+﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Domain.Products;
 
 namespace Warehouse.Domain.Suppliers;
 

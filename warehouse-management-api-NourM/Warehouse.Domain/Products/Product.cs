@@ -1,4 +1,5 @@
-﻿using Warehouse.Domain.ProductImages;
+﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.StockMovements;
 using Warehouse.Domain.Suppliers;
 

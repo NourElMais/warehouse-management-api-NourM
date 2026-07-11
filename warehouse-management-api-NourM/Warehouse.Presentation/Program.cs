@@ -1,14 +1,30 @@
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
 using Warehouse.Application.Products.Queries;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
+using Warehouse.Domain.Suppliers;
 using Warehouse.Infrastructure;
 using Warehouse.Infrastructure.Repositories;
 using Warehouse.Presentation.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
+var odataBuilder = new ODataConventionModelBuilder();
 
-builder.Services.AddControllers();
-
+builder.Services
+    .AddControllers()
+    .AddOData(options =>
+    {
+        options
+            .Select()
+            .Filter()
+            .OrderBy()
+            .Expand()
+            .Count()
+            .SetMaxTop(100)
+            .AddRouteComponents("odata", odataBuilder.GetEdmModel());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

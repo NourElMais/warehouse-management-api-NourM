@@ -26,7 +26,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
             command.Description,
             command.Price,
             command.QuantityInStock,
-            command.SupplierName,
+            command.SupplierId,
             command.ExpiryDate
         );
 

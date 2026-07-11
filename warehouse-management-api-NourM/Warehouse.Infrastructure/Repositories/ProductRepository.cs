@@ -1,4 +1,5 @@
-﻿using Warehouse.Domain.Products;
+﻿using Microsoft.EntityFrameworkCore;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Infrastructure.Repositories;
@@ -24,7 +25,8 @@ public class ProductRepository:IProductRepository
 
     public List<Product> Search(string? name, string? supplier)
     {
-        List<Product> products = _db.products.ToList();
+        // we include the Supplier so that we do not call product.Supplier.Name on a null Supplier
+        List<Product> products = _db.products.Include(p => p.Supplier).ToList();
         List<Product> result = new List<Product>();
 
         foreach (Product product in products)

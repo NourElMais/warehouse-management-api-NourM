@@ -2,7 +2,7 @@
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Suppliers;
 
-namespace Warehouse.Application.Mapping;
+namespace Warehouse.Presentation.Mapping;
 
 public class SupplierProfile:Profile
 {

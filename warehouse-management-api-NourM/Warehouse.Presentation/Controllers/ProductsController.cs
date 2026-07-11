@@ -59,7 +59,7 @@ public class ProductsController : ControllerBase
             Description = request.Description,
             Price = request.Price,
             QuantityInStock = request.QuantityInStock,
-            SupplierName = request.SupplierName,
+            SupplierId = request.SupplierId,
             ExpiryDate = request.ExpiryDate
         };
 

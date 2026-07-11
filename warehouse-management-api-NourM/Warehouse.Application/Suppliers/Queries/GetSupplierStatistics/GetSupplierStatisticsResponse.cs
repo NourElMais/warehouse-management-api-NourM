@@ -2,7 +2,7 @@
 
 public class GetSupplierStatisticsResponse
 {
-    public  int TotalSuppliers = 0;
-    public  int ActiveSuppliers = 0;
-    public  int InactiveSuppliers = 0;
+    public  int TotalSuppliers { get; set; }
+    public  int ActiveSuppliers { get; set; } 
+    public  int InactiveSuppliers { get; set; }
 }

@@ -8,5 +8,4 @@ public interface IProductRepository
     public Product? GetById(string id);
     List<Product> Search(string? name, string? supplier);
     public void Add(Product product);
-    public void Update(Product product);
 }

@@ -1,25 +1,30 @@
 ﻿using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
-using Warehouse.Infrastructure.Data;
 
 namespace Warehouse.Infrastructure.Repositories;
 
 public class ProductRepository:IProductRepository
 {
+    private readonly WarehouseDbContext _db;
+
+    public ProductRepository(WarehouseDbContext context)
+    {
+        _db = context;
+    }
     public List<Product> GetAll()
     {
-        return FakeWarehouseStore.Products;
+        return _db.products.ToList();
     }
 
     public Product? GetById(string id)
     {
-        return FakeWarehouseStore.Products
+        return _db.products
             .FirstOrDefault(p => p.Id == id);
     }
 
     public List<Product> Search(string? name, string? supplier)
     {
-        List<Product> products = FakeWarehouseStore.Products;
+        List<Product> products = _db.products.ToList();
         List<Product> result = new List<Product>();
 
         foreach (Product product in products)
@@ -40,11 +45,7 @@ public class ProductRepository:IProductRepository
     }
     public void Add(Product product)
     {
-        FakeWarehouseStore.Products.Add(product);
-    }
-
-    public void Update(Product product)
-    {
-        throw new NotImplementedException();
+       _db.products.Add(product);
+       _db.SaveChanges();
     }
 }

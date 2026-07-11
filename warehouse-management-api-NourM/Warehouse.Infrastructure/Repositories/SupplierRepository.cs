@@ -1,19 +1,24 @@
 ﻿using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
-using Warehouse.Infrastructure.Data;
 
 namespace Warehouse.Infrastructure.Repositories;
 
 public class SupplierRepository : ISupplierRepository
 {
+    private readonly WarehouseDbContext _db;
+
+    public SupplierRepository(WarehouseDbContext context)
+    {
+        _db = context;
+    }
     public List<Supplier> GetAll()
     {
-        return FakeSupplierStore.Suppliers;
+        return _db.suppliers.ToList();
     }
 
     public Supplier? GetById(string id)
     {
-        foreach (Supplier supplier in FakeSupplierStore.Suppliers)
+        foreach (Supplier supplier in _db.suppliers.ToList())
         {
             if (supplier.Id == id)
             {
@@ -26,11 +31,8 @@ public class SupplierRepository : ISupplierRepository
 
     public void Add(Supplier supplier)
     {
-        FakeSupplierStore.Suppliers.Add(supplier);
+       _db.suppliers.Add(supplier);
+       _db.SaveChanges();
     }
-
-    public void Update(Supplier supplier)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

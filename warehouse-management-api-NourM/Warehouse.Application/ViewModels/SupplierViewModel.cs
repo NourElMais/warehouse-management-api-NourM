@@ -1,4 +1,4 @@
-﻿namespace Warehouse.Presentation.ViewModels;
+﻿namespace Warehouse.Application.ViewModels;
 
 public class SupplierViewModel
 {

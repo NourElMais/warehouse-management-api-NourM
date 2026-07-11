@@ -1,19 +1,22 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
-public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supplier>
+public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, SupplierViewModel>
 {
     private readonly ISupplierRepository _supplierRepository;
-
-    public CreateSupplierHandler(ISupplierRepository supplierRepository)
+    private readonly IMapper _mapper;
+    public CreateSupplierHandler(ISupplierRepository supplierRepository, IMapper mapper)
     {
         _supplierRepository = supplierRepository;
+        _mapper = mapper;
     }
 
-    public Task<Supplier> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
+    public Task<SupplierViewModel> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
     {
         var supplier = new Supplier(
             request.Name,
@@ -24,6 +27,8 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supp
 
         _supplierRepository.Add(supplier);
 
-        return Task.FromResult(supplier);
+        var viewModel = _mapper.Map<SupplierViewModel>(supplier);
+
+        return Task.FromResult(viewModel);
     }
 }

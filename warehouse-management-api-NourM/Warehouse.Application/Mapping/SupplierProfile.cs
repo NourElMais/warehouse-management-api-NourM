@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Suppliers;
-using Warehouse.Presentation.ViewModels;
 
-namespace Warehouse.Presentation.Mapping;
+namespace Warehouse.Application.Mapping;
 
 public class SupplierProfile:Profile
 {

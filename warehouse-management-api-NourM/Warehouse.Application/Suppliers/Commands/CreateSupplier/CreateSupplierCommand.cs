@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
-public class CreateSupplierCommand : IRequest<Supplier>
+public class CreateSupplierCommand : IRequest<SupplierViewModel>
 {
     public string Name { get; set; }
     public string Country { get; set; }

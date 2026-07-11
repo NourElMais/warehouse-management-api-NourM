@@ -1,8 +1,9 @@
-﻿using Warehouse.Domain.Products;
+﻿using Warehouse.Application.ViewModels;
+using Warehouse.Domain.Products;
 
 namespace Warehouse.Application.Products.Commands;
 using MediatR;
-public class RestoreProductCommand: IRequest<Product?>
+public class RestoreProductCommand: IRequest<ProductViewModel?>
 {
     public string ProductId { get; set; }
 

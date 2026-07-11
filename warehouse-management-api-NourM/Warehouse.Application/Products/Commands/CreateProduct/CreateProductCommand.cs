@@ -1,8 +1,9 @@
-﻿using Warehouse.Domain.Products;
+﻿using Warehouse.Application.ViewModels;
+using Warehouse.Domain.Products;
 
 namespace Warehouse.Application.Products.Commands;
 using MediatR;
-public class CreateProductCommand: IRequest<Product>
+public class CreateProductCommand: IRequest<ProductViewModel>
 {
     public string Name { get; set; }
     public string SKU { get; set; }

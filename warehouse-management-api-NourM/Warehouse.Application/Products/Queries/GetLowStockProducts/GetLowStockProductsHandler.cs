@@ -1,20 +1,23 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Queries;
 
 public class GetLowStockProductsHandler
-    : IRequestHandler<GetLowStockProductsQuery, List<Product>>
+    : IRequestHandler<GetLowStockProductsQuery, List<ProductViewModel>>
 {
     private readonly IProductRepository _productRepository;
-
-    public GetLowStockProductsHandler(IProductRepository productRepository)
+    private readonly IMapper _mapper;
+    public GetLowStockProductsHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public Task<List<Product>> Handle(
+    public Task<List<ProductViewModel>> Handle(
         GetLowStockProductsQuery query,
         CancellationToken cancellationToken)
     {
@@ -29,7 +32,9 @@ public class GetLowStockProductsHandler
                 lowStockProducts.Add(product);
             }
         }
+ 
+        var viewModel = _mapper.Map<List<ProductViewModel>>(lowStockProducts);
 
-        return Task.FromResult(lowStockProducts);
+        return Task.FromResult(viewModel);
     }
 }

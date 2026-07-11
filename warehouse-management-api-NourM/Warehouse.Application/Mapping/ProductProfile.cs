@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
-using Warehouse.Presentation.ViewModels;
-
-namespace Warehouse.Presentation.Mapping;
+namespace Warehouse.Application.Mapping;
 
 //This class contains the mapping rules (to map from Product to ProductViewModel)
 public class ProductProfile : Profile

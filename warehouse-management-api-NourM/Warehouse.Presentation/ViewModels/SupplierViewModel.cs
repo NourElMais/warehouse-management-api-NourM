@@ -1,6 +1,6 @@
 ﻿namespace Warehouse.Presentation.ViewModels;
 
-public class SuplplierViewModel
+public class SupplierViewModel
 {
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";

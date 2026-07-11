@@ -3,6 +3,7 @@ using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure;
 using Warehouse.Infrastructure.Repositories;
+using Warehouse.Presentation.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,13 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddDbContext<WarehouseDbContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Register AutoMapper
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile<ProductProfile>();
+    config.AddProfile<SupplierProfile>();
+});
 
 var app = builder.Build();
 

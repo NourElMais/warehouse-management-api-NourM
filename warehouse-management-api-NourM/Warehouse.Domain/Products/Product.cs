@@ -1,4 +1,5 @@
 ﻿using Warehouse.Domain.DomainEvents;
+using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Domain.Products;
 
@@ -10,12 +11,14 @@ public class Product
     public string Description { get; private set; }
     public decimal Price { get; private set; }
     public int QuantityInStock { get; private set; }
-    public string SupplierName { get; private set; }
     public DateTime ExpiryDate { get; private set; }
     public bool IsArchived { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime LastUpdatedAt { get; private set; }
     
+    public string SupplierId { get; private set; }
+
+    public virtual Supplier Supplier { get; private set; }
     public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
 
     public Product(
@@ -24,7 +27,7 @@ public class Product
         string description,
         decimal price,
         int quantityInStock,
-        string supplierName,
+        string supplierid,
         DateTime expiryDate,
         string? id = null)
     {
@@ -46,7 +49,7 @@ public class Product
         Description = description;
         Price = price;
         QuantityInStock = quantityInStock;
-        SupplierName = supplierName;
+        SupplierId = supplierid;
         ExpiryDate = expiryDate;
         IsArchived = false;
         CreatedAt = DateTime.UtcNow;
@@ -83,14 +86,15 @@ public class Product
         DomainEvents.Add(new ProductArchivedEvent(Id));
     }
 
-    public void AssignSupplier(string supplierName, bool supplierIsActive)
+    public void AssignSupplier(Supplier supplier)
     {
         EnsureNotArchived();
 
-        if (!supplierIsActive)
+        if (!supplier.IsActive)
             throw new InvalidOperationException("Inactive suppliers cannot be assigned to products.");
 
-        SupplierName = supplierName;
+        SupplierId = supplier.Id;
+        Supplier = supplier;
         LastUpdatedAt = DateTime.UtcNow;
     }
 

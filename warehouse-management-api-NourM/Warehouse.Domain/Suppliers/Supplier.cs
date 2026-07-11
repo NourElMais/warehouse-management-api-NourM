@@ -1,4 +1,6 @@
-﻿namespace Warehouse.Domain.Suppliers;
+﻿using Warehouse.Domain.Products;
+
+namespace Warehouse.Domain.Suppliers;
 
 public class Supplier
 {
@@ -8,6 +10,8 @@ public class Supplier
     public string ContactEmail { get; private set; }
     public string PhoneNumber { get; private set; }
     public bool IsActive { get; private set; }
+    
+    public virtual List<Product> Products { get; private set; } = new List<Product>();
 
     public Supplier(
         string name,
@@ -38,6 +42,9 @@ public class Supplier
 
     public void Deactivate()
     {
+        if (!IsActive)
+            throw new InvalidOperationException("Supplier is already inactive.");
+
         IsActive = false;
     }
 }

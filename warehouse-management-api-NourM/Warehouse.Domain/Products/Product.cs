@@ -18,7 +18,7 @@ public class Product
     
     public string SupplierId { get; private set; }
 
-    public virtual Supplier Supplier { get; private set; }
+    public virtual Supplier? Supplier { get; private set; }
     public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
 
     public Product(

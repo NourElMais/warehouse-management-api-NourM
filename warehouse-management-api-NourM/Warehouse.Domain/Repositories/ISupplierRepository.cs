@@ -8,4 +8,5 @@ public interface ISupplierRepository
     public Supplier? GetById(string id);
     public void Add(Supplier supplier);
  
+    public void Update(Supplier supplier);
 }

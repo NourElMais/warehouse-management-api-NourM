@@ -48,4 +48,9 @@ public class ProductRepository:IProductRepository
        _db.products.Add(product);
        _db.SaveChanges();
     }
+
+    public void Update(Product product)
+    {
+        _db.SaveChanges();
+    }
 }

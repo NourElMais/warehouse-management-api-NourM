@@ -14,11 +14,12 @@ public class Supplier
     public virtual List<Product> Products { get; private set; } = new List<Product>();
 
     public Supplier(
+        string? id,
         string name,
         string country,
         string contactEmail,
-        string phoneNumber,
-        string? id = null)
+        string phoneNumber
+        )
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Supplier name is required.");

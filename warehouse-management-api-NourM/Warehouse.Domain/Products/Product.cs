@@ -1,4 +1,6 @@
 ﻿using Warehouse.Domain.DomainEvents;
+using Warehouse.Domain.ProductImages;
+using Warehouse.Domain.StockMovements;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Domain.Products;
@@ -19,8 +21,14 @@ public class Product
     public string SupplierId { get; private set; }
 
     public virtual Supplier? Supplier { get; private set; }
+    
+    //New navigation property: to be able to access the images of a certain product (I considered that 1 product can have many images)
+    public virtual ICollection<ProductImage> ProductImages { get; private set; } = new List<ProductImage>();
     public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
 
+    //New navigation property: to be able to access the stock movements of a certain product
+    public virtual List<StockMovement> StockMovements { get; private set; }
+        = new List<StockMovement>();
     public Product(
         string name,
         string sku,
@@ -29,7 +37,7 @@ public class Product
         int quantityInStock,
         string supplierid,
         DateTime expiryDate,
-        string? id = null)
+        string? id)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name is required.");

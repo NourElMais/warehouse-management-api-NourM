@@ -12,6 +12,10 @@ public class StockMovement
     //We add the navigation property:
     public virtual Product? Product { get; private set; }
 
+    private StockMovement()
+    {
+        
+    }
     public StockMovement(string? productId, int quantityChanged, string? id = null)
     {
         if (string.IsNullOrWhiteSpace(productId))

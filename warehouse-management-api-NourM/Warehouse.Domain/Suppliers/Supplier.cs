@@ -13,6 +13,10 @@ public class Supplier
     
     public virtual List<Product> Products { get; private set; } = new List<Product>();
 
+    private Supplier()
+    {
+        
+    }
     public Supplier(
         string name,
         string country,

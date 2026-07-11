@@ -27,6 +27,11 @@ public class Product
     //New navigation property: to be able to access the stock movements of a certain product
     public virtual List<StockMovement> StockMovements { get; private set; }
         = new List<StockMovement>();
+    
+    //private constructor for EF core to be able to create a Product
+    private Product()
+    {
+    }
     public Product(
         string name,
         string sku,

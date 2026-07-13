@@ -20,6 +20,7 @@ public class SupplierRepository : ISupplierRepository
 
     public async Task<Supplier?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
+        //I used FirstOrDefault and not toList with a for loop, so that I do not download the whole database, and get only the relevant row
         return await _db.Suppliers.FirstOrDefaultAsync(supplier => supplier.Id == id, cancellationToken);
     }
 

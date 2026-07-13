@@ -20,7 +20,7 @@ public class Product
     
     public string SupplierId { get; private set; }
 
-    public virtual Supplier? Supplier { get; private set; }
+    public virtual Supplier Supplier { get; private set; }
     
     //New navigation property: to be able to access the images of a certain product (I considered that 1 product can have many images)
     public virtual ICollection<ProductImage> ProductImages { get; private set; } = new List<ProductImage>();

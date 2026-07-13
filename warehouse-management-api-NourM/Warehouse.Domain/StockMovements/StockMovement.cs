@@ -16,7 +16,7 @@ public class StockMovement
     {
         
     }
-    public StockMovement(string? productId, int quantityChanged, string? id = null)
+    public StockMovement(string productId, int quantityChanged, string? id = null)
     {
         if (string.IsNullOrWhiteSpace(productId))
             throw new ArgumentException("Product Id is required.");

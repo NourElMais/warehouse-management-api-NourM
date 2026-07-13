@@ -13,12 +13,12 @@ public class SupplierRepository : ISupplierRepository
     }
     public List<Supplier> GetAll()
     {
-        return _db.suppliers.ToList();
+        return _db.Suppliers.ToList();
     }
 
     public Supplier? GetById(string id)
     {
-        foreach (Supplier supplier in _db.suppliers.ToList())
+        foreach (Supplier supplier in _db.Suppliers.ToList())
         {
             if (supplier.Id == id)
             {
@@ -31,7 +31,7 @@ public class SupplierRepository : ISupplierRepository
 
     public void Add(Supplier supplier)
     {
-       _db.suppliers.Add(supplier);
+       _db.Suppliers.Add(supplier);
        _db.SaveChanges();
     }
 

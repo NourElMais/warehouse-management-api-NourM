@@ -12,10 +12,10 @@ public class WarehouseDbContext : DbContext
     }
 
     // DbSet properties represent your database tables
-    public DbSet<Product> products { get; set; }
-    public DbSet<Supplier> suppliers { get; set; }
-    public DbSet<ProductImage>  productImages { get; set; }
-    public DbSet<StockMovement> stockMovements { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<ProductImage>  ProductImages { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

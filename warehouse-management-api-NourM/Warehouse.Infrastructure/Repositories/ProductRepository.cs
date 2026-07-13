@@ -14,19 +14,19 @@ public class ProductRepository:IProductRepository
     }
     public List<Product> GetAll()
     {
-        return _db.products.ToList();
+        return _db.Products.ToList();
     }
 
     public Product? GetById(string id)
     {
-        return _db.products
+        return _db.Products
             .FirstOrDefault(p => p.Id == id);
     }
 
     public List<Product> Search(string? name, string? supplier)
     {
         // we include the Supplier so that we do not call product.Supplier.Name on a null Supplier
-        List<Product> products = _db.products.Include(p => p.Supplier).ToList();
+        List<Product> products = _db.Products.Include(p => p.Supplier).ToList();
         List<Product> result = new List<Product>();
 
         foreach (Product product in products)
@@ -47,7 +47,7 @@ public class ProductRepository:IProductRepository
     }
     public void Add(Product product)
     {
-       _db.products.Add(product);
+       _db.Products.Add(product);
        _db.SaveChanges();
     }
 

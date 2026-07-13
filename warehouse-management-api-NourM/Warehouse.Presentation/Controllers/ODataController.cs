@@ -20,14 +20,14 @@ public class ODataController : ControllerBase
     [EnableQuery]
     public IQueryable<Product> GetProd()
     {
-        return _db.products;
+        return _db.Products;
     }
     
     [HttpGet("suppliers")]
     [EnableQuery]
     public IQueryable<Supplier> GetSupp()
     {
-        return _db.suppliers;
+        return _db.Suppliers;
     }
     
 }

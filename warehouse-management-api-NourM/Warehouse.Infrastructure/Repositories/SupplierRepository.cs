@@ -1,4 +1,5 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Infrastructure.Repositories;
@@ -11,32 +12,25 @@ public class SupplierRepository : ISupplierRepository
     {
         _db = context;
     }
-    public List<Supplier> GetAll()
+
+    public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return _db.Suppliers.ToList();
+        return await _db.Suppliers.ToListAsync(cancellationToken);
     }
 
-    public Supplier? GetById(string id)
+    public async Task<Supplier?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        foreach (Supplier supplier in _db.Suppliers.ToList())
-        {
-            if (supplier.Id == id)
-            {
-                return supplier;
-            }
-        }
-
-        return null;
+        return await _db.Suppliers.FirstOrDefaultAsync(supplier => supplier.Id == id, cancellationToken);
     }
 
-    public void Add(Supplier supplier)
+    public async Task AddAsync(Supplier supplier, CancellationToken cancellationToken)
     {
-       _db.Suppliers.Add(supplier);
-       _db.SaveChanges();
+        await _db.Suppliers.AddAsync(supplier, cancellationToken);
+        await _db.SaveChangesAsync(cancellationToken);
     }
 
-    public void Update(Supplier supplier)
+    public async Task UpdateAsync(Supplier supplier, CancellationToken cancellationToken)
     {
-        _db.SaveChanges();
+        await _db.SaveChangesAsync(cancellationToken);
     }
 }

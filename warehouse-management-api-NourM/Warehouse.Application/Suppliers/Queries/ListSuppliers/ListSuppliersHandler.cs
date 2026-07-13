@@ -10,7 +10,7 @@ public class ListSuppliersHandler
     : IRequestHandler<ListSuppliersQuery, List<SupplierViewModel>>
 {
     private readonly ISupplierRepository _supplierRepository;
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
 
     public ListSuppliersHandler(ISupplierRepository supplierRepository, IMapper mapper)
     {
@@ -18,14 +18,12 @@ public class ListSuppliersHandler
         _mapper = mapper;
     }
 
-    public Task<List<SupplierViewModel>> Handle(
+    public async Task<List<SupplierViewModel>> Handle(
         ListSuppliersQuery request,
         CancellationToken cancellationToken)
     {
-        List<Supplier> suppliers = _supplierRepository.GetAll();
+        List<Supplier> suppliers = await _supplierRepository.GetAllAsync(cancellationToken);
 
-        var viewModel = _mapper.Map<List<SupplierViewModel>>(suppliers);
-
-        return Task.FromResult(viewModel);
+        return _mapper.Map<List<SupplierViewModel>>(suppliers);
     }
 }

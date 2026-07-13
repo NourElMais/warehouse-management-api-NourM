@@ -16,7 +16,7 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supp
         _mapper = mapper;
     }
 
-    public Task<SupplierViewModel> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
+    public async Task<SupplierViewModel> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
     {
         var supplier = new Supplier(
             request.Name,
@@ -25,10 +25,9 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supp
             request.PhoneNumber
         );
 
-        _supplierRepository.Add(supplier);
+        await _supplierRepository.AddAsync(supplier, cancellationToken);
 
-        var viewModel = _mapper.Map<SupplierViewModel>(supplier);
-
-        return Task.FromResult(viewModel);
+        return _mapper.Map<SupplierViewModel>(supplier);
+        
     }
 }

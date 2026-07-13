@@ -4,7 +4,7 @@ using Warehouse.Domain.Products;
 
 namespace Warehouse.Application.Products.Queries;
 
-public class GetProductByIdQuery : IRequest<ProductViewModel>
+public class GetProductByIdQuery : IRequest<ProductViewModel?>
 {
     public string Id { get; set; }
 

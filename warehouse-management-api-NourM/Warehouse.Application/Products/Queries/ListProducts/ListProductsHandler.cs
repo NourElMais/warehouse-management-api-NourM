@@ -18,15 +18,15 @@ public class ListProductsHandler
         _mapper = mapper;
     }
 
-    public Task<List<ProductViewModel>> Handle(
+    public async Task<List<ProductViewModel>> Handle(
         ListProductsQuery query,
         CancellationToken cancellationToken)
     {
-        List<Product> products = _productRepository.GetAll();
+        List<Product> products = await _productRepository.GetAllAsync(cancellationToken);
 
         if (!query.OnlyAvailable)
         {
-            return Task.FromResult(_mapper.Map<List<ProductViewModel>>(products));
+            return _mapper.Map<List<ProductViewModel>>(products);
         }
 
         List<Product> availableProducts = new List<Product>();
@@ -39,8 +39,6 @@ public class ListProductsHandler
             }
         }
 
-        var viewModel = _mapper.Map<List<ProductViewModel>>(availableProducts);
-
-        return Task.FromResult(viewModel);
+       return _mapper.Map<List<ProductViewModel>>(availableProducts);
     }
 }

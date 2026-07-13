@@ -18,14 +18,12 @@ public class SearchProductsHandler
         _mapper = mapper;
     }
 
-    public Task<List<ProductViewModel>> Handle(
+    public async Task<List<ProductViewModel>> Handle(
         SearchProductsQuery request,
         CancellationToken cancellationToken)
     {
-        List<Product> products = _productRepository.Search(request.Name, request.Supplier);
+        List<Product> products = await _productRepository.SearchAsync(request.Name, request.Supplier,cancellationToken);
 
-        var viewModel = _mapper.Map<List<ProductViewModel>>(products);
-
-        return Task.FromResult(viewModel);
+       return _mapper.Map<List<ProductViewModel>>(products);
     }
 }

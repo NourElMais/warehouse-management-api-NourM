@@ -21,25 +21,23 @@ public class AssignSupplierToProductHandler
         _mapper = mapper;
     }
 
-    public Task<ProductViewModel> Handle(
+    public async Task<ProductViewModel?> Handle(
         AssignSupplierToProductCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            return Task.FromResult<ProductViewModel>(null);
+            return null;
 
-        var supplier = _supplierRepository.GetById(command.SupplierId);
+        var supplier = await _supplierRepository.GetByIdAsync(command.SupplierId, cancellationToken);
 
         if (supplier is null)
-            return Task.FromResult<ProductViewModel>(null);
+            return null;
 
         product.AssignSupplier(supplier);
 
-        _productRepository.Update(product);
-        var viewModel = _mapper.Map<ProductViewModel>(product);
-
-        return Task.FromResult<ProductViewModel?>(viewModel);
+        await _productRepository.UpdateAsync(product, cancellationToken);
+        return _mapper.Map<ProductViewModel>(product);
     }
 }

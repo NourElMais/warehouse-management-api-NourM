@@ -13,11 +13,11 @@ public class GetSupplierStatisticsHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Task<GetSupplierStatisticsResponse> Handle(
+    public async Task<GetSupplierStatisticsResponse> Handle(
         GetSupplierStatisticsQuery request,
         CancellationToken cancellationToken)
     {
-        var suppliers = _supplierRepository.GetAll();
+        var suppliers = await _supplierRepository.GetAllAsync(cancellationToken);
 
         int totalSuppliers = 0;
         int activeSuppliers = 0;
@@ -45,6 +45,6 @@ public class GetSupplierStatisticsHandler
         };
         
 
-        return Task.FromResult(statistics);
+        return statistics;
     }
 }

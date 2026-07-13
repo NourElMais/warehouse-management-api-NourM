@@ -7,7 +7,7 @@ using Warehouse.Domain.Repositories;
 namespace Warehouse.Application.Products.Queries;
 
 public class GetProductByIdHandler 
-    : IRequestHandler<GetProductByIdQuery, ProductViewModel>
+    : IRequestHandler<GetProductByIdQuery, ProductViewModel?>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -18,14 +18,12 @@ public class GetProductByIdHandler
         _mapper = mapper;
     }
 
-    public Task<ProductViewModel> Handle(
+    public async Task<ProductViewModel?> Handle(
         GetProductByIdQuery request,
         CancellationToken cancellationToken)
     {
-        Product? product = _productRepository.GetById(request.Id);
+        Product? product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
-        var viewModel = _mapper.Map<ProductViewModel>(product);
-
-        return Task.FromResult(viewModel);
+       return _mapper.Map<ProductViewModel>(product);
     }
 }

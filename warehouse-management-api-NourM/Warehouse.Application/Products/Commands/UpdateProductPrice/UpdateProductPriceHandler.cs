@@ -10,33 +10,32 @@ public class UpdateProductPriceHandler
     : IRequestHandler<UpdateProductPriceCommand, ProductViewModel?>
 {
     private readonly IProductRepository _productRepository;
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
     public UpdateProductPriceHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
         _mapper = mapper;
     }
 
-    public Task<ProductViewModel> Handle(
+    public async Task<ProductViewModel?> Handle(
         UpdateProductPriceCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            return Task.FromResult<ProductViewModel?>(null);
+            return null;
 
         decimal oldPrice = product.Price;
 
         product.UpdatePrice(command.NewPrice);
 
-        _productRepository.Update(product);
+        await _productRepository.UpdateAsync(product, cancellationToken);
 
         Console.WriteLine(
             $"Product {product.Name} price changed from {oldPrice} to {product.Price}");
 
-        var viewModel = _mapper.Map<ProductViewModel>(product);
-
-        return Task.FromResult<ProductViewModel?>(viewModel);
+        return _mapper.Map<ProductViewModel>(product);
+        
         }
 }

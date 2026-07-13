@@ -18,21 +18,20 @@ public class UpdateProductQuantityHandler
         _mapper = mapper;
     }
 
-    public Task<ProductViewModel?> Handle(
+    public async Task<ProductViewModel?> Handle(
         UpdateProductQuantityCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId,cancellationToken);
 
         if (product is null)
-            return Task.FromResult<ProductViewModel?>(null);
+            return null;
 
         product.UpdateQuantity(command.NewQuantity);
 
-        _productRepository.Update(product);
+        await _productRepository.UpdateAsync(product,cancellationToken);
 
-        var viewModel = _mapper.Map<ProductViewModel>(product);
-
-        return Task.FromResult<ProductViewModel?>(viewModel);
+        return _mapper.Map<ProductViewModel>(product);
+        
     }
 }

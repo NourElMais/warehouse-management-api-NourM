@@ -17,11 +17,11 @@ public class GetLowStockProductsHandler
         _mapper = mapper;
     }
 
-    public Task<List<ProductViewModel>> Handle(
+    public async Task<List<ProductViewModel>> Handle(
         GetLowStockProductsQuery query,
         CancellationToken cancellationToken)
     {
-        List<Product> products = _productRepository.GetAll();
+        List<Product> products = await _productRepository.GetAllAsync(cancellationToken);
         List<Product> lowStockProducts = new List<Product>();
 
         foreach (Product product in products)
@@ -33,8 +33,6 @@ public class GetLowStockProductsHandler
             }
         }
  
-        var viewModel = _mapper.Map<List<ProductViewModel>>(lowStockProducts);
-
-        return Task.FromResult(viewModel);
+        return _mapper.Map<List<ProductViewModel>>(lowStockProducts);
     }
 }

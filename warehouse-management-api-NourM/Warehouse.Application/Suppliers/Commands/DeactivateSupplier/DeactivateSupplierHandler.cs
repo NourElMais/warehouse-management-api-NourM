@@ -10,28 +10,27 @@ public class DeactivateSupplierHandler
     : IRequestHandler<DeactivateSupplierCommand, SupplierViewModel?>
 {
     private readonly ISupplierRepository _supplierRepository;
-    private IMapper _mapper;
+    private readonly IMapper _mapper;
     public DeactivateSupplierHandler(ISupplierRepository supplierRepository, IMapper mapper)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;
     }
 
-    public Task<SupplierViewModel?> Handle(
+    public async Task<SupplierViewModel?> Handle(
         DeactivateSupplierCommand request,
         CancellationToken cancellationToken)
     {
-        var supplier = _supplierRepository.GetById(request.SupplierId);
+        var supplier = await _supplierRepository.GetByIdAsync(request.SupplierId, cancellationToken);
 
         if (supplier is null)
-            return Task.FromResult<SupplierViewModel?>(null);
+            return null;
 
         supplier.Deactivate();
 
-        _supplierRepository.Update(supplier);
+        await _supplierRepository.UpdateAsync(supplier, cancellationToken);
 
-        var viewModel = _mapper.Map<SupplierViewModel>(supplier);
-
-        return Task.FromResult(viewModel);
+        return _mapper.Map<SupplierViewModel>(supplier);
+        
     }
 }

@@ -13,24 +13,26 @@ public class UploadProductImageHandler
         _productRepository = productRepository;
     }
 
-    public Task<UploadProductImageResult> Handle(
+    public async Task<UploadProductImageResult> Handle(
         UploadProductImageCommand request,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(request.ProductId);
+        var product = await _productRepository.GetByIdAsync(request.ProductId,cancellationToken);
 
         if (product is null)
-            return Task.FromResult(UploadProductImageResult.ProductNotFound);
+            return UploadProductImageResult.ProductNotFound;
 
         if (string.IsNullOrWhiteSpace(request.FileName))
-            return Task.FromResult(UploadProductImageResult.EmptyImage);
+            return UploadProductImageResult.EmptyImage;
 
         string extension = Path.GetExtension(request.FileName).ToLower();
 
         if (extension != ".jpg" && extension != ".png")
-            return Task.FromResult(UploadProductImageResult.InvalidExtension);
+            return UploadProductImageResult.InvalidExtension;
+
         if (request.FileSize > 2 * 1024 * 1024)
-            return Task.FromResult(UploadProductImageResult.FileTooLarge);
-        return Task.FromResult(UploadProductImageResult.Success);
+            return UploadProductImageResult.FileTooLarge;
+
+        return UploadProductImageResult.Success;
     }
 }

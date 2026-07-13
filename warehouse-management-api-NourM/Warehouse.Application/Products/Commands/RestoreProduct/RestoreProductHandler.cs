@@ -17,21 +17,18 @@ public class RestoreProductHandler
         _mapper = mapper;
     }
 
-    public Task<ProductViewModel> Handle(
+    public async Task<ProductViewModel?> Handle(
         RestoreProductCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            return Task.FromResult<ProductViewModel>(null);
+            return null;
 
         product.Restore();
+        _productRepository.UpdateAsync(product,cancellationToken);
 
-        _productRepository.Update(product);
-
-        var viewModel = _mapper.Map<ProductViewModel>(product);
-
-        return Task.FromResult<ProductViewModel?>(viewModel);
+        return _mapper.Map<ProductViewModel>(product);
     }
 }

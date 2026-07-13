@@ -1,8 +1,7 @@
-﻿using Warehouse.Domain.Products;
-
+﻿using Warehouse.Application.ViewModels;
 namespace Warehouse.Application.Products.Commands;
 using MediatR;
-public class UpdateProductPriceCommand: IRequest<Product?>
+public class UpdateProductPriceCommand: IRequest<ProductViewModel?>
 {
     public string ProductId { get; set; }
     public decimal NewPrice { get; set; }

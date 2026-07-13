@@ -4,7 +4,7 @@ using Warehouse.Domain.Repositories;
 namespace Warehouse.Application.Suppliers.Queries;
 
 public class GetSupplierStatisticsHandler
-    : IRequestHandler<GetSupplierStatisticsQuery, object>
+    : IRequestHandler<GetSupplierStatisticsQuery, GetSupplierStatisticsResponse>
 {
     private readonly ISupplierRepository _supplierRepository;
 
@@ -13,11 +13,11 @@ public class GetSupplierStatisticsHandler
         _supplierRepository = supplierRepository;
     }
 
-    public Task<object> Handle(
+    public async Task<GetSupplierStatisticsResponse> Handle(
         GetSupplierStatisticsQuery request,
         CancellationToken cancellationToken)
     {
-        var suppliers = _supplierRepository.GetAll();
+        var suppliers = await _supplierRepository.GetAllAsync(cancellationToken);
 
         int totalSuppliers = 0;
         int activeSuppliers = 0;
@@ -37,13 +37,14 @@ public class GetSupplierStatisticsHandler
             }
         }
 
-        object statistics = new
+        var statistics = new GetSupplierStatisticsResponse()
         {
             TotalSuppliers = totalSuppliers,
             ActiveSuppliers = activeSuppliers,
             InactiveSuppliers = inactiveSuppliers
         };
+        
 
-        return Task.FromResult(statistics);
+        return statistics;
     }
 }

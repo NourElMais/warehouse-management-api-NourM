@@ -1,32 +1,37 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
 public class UpdateProductQuantityHandler 
-    : IRequestHandler<UpdateProductQuantityCommand, Product?>
+    : IRequestHandler<UpdateProductQuantityCommand, ProductViewModel?>
 {
     private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
 
-    public UpdateProductQuantityHandler(IProductRepository productRepository)
+    public UpdateProductQuantityHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public Task<Product?> Handle(
+    public async Task<ProductViewModel?> Handle(
         UpdateProductQuantityCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId,cancellationToken);
 
         if (product is null)
-            return Task.FromResult<Product?>(null);
+            return null;
 
         product.UpdateQuantity(command.NewQuantity);
 
-        _productRepository.Update(product);
+        await _productRepository.UpdateAsync(product,cancellationToken);
 
-        return Task.FromResult<Product?>(product);
+        return _mapper.Map<ProductViewModel>(product);
+        
     }
 }

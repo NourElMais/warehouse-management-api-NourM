@@ -1,19 +1,22 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
-public class CreateProductHandler : IRequestHandler<CreateProductCommand, Product>
+public class CreateProductHandler : IRequestHandler<CreateProductCommand, ProductViewModel>
 {
     private readonly IProductRepository _productRepository;
-
-    public CreateProductHandler(IProductRepository productRepository)
+    private readonly IMapper _mapper;
+    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public Task<Product> Handle(
+    public async Task<ProductViewModel> Handle(
         CreateProductCommand command,
         CancellationToken cancellationToken)
     {
@@ -23,12 +26,11 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
             command.Description,
             command.Price,
             command.QuantityInStock,
-            command.SupplierName,
+            command.SupplierId,
             command.ExpiryDate
         );
 
-        _productRepository.Add(product);
-
-        return Task.FromResult(product);
+        await _productRepository.AddAsync(product, cancellationToken);
+       return _mapper.Map<ProductViewModel>(product);
     }
 }

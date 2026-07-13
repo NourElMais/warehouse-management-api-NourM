@@ -2,6 +2,6 @@
 
 namespace Warehouse.Application.Suppliers.Queries;
 
-public class GetSupplierStatisticsQuery : IRequest<object>
+public class GetSupplierStatisticsQuery : IRequest<GetSupplierStatisticsResponse>
 {
 }

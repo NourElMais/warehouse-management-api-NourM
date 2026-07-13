@@ -4,9 +4,23 @@ namespace Warehouse.Domain.Repositories;
 
 public interface IProductRepository
 {
-    public List<Product> GetAll();
-    public Product? GetById(string id);
-    List<Product> Search(string? name, string? supplier);
-    public void Add(Product product);
-    public void Update(Product product);
+    Task<List<Product>> GetAllAsync(
+        CancellationToken cancellationToken);
+
+    Task<Product?> GetByIdAsync(
+        string id,
+        CancellationToken cancellationToken);
+
+    Task<List<Product>> SearchAsync(
+        string? name,
+        string? supplier,
+        CancellationToken cancellationToken);
+
+    Task AddAsync(
+        Product product,
+        CancellationToken cancellationToken);
+
+    Task UpdateAsync(
+        Product product,
+        CancellationToken cancellationToken);
 }

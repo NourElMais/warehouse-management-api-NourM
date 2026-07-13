@@ -1,4 +1,7 @@
-﻿namespace Warehouse.Domain.Suppliers;
+﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Domain.Products;
+
+namespace Warehouse.Domain.Suppliers;
 
 public class Supplier
 {
@@ -8,13 +11,20 @@ public class Supplier
     public string ContactEmail { get; private set; }
     public string PhoneNumber { get; private set; }
     public bool IsActive { get; private set; }
+    
+    public virtual List<Product> Products { get; private set; } = new List<Product>();
 
+    private Supplier()
+    {
+        
+    }
     public Supplier(
         string name,
         string country,
         string contactEmail,
         string phoneNumber,
-        string? id = null)
+        string? id=null
+        )
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Supplier name is required.");
@@ -38,6 +48,9 @@ public class Supplier
 
     public void Deactivate()
     {
+        if (!IsActive)
+            throw new InvalidOperationException("Supplier is already inactive.");
+
         IsActive = false;
     }
 }

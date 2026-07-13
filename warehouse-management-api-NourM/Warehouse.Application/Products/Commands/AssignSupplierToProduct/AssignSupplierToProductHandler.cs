@@ -1,41 +1,43 @@
-﻿using MediatR;
-using Warehouse.Domain.Products;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
 public class AssignSupplierToProductHandler 
-    : IRequestHandler<AssignSupplierToProductCommand, Product?>
+    : IRequestHandler<AssignSupplierToProductCommand, ProductViewModel?>
 {
     private readonly IProductRepository _productRepository;
     private readonly ISupplierRepository _supplierRepository;
-
+    private readonly IMapper _mapper;
     public AssignSupplierToProductHandler(
         IProductRepository productRepository,
-        ISupplierRepository supplierRepository)
+        ISupplierRepository supplierRepository,
+        IMapper mapper)
     {
         _productRepository = productRepository;
         _supplierRepository = supplierRepository;
+        _mapper = mapper;
     }
 
-    public Task<Product?> Handle(
+    public async Task<ProductViewModel?> Handle(
         AssignSupplierToProductCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            return Task.FromResult<Product?>(null);
+            return null;
 
-        var supplier = _supplierRepository.GetById(command.SupplierId);
+        var supplier = await _supplierRepository.GetByIdAsync(command.SupplierId, cancellationToken);
 
         if (supplier is null)
-            return Task.FromResult<Product?>(null);
+            return null;
 
-        product.AssignSupplier(supplier.Name, supplier.IsActive);
+        product.AssignSupplier(supplier);
 
-        _productRepository.Update(product);
-
-        return Task.FromResult<Product?>(product);
+        await _productRepository.UpdateAsync(product, cancellationToken);
+        return _mapper.Map<ProductViewModel>(product);
     }
 }

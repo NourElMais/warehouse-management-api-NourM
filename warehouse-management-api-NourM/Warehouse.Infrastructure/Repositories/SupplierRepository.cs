@@ -1,36 +1,37 @@
-﻿using Warehouse.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
-using Warehouse.Infrastructure.Data;
 
 namespace Warehouse.Infrastructure.Repositories;
 
 public class SupplierRepository : ISupplierRepository
 {
-    public List<Supplier> GetAll()
+    private readonly WarehouseDbContext _db;
+
+    public SupplierRepository(WarehouseDbContext context)
     {
-        return FakeSupplierStore.Suppliers;
+        _db = context;
     }
 
-    public Supplier? GetById(string id)
+    public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken)
     {
-        foreach (Supplier supplier in FakeSupplierStore.Suppliers)
-        {
-            if (supplier.Id == id)
-            {
-                return supplier;
-            }
-        }
-
-        return null;
+        return await _db.Suppliers.ToListAsync(cancellationToken);
     }
 
-    public void Add(Supplier supplier)
+    public async Task<Supplier?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        FakeSupplierStore.Suppliers.Add(supplier);
+        //I used FirstOrDefault and not toList with a for loop, so that I do not download the whole database, and get only the relevant row
+        return await _db.Suppliers.FirstOrDefaultAsync(supplier => supplier.Id == id, cancellationToken);
     }
 
-    public void Update(Supplier supplier)
+    public async Task AddAsync(Supplier supplier, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _db.Suppliers.AddAsync(supplier, cancellationToken);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(Supplier supplier, CancellationToken cancellationToken)
+    {
+        await _db.SaveChangesAsync(cancellationToken);
     }
 }

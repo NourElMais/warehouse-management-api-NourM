@@ -1,50 +1,57 @@
-﻿using Warehouse.Domain.Products;
+﻿using Microsoft.EntityFrameworkCore;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
-using Warehouse.Infrastructure.Data;
 
 namespace Warehouse.Infrastructure.Repositories;
 
-public class ProductRepository:IProductRepository
+public class ProductRepository : IProductRepository
 {
-    public List<Product> GetAll()
+    private readonly WarehouseDbContext _db;
+
+    public ProductRepository(WarehouseDbContext context)
     {
-        return FakeWarehouseStore.Products;
+        _db = context;
     }
 
-    public Product? GetById(string id)
+    public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return FakeWarehouseStore.Products
-            .FirstOrDefault(p => p.Id == id);
+        return await _db.Products.Include(product => product.Supplier)
+            .ToListAsync(cancellationToken);
     }
 
-    public List<Product> Search(string? name, string? supplier)
+    public async Task<Product?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        List<Product> products = FakeWarehouseStore.Products;
-        List<Product> result = new List<Product>();
+        return await _db.Products.Include(product => product.Supplier).FirstOrDefaultAsync(
+                product => product.Id == id,
+                cancellationToken);
+    }
 
-        foreach (Product product in products)
+    public async Task<List<Product>> SearchAsync(string? name, string? supplier, CancellationToken cancellationToken)
+    {
+        IQueryable<Product> query = _db.Products.Include(product => product.Supplier).AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
         {
-            bool nameMatches = string.IsNullOrWhiteSpace(name) ||
-                               product.Name.Contains(name, StringComparison.OrdinalIgnoreCase);
-
-            bool supplierMatches = string.IsNullOrWhiteSpace(supplier) ||
-                                   product.SupplierName.Contains(supplier, StringComparison.OrdinalIgnoreCase);
-
-            if (nameMatches && supplierMatches)
-            {
-                result.Add(product);
-            }
+            query = query.Where(product => product.Name.Contains(name));
         }
 
-        return result;
-    }
-    public void Add(Product product)
-    {
-        FakeWarehouseStore.Products.Add(product);
+        if (!string.IsNullOrWhiteSpace(supplier))
+        {
+            query = query.Where(product => product.Supplier != null && product.Supplier.Name.Contains(supplier));
+        }
+
+        return await query.ToListAsync(cancellationToken);
     }
 
-    public void Update(Product product)
+    public async Task AddAsync(Product product, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _db.Products.AddAsync(product, cancellationToken);
+
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
+    {
+        await _db.SaveChangesAsync(cancellationToken);
     }
 }

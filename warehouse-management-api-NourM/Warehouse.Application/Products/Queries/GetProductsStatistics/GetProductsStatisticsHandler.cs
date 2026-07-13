@@ -14,11 +14,11 @@ public class GetProductsStatisticsHandler
         _productRepository = productRepository;
     }
 
-    public Task<GetProductsStatisticsResponse> Handle(
+    public async Task<GetProductsStatisticsResponse> Handle(
         GetProductsStatisticsQuery request,
         CancellationToken cancellationToken)
     {
-        var products = _productRepository.GetAll();
+        var products = await _productRepository.GetAllAsync(cancellationToken);
 
         int totalProducts = 0;
         int activeProducts = 0;
@@ -52,6 +52,6 @@ public class GetProductsStatisticsHandler
             LowStockProducts = lowStockProducts
         };
 
-        return Task.FromResult(statistics);
+        return statistics;
     }
 }

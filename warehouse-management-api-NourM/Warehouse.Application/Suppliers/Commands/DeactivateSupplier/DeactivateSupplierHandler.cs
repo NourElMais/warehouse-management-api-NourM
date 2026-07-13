@@ -1,32 +1,36 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
 public class DeactivateSupplierHandler 
-    : IRequestHandler<DeactivateSupplierCommand, Supplier?>
+    : IRequestHandler<DeactivateSupplierCommand, SupplierViewModel?>
 {
     private readonly ISupplierRepository _supplierRepository;
-
-    public DeactivateSupplierHandler(ISupplierRepository supplierRepository)
+    private readonly IMapper _mapper;
+    public DeactivateSupplierHandler(ISupplierRepository supplierRepository, IMapper mapper)
     {
         _supplierRepository = supplierRepository;
+        _mapper = mapper;
     }
 
-    public Task<Supplier?> Handle(
+    public async Task<SupplierViewModel?> Handle(
         DeactivateSupplierCommand request,
         CancellationToken cancellationToken)
     {
-        var supplier = _supplierRepository.GetById(request.SupplierId);
+        var supplier = await _supplierRepository.GetByIdAsync(request.SupplierId, cancellationToken);
 
         if (supplier is null)
-            return Task.FromResult<Supplier?>(null);
+            return null;
 
         supplier.Deactivate();
 
-        _supplierRepository.Update(supplier);
+        await _supplierRepository.UpdateAsync(supplier, cancellationToken);
 
-        return Task.FromResult<Supplier?>(supplier);
+        return _mapper.Map<SupplierViewModel>(supplier);
+        
     }
 }

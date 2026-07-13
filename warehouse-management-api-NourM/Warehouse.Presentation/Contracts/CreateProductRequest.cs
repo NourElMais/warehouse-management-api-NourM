@@ -25,8 +25,8 @@ public class CreateProductRequest
     public int QuantityInStock { get; set; }
 
     [Required]
-    [StringLength(50)]
-    public string SupplierName { get; set; }
+    [StringLength(500)]
+    public string SupplierId { get; set; }
 
     public DateTime ExpiryDate { get; set; }
 }

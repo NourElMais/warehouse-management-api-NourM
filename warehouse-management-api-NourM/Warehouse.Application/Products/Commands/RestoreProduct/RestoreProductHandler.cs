@@ -1,32 +1,34 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
 public class RestoreProductHandler 
-    : IRequestHandler<RestoreProductCommand, Product?>
+    : IRequestHandler<RestoreProductCommand, ProductViewModel?>
 {
     private readonly IProductRepository _productRepository;
-
-    public RestoreProductHandler(IProductRepository productRepository)
+    private readonly IMapper _mapper;
+    public RestoreProductHandler(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public Task<Product?> Handle(
+    public async Task<ProductViewModel?> Handle(
         RestoreProductCommand command,
         CancellationToken cancellationToken)
     {
-        var product = _productRepository.GetById(command.ProductId);
+        var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            return Task.FromResult<Product?>(null);
+            return null;
 
         product.Restore();
+        _productRepository.UpdateAsync(product,cancellationToken);
 
-        _productRepository.Update(product);
-
-        return Task.FromResult<Product?>(product);
+        return _mapper.Map<ProductViewModel>(product);
     }
 }

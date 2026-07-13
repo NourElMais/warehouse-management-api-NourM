@@ -1,4 +1,7 @@
-﻿using Warehouse.Domain.DomainEvents;
+﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Domain.ProductImages;
+using Warehouse.Domain.StockMovements;
+using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Domain.Products;
 
@@ -10,23 +13,35 @@ public class Product
     public string Description { get; private set; }
     public decimal Price { get; private set; }
     public int QuantityInStock { get; private set; }
-    public string SupplierName { get; private set; }
     public DateTime ExpiryDate { get; private set; }
     public bool IsArchived { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime LastUpdatedAt { get; private set; }
     
-    public List<ProductArchivedEvent> DomainEvents { get; private set; } = new();
+    public string SupplierId { get; private set; }
 
+    public virtual Supplier Supplier { get; private set; }
+    
+    //New navigation property: to be able to access the images of a certain product (I considered that 1 product can have many images)
+    public virtual ICollection<ProductImage> ProductImages { get; private set; } = new List<ProductImage>();
+
+    //New navigation property: to be able to access the stock movements of a certain product
+    public virtual List<StockMovement> StockMovements { get; private set; }
+        = new List<StockMovement>();
+    
+    //private constructor for EF core to be able to create a Product
+    private Product()
+    {
+    }
     public Product(
         string name,
         string sku,
         string description,
         decimal price,
         int quantityInStock,
-        string supplierName,
+        string supplierId,
         DateTime expiryDate,
-        string? id = null)
+        string? id =null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name is required.");
@@ -39,6 +54,9 @@ public class Product
 
         if (quantityInStock < 0)
             throw new ArgumentException("Quantity cannot be negative.");
+        
+        if (string.IsNullOrWhiteSpace(supplierId))
+            throw new ArgumentException("Supplier Id is required.");
 
         Id = id ?? Guid.NewGuid().ToString();
         Name = name;
@@ -46,7 +64,7 @@ public class Product
         Description = description;
         Price = price;
         QuantityInStock = quantityInStock;
-        SupplierName = supplierName;
+        SupplierId = supplierId;
         ExpiryDate = expiryDate;
         IsArchived = false;
         CreatedAt = DateTime.UtcNow;
@@ -79,18 +97,17 @@ public class Product
     {
         IsArchived = true;
         LastUpdatedAt = DateTime.UtcNow;
-
-        DomainEvents.Add(new ProductArchivedEvent(Id));
     }
 
-    public void AssignSupplier(string supplierName, bool supplierIsActive)
+    public void AssignSupplier(Supplier supplier)
     {
         EnsureNotArchived();
 
-        if (!supplierIsActive)
+        if (!supplier.IsActive)
             throw new InvalidOperationException("Inactive suppliers cannot be assigned to products.");
 
-        SupplierName = supplierName;
+        SupplierId = supplier.Id;
+        Supplier = supplier;
         LastUpdatedAt = DateTime.UtcNow;
     }
 

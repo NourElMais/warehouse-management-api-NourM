@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Warehouse.Application.Products.Commands;
 using Warehouse.Application.Products.GetProductsStatistics;
@@ -180,5 +181,58 @@ public class ProductsController : ControllerBase
         await image.CopyToAsync(stream, cancellationToken);
 
         return Ok("Image uploaded successfully.");
+    }
+    
+    [HttpGet("metadata/validation/{dtoName}")]
+    public ActionResult GetValidationMetadata(string dtoName)
+    {
+
+        Type? DtoType = null;
+        switch (dtoName) {
+            case "CreateProductRequest":
+                DtoType = typeof(CreateProductRequest);
+                break;
+                    
+             case "CreateSupplierRequest":
+                DtoType = typeof(CreateSupplierRequest);
+                break;
+                
+            case "UpdateProductPriceRequest":
+                DtoType = typeof(UpdateProductPriceRequest);
+                break;
+                
+            case "UpdateProductQuantityRequest":
+                DtoType = typeof(UpdateProductQuantityRequest);
+                break;
+                
+            default:
+                DtoType = null;
+                break;
+            }
+
+            if (DtoType is null)
+                return NotFound("DTO was not found.");
+
+            var result = new List<object>();
+        
+            
+            foreach (var property in DtoType.GetProperties())
+            {
+                var attributes = new List<string>();
+                foreach (var attribute in property.GetCustomAttributes(true))
+                {
+                    if (attribute is ValidationAttribute validationAttribute)
+                    {
+                        attributes.Add(validationAttribute.GetType().Name);
+                    }
+                }
+                result.Add(new {
+                    PropertyName = property.Name,
+                    ValidationAttributes = attributes
+                });
+                
+            }
+           
+            return Ok(result);
     }
 }

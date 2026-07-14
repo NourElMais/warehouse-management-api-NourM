@@ -19,23 +19,23 @@ public class SuppliersController : ControllerBase
 
     // 1. Get all suppliers
     [HttpGet]
-    public async Task<ActionResult> GetAllSuppliers()
+    public async Task<ActionResult> GetAllSuppliers(CancellationToken cancellationToken)
     {
-        var suppliers = await _mediator.Send(new ListSuppliersQuery());
+        var suppliers = await _mediator.Send(new ListSuppliersQuery(),cancellationToken);
 
         return Ok(suppliers);
     }
 
     // 2. Get supplier by Id
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetSupplierById([FromRoute] string id)
+    public async Task<ActionResult> GetSupplierById([FromRoute] string id, CancellationToken cancellationToken)
     {
-        if (!Guid.TryParse(id, out _))
+        if (!Guid.TryParse(id, out var guid))
         {
             return BadRequest("The provided Id is not valid");
         }
 
-        var supplier = await _mediator.Send(new GetSupplierByIdQuery(id));
+        var supplier = await _mediator.Send(new GetSupplierByIdQuery(id), cancellationToken);
 
         if (supplier is null)
         {
@@ -47,7 +47,7 @@ public class SuppliersController : ControllerBase
 
     // 3. Create supplier
     [HttpPost]
-    public async Task<ActionResult> CreateSupplier([FromBody] CreateSupplierRequest request)
+    public async Task<ActionResult> CreateSupplier([FromBody] CreateSupplierRequest request, CancellationToken cancellationToken)
     {
         var command = new CreateSupplierCommand
         {
@@ -57,21 +57,21 @@ public class SuppliersController : ControllerBase
             PhoneNumber = request.PhoneNumber
         };
 
-        var supplier = await _mediator.Send(command);
+        var supplier = await _mediator.Send(command, cancellationToken);
 
         return Ok(supplier);
     }
 
     // 4. Deactivate supplier
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteSupplier([FromRoute] string id)
+    public async Task<ActionResult> DeleteSupplier([FromRoute] string id, CancellationToken cancellationToken)
     {
-        if (!Guid.TryParse(id, out _))
+        if (!Guid.TryParse(id, out var guid))
         {
             return BadRequest("The provided Id is not valid");
         }
 
-        var supplier = await _mediator.Send(new DeactivateSupplierCommand(id));
+        var supplier = await _mediator.Send(new DeactivateSupplierCommand(id), cancellationToken);
 
         if (supplier is null)
         {
@@ -83,9 +83,9 @@ public class SuppliersController : ControllerBase
 
     // 5. Supplier statistics
     [HttpGet("statistics")]
-    public async Task<ActionResult> GetSupplierStatistics()
+    public async Task<ActionResult> GetSupplierStatistics(CancellationToken cancellationToken)
     {
-        var statistics = await _mediator.Send(new GetSupplierStatisticsQuery());
+        var statistics = await _mediator.Send(new GetSupplierStatisticsQuery(), cancellationToken);
 
         return Ok(statistics);
     }

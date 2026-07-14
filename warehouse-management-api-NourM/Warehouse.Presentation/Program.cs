@@ -7,6 +7,7 @@ using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 using Warehouse.Infrastructure;
 using Warehouse.Infrastructure.Repositories;
+using Warehouse.Presentation.Filters;
 using Warehouse.Presentation.Mapping;
 using Warehouse.Presentation.Middleware;
 
@@ -29,6 +30,12 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Register filters
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ModelValidationFilter>();
+    options.Filters.Add<ActionLoggingFilter>();
+});
 // Register repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();

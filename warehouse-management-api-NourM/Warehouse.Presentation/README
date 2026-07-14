@@ -290,3 +290,53 @@ https://localhost:<port>/swagger
 **OData endpoints were tested directly through the browser using OData query URLs, 
 as Swagger does not provide built-in support for entering OData query options such as `$filter`, 
 `$orderby`, and `$top`**
+
+# Session 5 (Jhonny Abou Rjeily)
+
+## Implemented Features
+The aim of this lab was to refactor the existing repository, by adding custom exceptions, custom validations, using generics and reflection, adding middlewares and filters,
+and finally testing the implemented features.
+
+1- Exceptions
+In Warehouse.Application: NotFoundException
+  --> Before adding this exception, if the handler does not find a resource, it returned null,
+  now it returns a 404 Not Found response, that is later caught by the middleware.
+  
+In Warehouse.Domain: BusinessRuleException
+   --> In the business rules inside the domain, most of the thrown exceptions were of the type "ArgumentException",
+   however it is more convenient to state that it is a business rule exception, as it is concerned with the entities properties themselves.
+   
+These 2 Exceptions, in addition to other ones (of the general type Exception), are caught by the corresponding middleware.
+
+2- Validation
+The DTOs already contained Data Annotations, however I created a custom attribute to check whether the expiry date is valid.
+It should be greater than the current date.
+
+3- Generics
+in Warehouse.Domain, I added a new class: "IRepository.cs", which is an interface that accepts a generic type T, 
+and IProductRepository and ISupplierRepository implement it. This reduced the same code (same functions) that were repeated in
+the 2 interfaces.
+
+4-MiddleWares
+The app now has 3 middlewares (in order)
+RequestTimingMiddleware -> To measure how long each request takes.
+CorrelationIdMiddleware -> To assign a unique Correlation ID to every request.
+ExceptionHandlingMiddleware> -> This middleware catches the 3 exceptions listed above, and returns a common error response to the client.
+
+5- Filters
+2 filters were implemented:
+ActionLoggingFilter   -> logs when an endpoint starts executing and when it finishes.
+ModelValidationFilter -> checks that the model is valid
+
+6-Reflection
+An extra endpoint to the ProductsController was added to return the validation attributes of the properties of the DTO's
+(in the Contracts folder in the Presentation layer)                  
+
+7-Async Programming
+The application was updated to use asynchronous methods throughout the controllers, handlers, repositories,
+and Entity Framework operations. CancellationToken was also passed through all the async calls.
+
+## Notes
+Refer to the screenshots of swagger inside the screenshots folder (Session05 (Jhonny))
+
+

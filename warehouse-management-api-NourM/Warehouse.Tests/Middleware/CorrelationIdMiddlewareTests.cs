@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Warehouse.Presentation.Middleware;
 
-namespace Warehouse.Tests.Validation;
+namespace Warehouse.Tests.Middleware;
 
 public class CorrelationIdMiddlewareTests
 {

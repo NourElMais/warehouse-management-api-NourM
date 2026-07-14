@@ -3,7 +3,7 @@ using Warehouse.Presentation.Controllers;
 
 namespace Warehouse.Tests.Reflection;
 
-public class UnknownDTO
+public class UnknownDto
 {
     [Fact]
     public void UnknownDto_ShouldReturnNotFound()

@@ -4,7 +4,7 @@ using Warehouse.Application.Exceptions;
 using Warehouse.Domain.Exceptions;
 using Warehouse.Presentation.Middleware;
 
-namespace Warehouse.Tests.Validation;
+namespace Warehouse.Tests.MiddleWare;
 
 public class ExceptionHandlingMiddlewareTests
 {

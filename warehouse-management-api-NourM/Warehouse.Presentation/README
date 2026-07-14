@@ -328,6 +328,10 @@ ExceptionHandlingMiddleware> -> This middleware catches the 3 exceptions listed 
 ActionLoggingFilter   -> logs when an endpoint starts executing and when it finishes.
 ModelValidationFilter -> checks that the model is valid
 
+Note:
+Middleware runs for every HTTP request before it reaches the controllers -> It is used for application-wide concerns.
+Filters run only for MVC controller actions after the request reaches the MVC pipeline -> They are used for controller-specific concerns.
+
 6-Reflection
 An extra endpoint to the ProductsController was added to return the validation attributes of the properties of the DTO's
 (in the Contracts folder in the Presentation layer)                  

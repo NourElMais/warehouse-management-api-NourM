@@ -1,0 +1,24 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Warehouse.Application.Inventory.Queries.GetInventoryDashboard;
+
+namespace Warehouse.Presentation.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class InventoryController : ControllerBase
+{
+    private readonly IMediator _mediator;
+
+    public InventoryController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    [HttpGet("dashboard")]
+    public async Task<ActionResult> GetDashboard(CancellationToken cancellationToken)
+    {
+        var dashboard = await _mediator.Send(new GetInventoryDashboardQuery(), cancellationToken);
+        return Ok(dashboard);
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using Warehouse.Application.Exceptions;
+using Warehouse.Domain.Exceptions;
 using Warehouse.Presentation.Contracts;
 
 namespace Warehouse.Presentation.Middleware;
@@ -24,10 +25,10 @@ public class ExceptionHandlingMiddleware
         }
         catch (NotFoundException exception)
         {
-            _logger.LogError(exception, "Resource not found");
+            _logger.LogError(exception, "Resource not found " + context.Items["CorrelationId"]);
 
             context.Response.StatusCode = StatusCodes.Status404NotFound;
- 
+
             //returns JSON to Swagger.
             await context.Response.WriteAsJsonAsync(new ApiErrorResponse
             {
@@ -36,11 +37,25 @@ public class ExceptionHandlingMiddleware
                 TraceId = context.TraceIdentifier
             });
         }
-        catch (Exception exception)
+        catch (BusinessRuleException exception)
         {
-            _logger.LogError(exception, "Unexpected error");
+            _logger.LogWarning(exception, "Business rule violation " + context.Items["CorrelationId"]);
 
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            await context.Response.WriteAsJsonAsync(new ApiErrorResponse
+            {
+                ErrorCode = "BUSINESS_RULE_VIOLATION",
+                Message = exception.Message,
+                TraceId = context.TraceIdentifier
+            });
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Unexpected server error " + context.Items["CorrelationId"]);
+
+            context.Response.StatusCode =
+                StatusCodes.Status500InternalServerError;
 
             await context.Response.WriteAsJsonAsync(new ApiErrorResponse
             {

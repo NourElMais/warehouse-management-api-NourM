@@ -16,7 +16,8 @@ public class CorrelationIdMiddleware
         var correlationId = context.Request.Headers[HeaderName].FirstOrDefault() ?? Guid.NewGuid().ToString();
 
         context.Response.Headers[HeaderName] = correlationId;
-
+        // I saved it so the rest of the application can access it
+        context.Items["CorrelationId"] = correlationId;
         await _next(context);
     }
 }

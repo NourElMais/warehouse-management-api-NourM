@@ -4,7 +4,7 @@ using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Queries;
 
-public class GetSupplierByIdQuery : IRequest<SupplierViewModel?>
+public class GetSupplierByIdQuery : IRequest<SupplierViewModel>
 {
     public string Id { get; set; }
 

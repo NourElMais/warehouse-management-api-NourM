@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
@@ -13,14 +14,12 @@ public class UploadProductImageHandler
         _productRepository = productRepository;
     }
 
-    public async Task<UploadProductImageResult> Handle(
-        UploadProductImageCommand request,
-        CancellationToken cancellationToken)
+    public async Task<UploadProductImageResult> Handle(UploadProductImageCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(request.ProductId,cancellationToken);
 
         if (product is null)
-            return UploadProductImageResult.ProductNotFound;
+            throw new NotFoundException("The product was not found");
 
         if (string.IsNullOrWhiteSpace(request.FileName))
             return UploadProductImageResult.EmptyImage;

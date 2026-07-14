@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
-using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Queries;
 
 public class GetSupplierByIdHandler
-    : IRequestHandler<GetSupplierByIdQuery, SupplierViewModel?>
+    : IRequestHandler<GetSupplierByIdQuery, SupplierViewModel>
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
@@ -17,16 +17,12 @@ public class GetSupplierByIdHandler
         _mapper = mapper;
     }
 
-    public async Task<SupplierViewModel?> Handle(
-        GetSupplierByIdQuery request,
-        CancellationToken cancellationToken)
+    public async Task<SupplierViewModel> Handle(GetSupplierByIdQuery request, CancellationToken cancellationToken)
     {
-        Supplier? supplier = await _supplierRepository.GetByIdAsync(
-            request.Id,
-            cancellationToken);
+        var supplier = await _supplierRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (supplier is null)
-            return null;
+            throw new NotFoundException("The supplier was not found.");
 
         return _mapper.Map<SupplierViewModel>(supplier);
     }

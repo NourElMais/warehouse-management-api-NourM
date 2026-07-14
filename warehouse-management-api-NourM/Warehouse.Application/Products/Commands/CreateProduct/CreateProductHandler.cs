@@ -16,9 +16,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
         _mapper = mapper;
     }
 
-    public async Task<ProductViewModel> Handle(
-        CreateProductCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ProductViewModel> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
         var product = new Product(
             command.Name,
@@ -29,8 +27,8 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
             command.SupplierId,
             command.ExpiryDate
         );
-
-        await _productRepository.AddAsync(product, cancellationToken);
+        
+       await _productRepository.AddAsync(product, cancellationToken);
        return _mapper.Map<ProductViewModel>(product);
     }
 }

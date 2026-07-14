@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Presentation.Validation;
 
 namespace Warehouse.Presentation.Contracts;
 
@@ -28,5 +29,6 @@ public class CreateProductRequest
     [StringLength(500)]
     public string SupplierId { get; set; }
 
+    [FutureDate]
     public DateTime ExpiryDate { get; set; }
 }

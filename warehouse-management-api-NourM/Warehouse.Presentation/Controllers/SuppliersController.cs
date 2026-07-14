@@ -37,11 +37,6 @@ public class SuppliersController : ControllerBase
 
         var supplier = await _mediator.Send(new GetSupplierByIdQuery(id), cancellationToken);
 
-        if (supplier is null)
-        {
-            return NotFound("There is no supplier found with the specified Id");
-        }
-
         return Ok(supplier);
     }
 
@@ -72,11 +67,6 @@ public class SuppliersController : ControllerBase
         }
 
         var supplier = await _mediator.Send(new DeactivateSupplierCommand(id), cancellationToken);
-
-        if (supplier is null)
-        {
-            return NotFound("There is no supplier found with the specified Id");
-        }
 
         return Ok("Supplier Deleted (Deactivated)");
     }

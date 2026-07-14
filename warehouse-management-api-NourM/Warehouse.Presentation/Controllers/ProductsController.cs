@@ -37,9 +37,6 @@ public class ProductsController : ControllerBase
 
         var product = await _mediator.Send(new GetProductByIdQuery(id), cancellationToken);
 
-        if (product is null)
-            return NotFound("There is no product with the specified id");
-
         return Ok(product);
     }
 
@@ -79,10 +76,7 @@ public class ProductsController : ControllerBase
             return BadRequest("The entered Id is not valid");
 
         var product = await _mediator.Send(new UpdateProductQuantityCommand(id, request.QuantityInStock), cancellationToken);
-
-        if (product is null)
-            return NotFound("There is no product with the specified id");
-
+        
         return Ok(product);
     }
 
@@ -93,10 +87,6 @@ public class ProductsController : ControllerBase
             return BadRequest("The entered Id is not valid");
 
         var product = await _mediator.Send(new UpdateProductPriceCommand(id, request.Price), cancellationToken);
-
-        if (product is null)
-            return NotFound("There is no product with the specified id");
-
         return Ok(product);
     }
 
@@ -107,10 +97,6 @@ public class ProductsController : ControllerBase
             return BadRequest("The entered Id is not valid");
 
         var product = await _mediator.Send(new ArchiveProductCommand(id), cancellationToken);
-
-        if (product is null)
-            return NotFound("There is no product with the specified id.");
-
         return Ok("Product Deleted (Archived)");
     }
 
@@ -125,9 +111,6 @@ public class ProductsController : ControllerBase
 
         var product = await _mediator.Send(new AssignSupplierToProductCommand(id, supplierId), cancellationToken);
 
-        if (product is null)
-            return NotFound("Product or supplier not found.");
-
         return Ok(product);
     }
 
@@ -138,9 +121,6 @@ public class ProductsController : ControllerBase
             return BadRequest("The entered Id is not valid");
 
         var product = await _mediator.Send(new RestoreProductCommand(id), cancellationToken);
-
-        if (product is null)
-            return NotFound("There is no product with the specified id");
 
         return Ok(product);
     }
@@ -189,9 +169,6 @@ public class ProductsController : ControllerBase
         if (result == UploadProductImageResult.FileTooLarge)
             return BadRequest("Image size cannot exceed 2 MB.");
 
-        if (result == UploadProductImageResult.ProductNotFound)
-            return NotFound("There is no product with the specified id.");
-
         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
 
         if (!Directory.Exists(uploadsFolder))
@@ -200,7 +177,7 @@ public class ProductsController : ControllerBase
         var filePath = Path.Combine(uploadsFolder, image.FileName);
 
         await using var stream = new FileStream(filePath, FileMode.Create);
-        await image.CopyToAsync(stream);
+        await image.CopyToAsync(stream, cancellationToken);
 
         return Ok("Image uploaded successfully.");
     }

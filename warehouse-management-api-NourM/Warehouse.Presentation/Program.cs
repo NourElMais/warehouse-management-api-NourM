@@ -8,6 +8,7 @@ using Warehouse.Domain.Suppliers;
 using Warehouse.Infrastructure;
 using Warehouse.Infrastructure.Repositories;
 using Warehouse.Presentation.Mapping;
+using Warehouse.Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var odataBuilder = new ODataConventionModelBuilder();
@@ -50,6 +51,11 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+//Middlewares sequence:
+app.UseMiddleware<RequestTimingMiddleware>();
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

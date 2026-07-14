@@ -20,14 +20,11 @@ public class GetInventoryDashboardHandler : IRequestHandler<GetInventoryDashboar
 
     public async Task<GetInventoryDashboardResponse> Handle(GetInventoryDashboardQuery request, CancellationToken cancellationToken)
     {
-        var productsTask = _productRepository.GetAllAsync(cancellationToken);
+        //Note: I did not use Task.When because the two EF Core queries share the same DbContext, so they cannot run together.
+        var products = await _productRepository.GetAllAsync(cancellationToken);
 
-        var suppliersTask = _supplierRepository.GetAllAsync(cancellationToken);
-
-        await Task.WhenAll(productsTask, suppliersTask);
-
-        var products = await productsTask;
-        var suppliers = await suppliersTask;
+        var suppliers = await _supplierRepository.GetAllAsync(cancellationToken);
+        
         int totalProducts = products.Count;
         int activeProducts = 0;
         int archivedProducts = 0;

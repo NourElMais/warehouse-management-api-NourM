@@ -33,11 +33,38 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\uploads\Samsung Monitor.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\SharedResources.fr.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.fr.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\SharedResources.resx">
+        <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\SharedResources.ar.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>SharedResources.ar.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\SharedResources.ar.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SharedResources.ar.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Screenshots\Session06 (Lea)\Localization\" />
     </ItemGroup>
 
 </Project>

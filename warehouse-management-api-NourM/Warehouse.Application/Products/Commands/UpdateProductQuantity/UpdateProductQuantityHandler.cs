@@ -23,7 +23,7 @@ public class UpdateProductQuantityHandler
         var product = await _productRepository.GetByIdAsync(command.ProductId,cancellationToken);
 
         if (product is null)
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
 
         product.UpdateQuantity(command.NewQuantity);
 

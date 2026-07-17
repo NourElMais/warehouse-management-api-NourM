@@ -27,12 +27,12 @@ public class AssignSupplierToProductHandler
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
 
         var supplier = await _supplierRepository.GetByIdAsync(command.SupplierId, cancellationToken);
 
         if (supplier is null)
-            throw new NotFoundException("The supplier was not found");
+            throw new NotFoundException("SupplierNotFound");
 
         product.AssignSupplier(supplier);
 

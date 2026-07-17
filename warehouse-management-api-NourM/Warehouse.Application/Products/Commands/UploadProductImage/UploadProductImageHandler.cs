@@ -19,7 +19,7 @@ public class UploadProductImageHandler
         var product = await _productRepository.GetByIdAsync(request.ProductId,cancellationToken);
 
         if (product is null)
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
 
         if (string.IsNullOrWhiteSpace(request.FileName))
             return UploadProductImageResult.EmptyImage;

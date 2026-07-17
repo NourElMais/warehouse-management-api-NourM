@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Globalization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Warehouse.Application.Products.Commands;
 using Warehouse.Application.Products.GetProductsStatistics;
 using Warehouse.Application.Products.Queries;
@@ -13,10 +14,12 @@ namespace Warehouse.Presentation.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IStringLocalizer<SharedResources> _localizer;
 
-    public ProductsController(IMediator mediator)
+    public ProductsController(IMediator mediator, IStringLocalizer<SharedResources> localizer)
     {
         _mediator = mediator;
+        _localizer = localizer;
     }
 // ASP.NET creates a CancellationToken for each HTTP request,
 // so we pass it through all application layers (Controller → MediatR → Handler → Repository → EF Core)
@@ -34,7 +37,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> GetProductById([FromRoute] string id, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not a valid GUID");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new GetProductByIdQuery(id), cancellationToken);
 
@@ -45,7 +48,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> GetProductsBySearch([FromQuery] string? name, [FromQuery] string? supplier, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(supplier))
-            return BadRequest("Please provide at least the item name or the supplier name.");
+            return BadRequest(_localizer["SearchInputRequired"].Value);
 
         var products = await _mediator.Send(new SearchProductsQuery(name, supplier), cancellationToken);
         return Ok(products);
@@ -74,7 +77,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest request, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not valid");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new UpdateProductQuantityCommand(id, request.QuantityInStock), cancellationToken);
         
@@ -85,7 +88,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> UpdatePrice([FromRoute] string id, [FromBody] UpdateProductPriceRequest request, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not valid");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new UpdateProductPriceCommand(id, request.Price), cancellationToken);
         return Ok(product);
@@ -95,20 +98,20 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> DeleteProduct([FromRoute] string id, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not valid");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new ArchiveProductCommand(id), cancellationToken);
-        return Ok("Product Deleted (Archived)");
+        return Ok(_localizer["ProductArchived"].Value);
     }
 
     [HttpPost("{id}/assign-supplier/{supplierId}")]
     public async Task<ActionResult> AssignSupplierToProduct([FromRoute] string id, [FromRoute] string supplierId, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The product Id is not valid.");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         if (!Guid.TryParse(supplierId, out var g))
-            return BadRequest("The supplier Id is not valid.");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new AssignSupplierToProductCommand(id, supplierId), cancellationToken);
 
@@ -119,7 +122,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> RestoreProduct([FromRoute] string id, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not valid");
+            return BadRequest(_localizer["InvalidID"].Value);
 
         var product = await _mediator.Send(new RestoreProductCommand(id), cancellationToken);
 
@@ -144,31 +147,30 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> GetServerTime(CancellationToken cancellationToken, [FromHeader(Name = "Accept-Language")] string language)
     {
         if (language != "en-US" && language != "fr-FR" && language != "ar-LB")
-            return BadRequest("The specified language is not supported");
+            return BadRequest(_localizer["LanguageNotSupported"].Value);
 
         var result = await _mediator.Send(new GetServerTimeQuery(language), cancellationToken);
         return Ok(result);
     }
 
     [HttpPost("{id}/image")]
-    public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile image, CancellationToken cancellationToken)
+    public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile? image, CancellationToken cancellationToken)
     {
         if (!Guid.TryParse(id, out var guid))
-            return BadRequest("The entered Id is not valid");
-
+            return BadRequest(_localizer["InvalidID"].Value);
         if (image is null)
-            return BadRequest("Please upload an image.");
-
+            return BadRequest(_localizer["EmptyImageViolation"].Value);
+        
         var result = await _mediator.Send(new UploadProductImageCommand(id, image.FileName, image.Length), cancellationToken);
 
         if (result == UploadProductImageResult.EmptyImage)
-            return BadRequest("Please upload an image.");
+            return BadRequest(_localizer["EmptyImageViolation"].Value);
 
         if (result == UploadProductImageResult.InvalidExtension)
-            return BadRequest("Only JPG and PNG images are allowed.");
+            return BadRequest(_localizer["ImageTypeViolation"].Value);
 
         if (result == UploadProductImageResult.FileTooLarge)
-            return BadRequest("Image size cannot exceed 2 MB.");
+            return BadRequest(_localizer["ImageSizeViolation"].Value);
 
         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
 
@@ -180,6 +182,8 @@ public class ProductsController : ControllerBase
         await using var stream = new FileStream(filePath, FileMode.Create);
         await image.CopyToAsync(stream, cancellationToken);
 
-        return Ok("Image uploaded successfully.");
+        return Ok(_localizer["ImageUploaded"].Value);
     }
+        
 }
+

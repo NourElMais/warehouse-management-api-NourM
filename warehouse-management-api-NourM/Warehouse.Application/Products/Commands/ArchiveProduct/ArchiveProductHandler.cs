@@ -28,7 +28,7 @@ public class ArchiveProductHandler
             cancellationToken);
 
         if (product is null)
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
 
         product.Archive();
 

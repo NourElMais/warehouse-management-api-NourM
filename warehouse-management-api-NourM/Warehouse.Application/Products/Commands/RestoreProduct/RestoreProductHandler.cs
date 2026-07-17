@@ -23,7 +23,7 @@ public class RestoreProductHandler
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
         if (product is null)
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
 
         product.Restore();
         await _productRepository.UpdateAsync(product,cancellationToken);

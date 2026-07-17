@@ -24,7 +24,7 @@ public class DeactivateSupplierHandler
         var supplier = await _supplierRepository.GetByIdAsync(request.SupplierId, cancellationToken);
 
         if (supplier is null)
-            throw new NotFoundException("The supplier was not found");
+            throw new NotFoundException("SupplierNotFound");
 
         supplier.Deactivate();
 

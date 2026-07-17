@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
@@ -12,14 +13,14 @@ public class AssignSupplierToProductHandler
     private readonly IProductRepository _productRepository;
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
-    public AssignSupplierToProductHandler(
-        IProductRepository productRepository,
-        ISupplierRepository supplierRepository,
-        IMapper mapper)
+    private readonly ILogger<AssignSupplierToProductHandler> _logger;
+    public AssignSupplierToProductHandler(IProductRepository productRepository, ISupplierRepository supplierRepository,
+        IMapper mapper, ILogger<AssignSupplierToProductHandler> logger)
     {
         _productRepository = productRepository;
         _supplierRepository = supplierRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<ProductViewModel> Handle(AssignSupplierToProductCommand command, CancellationToken cancellationToken)
@@ -35,8 +36,8 @@ public class AssignSupplierToProductHandler
             throw new NotFoundException("SupplierNotFound");
 
         product.AssignSupplier(supplier);
-
         await _productRepository.UpdateAsync(product, cancellationToken);
+        _logger.LogInformation("Assigned Product {ProductId} to supplier {SupplierId}", command.ProductId, command.SupplierId);
         return _mapper.Map<ProductViewModel>(product);
     }
 }

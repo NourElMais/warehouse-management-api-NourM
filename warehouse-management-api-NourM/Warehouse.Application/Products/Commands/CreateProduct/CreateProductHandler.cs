@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
@@ -10,10 +11,12 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper)
+    private readonly ILogger<CreateProductHandler> _logger;
+    public CreateProductHandler(IProductRepository productRepository, IMapper mapper, ILogger<CreateProductHandler> logger)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<ProductViewModel> Handle(CreateProductCommand command, CancellationToken cancellationToken)
@@ -29,6 +32,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
         );
         
        await _productRepository.AddAsync(product, cancellationToken);
+       _logger.LogInformation("Product {ProductId} created successfully", product.Id);
        return _mapper.Map<ProductViewModel>(product);
     }
 }

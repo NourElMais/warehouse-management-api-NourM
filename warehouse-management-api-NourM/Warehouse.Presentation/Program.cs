@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
+using Serilog;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure;
@@ -12,7 +13,11 @@ using Warehouse.Presentation.Mapping;
 using Warehouse.Presentation.Middleware;
 using Warehouse.Presentation.Swagger;
 
+Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 var odataBuilder = new ODataConventionModelBuilder();
 
 builder.Services
@@ -75,6 +80,8 @@ var supportedCultures = new[]
 };
 
 var app = builder.Build();
+//Log to see when the application started running
+Log.Information("Warehouse Management API started successfully.");
 
 //localization settings that the app should use.
 var localizationOptions = new RequestLocalizationOptions

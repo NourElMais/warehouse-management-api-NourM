@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
@@ -11,15 +12,15 @@ public class UpdateProductPriceHandler
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
-    public UpdateProductPriceHandler(IProductRepository productRepository, IMapper mapper)
+    private readonly ILogger<UpdateProductPriceHandler> _logger;
+    public UpdateProductPriceHandler(IProductRepository productRepository, IMapper mapper, ILogger<UpdateProductPriceHandler> logger)
     {
         _productRepository = productRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
-    public async Task<ProductViewModel> Handle(
-        UpdateProductPriceCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ProductViewModel> Handle(UpdateProductPriceCommand command, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(command.ProductId, cancellationToken);
 
@@ -32,7 +33,7 @@ public class UpdateProductPriceHandler
 
         await _productRepository.UpdateAsync(product, cancellationToken);
 
-        Console.WriteLine($"Product {product.Name} price changed from {oldPrice} to {product.Price}");
+        _logger.LogInformation("Product {ProductId} price is updated from {OldPrice} to {NewPrice}: ", command.ProductId, oldPrice, product.Price);
 
         return _mapper.Map<ProductViewModel>(product);
         

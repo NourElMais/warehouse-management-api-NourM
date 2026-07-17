@@ -27,10 +27,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (NotFoundException exception)
         {
-            _logger.LogError(
-                exception,
-                "Resource not found {CorrelationId}",
-                context.Items["CorrelationId"]);
+            _logger.LogError(exception, "Resource not found {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode = StatusCodes.Status404NotFound;
 
@@ -43,10 +40,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (BusinessRuleException exception)
         {
-            _logger.LogWarning(
-                exception,
-                "Business rule violation {CorrelationId}",
-                context.Items["CorrelationId"]);
+            _logger.LogWarning(exception, "Business rule violation {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
@@ -59,10 +53,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError(
-                exception,
-                "Unexpected server error {CorrelationId}",
-                context.Items["CorrelationId"]);
+            _logger.LogError(exception, "Unexpected server error {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode =
                 StatusCodes.Status500InternalServerError;

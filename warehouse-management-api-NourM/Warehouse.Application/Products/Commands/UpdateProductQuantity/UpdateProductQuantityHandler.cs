@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
-using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.Commands;
 
 public class UpdateProductQuantityHandler 
-    : IRequestHandler<UpdateProductQuantityCommand, ProductViewModel?>
+    : IRequestHandler<UpdateProductQuantityCommand, ProductViewModel>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -18,14 +18,12 @@ public class UpdateProductQuantityHandler
         _mapper = mapper;
     }
 
-    public async Task<ProductViewModel?> Handle(
-        UpdateProductQuantityCommand command,
-        CancellationToken cancellationToken)
+    public async Task<ProductViewModel> Handle(UpdateProductQuantityCommand command, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetByIdAsync(command.ProductId,cancellationToken);
 
         if (product is null)
-            return null;
+            throw new NotFoundException("The product was not found");
 
         product.UpdateQuantity(command.NewQuantity);
 

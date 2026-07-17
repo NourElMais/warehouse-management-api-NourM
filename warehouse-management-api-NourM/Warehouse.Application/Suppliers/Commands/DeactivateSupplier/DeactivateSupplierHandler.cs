@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
-using Warehouse.Domain.Suppliers;
 
 namespace Warehouse.Application.Suppliers.Commands;
 
 public class DeactivateSupplierHandler 
-    : IRequestHandler<DeactivateSupplierCommand, SupplierViewModel?>
+    : IRequestHandler<DeactivateSupplierCommand, SupplierViewModel>
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
@@ -17,14 +17,14 @@ public class DeactivateSupplierHandler
         _mapper = mapper;
     }
 
-    public async Task<SupplierViewModel?> Handle(
+    public async Task<SupplierViewModel> Handle(
         DeactivateSupplierCommand request,
         CancellationToken cancellationToken)
     {
         var supplier = await _supplierRepository.GetByIdAsync(request.SupplierId, cancellationToken);
 
         if (supplier is null)
-            return null;
+            throw new NotFoundException("The supplier was not found");
 
         supplier.Deactivate();
 

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Warehouse.Domain.Exceptions;
 using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.StockMovements;
 using Warehouse.Domain.Suppliers;
@@ -76,7 +76,7 @@ public class Product
         EnsureNotArchived();
 
         if (newPrice <= 0)
-            throw new ArgumentException("Price must be greater than zero.");
+            throw new BusinessRuleException("Price must be greater than zero.");
 
         Price = newPrice;
         LastUpdatedAt = DateTime.UtcNow;
@@ -87,7 +87,7 @@ public class Product
         EnsureNotArchived();
 
         if (newQuantity < 0)
-            throw new ArgumentException("Quantity cannot be negative.");
+            throw new BusinessRuleException("Quantity cannot be negative.");
 
         QuantityInStock = newQuantity;
         LastUpdatedAt = DateTime.UtcNow;
@@ -104,7 +104,7 @@ public class Product
         EnsureNotArchived();
 
         if (!supplier.IsActive)
-            throw new InvalidOperationException("Inactive suppliers cannot be assigned to products.");
+            throw new BusinessRuleException("Inactive suppliers cannot be assigned to products.");
 
         SupplierId = supplier.Id;
         Supplier = supplier;
@@ -114,14 +114,14 @@ public class Product
     private void EnsureNotArchived()
     {
         if (IsArchived)
-            throw new InvalidOperationException("Archived products cannot be updated.");
+            throw new BusinessRuleException("Archived products cannot be updated.");
     }
     
     public void Restore()
     {
         //we verify if it is alreaady active
         if (!IsArchived)
-            throw new InvalidOperationException("Product is already active.");
+            throw new BusinessRuleException("Product is already active.");
 
         IsArchived = false;
         LastUpdatedAt = DateTime.UtcNow;

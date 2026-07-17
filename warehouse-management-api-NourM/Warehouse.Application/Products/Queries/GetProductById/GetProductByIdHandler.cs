@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
@@ -7,7 +8,7 @@ using Warehouse.Domain.Repositories;
 namespace Warehouse.Application.Products.Queries;
 
 public class GetProductByIdHandler 
-    : IRequestHandler<GetProductByIdQuery, ProductViewModel?>
+    : IRequestHandler<GetProductByIdQuery, ProductViewModel>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -18,12 +19,14 @@ public class GetProductByIdHandler
         _mapper = mapper;
     }
 
-    public async Task<ProductViewModel?> Handle(
-        GetProductByIdQuery request,
-        CancellationToken cancellationToken)
+    public async Task<ProductViewModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        Product? product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
+        var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
+        if (product is null)
+        {
+            throw new NotFoundException("The product was not found");
+        }
        return _mapper.Map<ProductViewModel>(product);
     }
 }

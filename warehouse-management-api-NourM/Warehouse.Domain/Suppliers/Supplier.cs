@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Warehouse.Domain.Exceptions;
 using Warehouse.Domain.Products;
 
 namespace Warehouse.Domain.Suppliers;
@@ -49,7 +50,7 @@ public class Supplier
     public void Deactivate()
     {
         if (!IsActive)
-            throw new InvalidOperationException("Supplier is already inactive.");
+            throw new BusinessRuleException("Supplier is already inactive.");
 
         IsActive = false;
     }

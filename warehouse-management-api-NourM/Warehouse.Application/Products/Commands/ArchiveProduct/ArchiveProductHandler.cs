@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Warehouse.Application.Exceptions;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
 namespace Warehouse.Application.Products.Commands;
@@ -27,13 +28,11 @@ public class ArchiveProductHandler
             cancellationToken);
 
         if (product is null)
-            return null;
+            throw new NotFoundException("The product was not found");
 
         product.Archive();
 
-        await _productRepository.UpdateAsync(
-            product,
-            cancellationToken);
+        await _productRepository.UpdateAsync(product, cancellationToken);
 
         return _mapper.Map<ProductViewModel>(product);
     }

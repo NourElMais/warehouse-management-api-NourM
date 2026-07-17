@@ -18,9 +18,7 @@ public class SearchProductsHandler
         _mapper = mapper;
     }
 
-    public async Task<List<ProductViewModel>> Handle(
-        SearchProductsQuery request,
-        CancellationToken cancellationToken)
+    public async Task<List<ProductViewModel>> Handle(SearchProductsQuery request, CancellationToken cancellationToken)
     {
         List<Product> products = await _productRepository.SearchAsync(request.Name, request.Supplier,cancellationToken);
 

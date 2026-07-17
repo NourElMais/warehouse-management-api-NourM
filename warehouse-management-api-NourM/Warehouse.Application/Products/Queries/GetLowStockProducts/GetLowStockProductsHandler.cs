@@ -17,9 +17,7 @@ public class GetLowStockProductsHandler
         _mapper = mapper;
     }
 
-    public async Task<List<ProductViewModel>> Handle(
-        GetLowStockProductsQuery query,
-        CancellationToken cancellationToken)
+    public async Task<List<ProductViewModel>> Handle( GetLowStockProductsQuery query, CancellationToken cancellationToken)
     {
         List<Product> products = await _productRepository.GetAllAsync(cancellationToken);
         List<Product> lowStockProducts = new List<Product>();

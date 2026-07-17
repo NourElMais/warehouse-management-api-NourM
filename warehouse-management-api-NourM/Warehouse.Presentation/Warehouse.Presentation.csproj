@@ -63,8 +63,4 @@
       </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Screenshots\Session06 (Lea)\Localization\" />
-    </ItemGroup>
-
 </Project>

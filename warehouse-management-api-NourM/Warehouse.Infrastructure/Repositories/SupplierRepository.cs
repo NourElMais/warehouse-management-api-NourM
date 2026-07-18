@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Warehouse.Application.Interfaces;
 using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
 
@@ -11,23 +12,26 @@ public class SupplierRepository : ISupplierRepository
 {
     private readonly WarehouseDbContext _db;
     private readonly IDistributedCache _cache;
+    private readonly ICacheStatisticsService _cacheStatistics;
 
-    public SupplierRepository(WarehouseDbContext context, IDistributedCache cache)
+    public SupplierRepository(WarehouseDbContext context, IDistributedCache cache, ICacheStatisticsService cacheStatistics)
     {
         _db = context;
         _cache = cache;
+        _cacheStatistics = cacheStatistics;
     }
 
     public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken)
     {
         string cacheKey = "Suppliers";
-
         string? cachedValue = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
         if (cachedValue is not null)
         {
+            _cacheStatistics.RecordHit(cacheKey);
             return JsonSerializer.Deserialize<List<Supplier>>(cachedValue);
         }
+        _cacheStatistics.RecordMiss(cacheKey);
 
         List<Supplier> suppliers = await _db.Suppliers.ToListAsync(cancellationToken);
         
@@ -44,6 +48,7 @@ public class SupplierRepository : ISupplierRepository
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
             },
             cancellationToken);
+        _cacheStatistics.RecordRefresh(cacheKey);
         return suppliers;
     }
 
@@ -55,9 +60,11 @@ public class SupplierRepository : ISupplierRepository
 
         if (cachedValue is not null)
         {
+            _cacheStatistics.RecordHit(cacheKey);
             return JsonSerializer.Deserialize<Supplier>(cachedValue);
         }
 
+        _cacheStatistics.RecordMiss(cacheKey);
         Supplier? supplier = await _db.Suppliers.FirstOrDefaultAsync(supplier => supplier.Id == id, cancellationToken);
 
         if (supplier is not null)
@@ -74,6 +81,7 @@ public class SupplierRepository : ISupplierRepository
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 },
                 cancellationToken);
+            _cacheStatistics.RecordRefresh(cacheKey);
         }
 
         return supplier;
@@ -84,6 +92,8 @@ public class SupplierRepository : ISupplierRepository
         await _db.Suppliers.AddAsync(supplier, cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
         await _cache.RemoveAsync("Suppliers", cancellationToken);
+        _cacheStatistics.RemoveKey("Suppliers");
+        
     }
 
     public async Task UpdateAsync(Supplier supplier, CancellationToken cancellationToken)
@@ -92,5 +102,7 @@ public class SupplierRepository : ISupplierRepository
         await _db.SaveChangesAsync(cancellationToken);
         await _cache.RemoveAsync("Suppliers", cancellationToken);
         await _cache.RemoveAsync($"Supplier:{supplier.Id}", cancellationToken);
+        _cacheStatistics.RemoveKey("Suppliers");
+        _cacheStatistics.RemoveKey($"Supplier:{supplier.Id}");
     }
 }

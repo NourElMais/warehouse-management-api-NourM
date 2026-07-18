@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.VisualBasic;
+using Warehouse.Application.Interfaces;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
@@ -12,10 +13,12 @@ public class ProductRepository : IProductRepository
 {
     private readonly WarehouseDbContext _db;
     private readonly IDistributedCache _cache;
-    public ProductRepository(WarehouseDbContext context, IDistributedCache cache)
+    private readonly ICacheStatisticsService _cacheStatistics;
+    public ProductRepository(WarehouseDbContext context, IDistributedCache cache, ICacheStatisticsService cacheStatistics)
     {
         _db = context;
         _cache = cache;
+        _cacheStatistics = cacheStatistics;
     }
 
     public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
@@ -26,9 +29,11 @@ public class ProductRepository : IProductRepository
 
         if (cachedValue is not null)
         {
+            _cacheStatistics.RecordHit(cacheKey);
             return JsonSerializer.Deserialize<List<Product>>(cachedValue);
         }
 
+        _cacheStatistics.RecordMiss(cacheKey);
         List<Product> products =await _db.Products.Include(product => product.Supplier).ToListAsync(cancellationToken);
         var options = new JsonSerializerOptions
             {
@@ -43,6 +48,7 @@ public class ProductRepository : IProductRepository
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 },
                 cancellationToken);
+            _cacheStatistics.RecordRefresh(cacheKey);
             return products;
         }
     
@@ -55,9 +61,11 @@ public class ProductRepository : IProductRepository
 
         if (cachedValue is not null)
         {
+            _cacheStatistics.RecordHit(cacheKey);
             return JsonSerializer.Deserialize<Product>(cachedValue);
         }
 
+        _cacheStatistics.RecordMiss(cacheKey);
         Product? product = await _db.Products.Include(product => product.Supplier).FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
 
         if (product is not null)
@@ -76,7 +84,9 @@ public class ProductRepository : IProductRepository
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 },
                 cancellationToken);
+            _cacheStatistics.RecordRefresh(cacheKey);
         }
+        
 
         return product;
     }
@@ -104,6 +114,7 @@ public class ProductRepository : IProductRepository
         await _db.Products.AddAsync(product, cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
         await _cache.RemoveAsync("Products",cancellationToken);
+        _cacheStatistics.RemoveKey("Products");
     }
 
     public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
@@ -112,5 +123,7 @@ public class ProductRepository : IProductRepository
         await _db.SaveChangesAsync(cancellationToken);
         await _cache.RemoveAsync("Products",cancellationToken);
         await _cache.RemoveAsync($"Product:{product.Id}", cancellationToken);
+        _cacheStatistics.RemoveKey("Products");
+        _cacheStatistics.RemoveKey($"Product:{product.Id}");
     }
 }

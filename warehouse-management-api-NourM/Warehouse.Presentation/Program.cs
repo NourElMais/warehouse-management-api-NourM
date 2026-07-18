@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
 using Serilog;
+using Warehouse.Application.Cache.CacheStatistics;
+using Warehouse.Application.Interfaces;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure;
@@ -137,6 +139,10 @@ builder.Services.AddHangfire(configuration =>
 builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<ProductExpirationJob>();
+
+//Register the cache service
+//Assumption: one shared statistics object for the whole application.
+builder.Services.AddSingleton<ICacheStatisticsService, CacheStatisticsService>();
 
 var app = builder.Build();
 //Log to see when the application started running

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Warehouse.Application.Cache;
 using Warehouse.Application.Products.Commands;
 using Warehouse.Application.Products.GetProductsStatistics;
 using Warehouse.Application.Products.Queries;
@@ -183,6 +184,13 @@ public class ProductsController : ControllerBase
         await image.CopyToAsync(stream, cancellationToken);
 
         return Ok(_localizer["ImageUploaded"].Value);
+    }
+    // Challenge– Cache Statistics Endpoint 
+    [HttpGet("cache-statistics")]
+    public async Task<IActionResult> GetCacheStatistics(CancellationToken cancellationToken)
+    {
+        var stats = await _mediator.Send(new GetCacheStatisticsQuery(), cancellationToken);
+        return Ok(stats);
     }
         
 }

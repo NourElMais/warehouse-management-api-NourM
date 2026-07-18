@@ -13,10 +13,13 @@ using Warehouse.Presentation.Mapping;
 using Warehouse.Presentation.Middleware;
 using Warehouse.Presentation.Swagger;
 
+//serilog creates a new file every day.
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// whenever someone uses ILogger, Serilog will handle it.
 builder.Host.UseSerilog();
 var odataBuilder = new ODataConventionModelBuilder();
 
@@ -33,7 +36,9 @@ builder.Services
             .SetMaxTop(100)
             .AddRouteComponents("odata", odataBuilder.GetEdmModel());
     });
+
 builder.Services.AddEndpointsApiExplorer();
+
 // builder.Services.AddSwaggerGen();
 
 builder.Services.AddSwaggerGen(options =>
@@ -70,6 +75,15 @@ builder.Services.AddLocalization(options =>
 {
     options.ResourcesPath = "Resources";
 });
+
+//caching using redis
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = 
+        builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "MyApp_";
+});
+
 
 //to tell ASP.NET that these are the only languages supported.
 var supportedCultures = new[]

@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
 using Serilog;
+using StackExchange.Redis;
 using Warehouse.Application.Cache.CacheStatistics;
 using Warehouse.Application.Interfaces;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure;
 using Warehouse.Infrastructure.BackgroundJobs;
+using Warehouse.Infrastructure.HealthChecks;
 using Warehouse.Infrastructure.Repositories;
 using Warehouse.Presentation.Filters;
 using Warehouse.Presentation.Mapping;
@@ -33,14 +35,14 @@ string databaseConnection =
 string redisConnection =
     builder.Configuration.GetConnectionString("Redis");
 
-builder.Services
-    .AddHealthChecks()
+builder.Services.AddHealthChecks()
     .AddNpgSql(
         databaseConnection,
         name: "PostgreSQL")
-    .AddRedis(
-        redisConnection,
-        name: "Redis");
+    .AddCheck<RedisRetryHealthCheck>("redis");
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(redisConnection));
 
 // whenever someone uses ILogger, Serilog will handle it.
 builder.Host.UseSerilog();

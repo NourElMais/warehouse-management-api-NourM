@@ -343,4 +343,55 @@ and Entity Framework operations. CancellationToken was also passed through all t
 ## Notes
 Refer to the screenshots of swagger inside the screenshots folder (Session05 (Jhonny))
 
+# Session 6 (Lea Noun)
+
+## Implemented Features
+The aim of this lab is to  improve reliability, maintainability, and performance, by implementing localization, caching, background jobs, logging and health checks.
+
+### 1- Localization
+- Added support for multiple languages using resource (`.resx`) files.
+- Localized validation messages and API responses based on the `Accept-Language` request header, that was added to Swagger.
+
+### 2- Caching
+- Integrated Redis distributed caching to reduce database queries, and make the app faster.
+- Cached products and suppliers, and automatically invalidated the cache when data was added or updated.
+
+### 3- Background Jobs
+- Integrated Hangfire to run a recurring background task that logs products whose expiry date is near.
+
+### 4- Logging
+- Integrated Serilog for structured logging.
+- Logged API requests, application events, and background job execution.
+
+### 5- Health Checks
+- Added health checks for PostgreSQL and Redis, with a health-check UI.
+
+## Bonus Challenges
+
+### Challenge 1 – Background Job Improvement
+- Enhanced the Hangfire background job to automatically archive products that have been expired for more than 7 days.
+- Logged every product that was archived.
+
+### Challenge 3 – Cache Statistics Endpoint
+- Created an endpoint that returns cache statistics, including cached keys, cache hit count, cache miss count, and the last cache refresh time.
+
+### Challenge 4 – Retry Health Check
+- Implemented a custom Redis health check that retries the connection up to three times before reporting Redis as unhealthy.
+
+## API endpoints added
+### Cache
+- `GET /api/cache/statistics` – To retrieve cache statistics (cached keys, hit/miss counts, and last refresh time).
+
+### Health Checks
+- `GET /health` – To view the health status of the application and its dependencies.
+- `GET /health-ui` – To open the Health Checks UI dashboard.
+
+### Background Jobs
+- `/hangfire` – Open the Hangfire dashboard to monitor and manage recurring background jobs.
+
+## Notes
+- Challenge 2 was not implemented as I already had a middleware (RequestTimingMiddleware), that tracks the time of execution of each endpoint.
+- Screenshots are available in the screenshots folder.
+
+
 

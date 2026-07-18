@@ -1,4 +1,6 @@
 using System.Globalization;
+using Hangfire;
+using Hangfire.PostgreSql;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Localization;
@@ -9,6 +11,7 @@ using Serilog;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure;
+using Warehouse.Infrastructure.BackgroundJobs;
 using Warehouse.Infrastructure.Repositories;
 using Warehouse.Presentation.Filters;
 using Warehouse.Presentation.Mapping;
@@ -119,6 +122,22 @@ var supportedCultures = new[]
     new CultureInfo("ar")
 };
 
+//Configuring Hangfire
+//Hangfire will use PostgreSQL to store: job schedules, job status, execution history , failed jobs... (it creates its own tables)
+
+builder.Services.AddHangfire(configuration =>
+{
+    configuration.UsePostgreSqlStorage(options =>
+    {
+        options.UseNpgsqlConnection(
+            builder.Configuration.GetConnectionString("DefaultConnection"));
+    });
+});
+
+builder.Services.AddHangfireServer();
+
+builder.Services.AddScoped<ProductExpirationJob>();
+
 var app = builder.Build();
 //Log to see when the application started running
 Log.Information("Warehouse Management API started successfully.");
@@ -150,5 +169,12 @@ app.MapHealthChecksUI(options =>
     options.UIPath = "/health-ui";
 });
 
+//Configuring Hangfire's dashboard
+app.UseHangfireDashboard("/hangfire");
+
+string productExpirationCron = builder.Configuration["Hangfire:ProductExpirationCron"];
+
+RecurringJob.AddOrUpdate<ProductExpirationJob>("product-expiration-check", job => job.CheckProductsAsync(CancellationToken.None),
+    productExpirationCron);
 
 app.Run();

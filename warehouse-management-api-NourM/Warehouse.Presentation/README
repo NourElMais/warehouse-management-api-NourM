@@ -390,7 +390,7 @@ The aim of this lab is to  improve reliability, maintainability, and performance
 - `/hangfire` – Open the Hangfire dashboard to monitor and manage recurring background jobs.
 
 ## Notes
-- Challenge 2 was not implemented as I already had a middleware (RequestTimingMiddleware), that tracks the time of execution of each endpoint.
+- Challenge 2 was not implemented as I already had a middleware (RequestTimingMiddleware), that tracks the time it takes each endpoint to execute. 
 - Screenshots are available in the screenshots folder.
 
 

@@ -1,4 +1,6 @@
 using System.Globalization;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +20,22 @@ Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Things that will be checked by the health check:
+string databaseConnection =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+string redisConnection =
+    builder.Configuration.GetConnectionString("Redis");
+
+builder.Services
+    .AddHealthChecks()
+    .AddNpgSql(
+        databaseConnection,
+        name: "PostgreSQL")
+    .AddRedis(
+        redisConnection,
+        name: "Redis");
 
 // whenever someone uses ILogger, Serilog will handle it.
 builder.Host.UseSerilog();
@@ -84,6 +102,14 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = "MyApp_";
 });
 
+builder.Services.AddHealthChecksUI(options =>
+    {
+        options.AddHealthCheckEndpoint(
+            "Warehouse API",
+            "/health");
+
+        options.SetEvaluationTimeInSeconds(10);
+    }).AddInMemoryStorage();
 
 //to tell ASP.NET that these are the only languages supported.
 var supportedCultures = new[]
@@ -114,6 +140,15 @@ app.UseMiddleware<RequestTimingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
+app.MapHealthChecksUI(options =>
+{
+    options.UIPath = "/health-ui";
+});
 
 
 app.Run();

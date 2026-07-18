@@ -26,6 +26,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.0" />
+      <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.0" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI" Version="8.0.0" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0" />
+      <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="8.0.0" />
       <PackageReference Include="AutoMapper" Version="16.2.0" />
       <PackageReference Include="MediatR" Version="14.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.4.1" />

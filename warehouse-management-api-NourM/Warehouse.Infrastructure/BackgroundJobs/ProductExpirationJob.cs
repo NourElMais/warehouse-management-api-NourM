@@ -16,8 +16,7 @@ public class ProductExpirationJob
         _logger = logger;
     }
     //method that checks already expired products, and products expiring within 30 days
-    public async Task CheckProductsAsync(
-        CancellationToken cancellationToken)
+    public async Task CheckProductsAsync(CancellationToken cancellationToken)
     {
         DateTime today = DateTime.UtcNow.Date;
 
@@ -33,6 +32,20 @@ public class ProductExpirationJob
         _logger.LogInformation("Expired product names: {ExpiredNames}", expiredProducts.Select(product => product.Name).ToList());
 
         _logger.LogInformation("Soon to expire product names: {SoonToExpireNames}",soonToExpireProducts.Select(product => product.Name).ToList());
+        
+        //Challenge: Archiving products expired more than 7 days ago
+        DateTime archiveLimit = DateTime.UtcNow.AddDays(-7);
+        List<Product> productsToArchive = await _db.Products.Where(product => product.ExpiryDate < archiveLimit && !product.IsArchived).ToListAsync(cancellationToken);
+        foreach (Product product in productsToArchive)
+        {
+            product.Archive();
+            _logger.LogInformation("Automatically archived product: {ProductName}", product.Name);
+        }
+        if (productsToArchive.Count > 0)
+        {
+            await _db.SaveChangesAsync(cancellationToken);
+        }
+       
     }
     
 }

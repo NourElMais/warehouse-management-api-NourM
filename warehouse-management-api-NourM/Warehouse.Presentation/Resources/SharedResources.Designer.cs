@@ -21,14 +21,14 @@ namespace Warehouse.Presentation.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SharedResources_ar {
+    public partial class SharedResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedResources_ar() {
+        internal SharedResources() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Warehouse.Presentation.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warehouse.Presentation.Resources.SharedResources.ar", typeof(SharedResources_ar).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warehouse.Presentation.Resources.SharedResources", typeof(SharedResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,7 +60,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يرجى إرفاق صورة..
+        ///   Looks up a localized string similar to Please provide an image.
         /// </summary>
         internal static string EmptyImageViolation {
             get {
@@ -69,7 +69,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يجب ألا يتجاوز حجم الصورة 2 ميغابايت..
+        ///   Looks up a localized string similar to The image size should be 2 MB maximum.
         /// </summary>
         internal static string ImageSizeViolation {
             get {
@@ -78,7 +78,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يُسمح فقط بصور بصيغتي JPG وPNG..
+        ///   Looks up a localized string similar to Only jpg and png images are accepted.
         /// </summary>
         internal static string ImageTypeViolation {
             get {
@@ -87,7 +87,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم رفع الصورة بنجاح..
+        ///   Looks up a localized string similar to The image was successfully uploaded.
         /// </summary>
         internal static string ImageUploaded {
             get {
@@ -96,7 +96,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to المعرّف المُدخل غير صالح..
+        ///   Looks up a localized string similar to The provided ID is not valid.
         /// </summary>
         internal static string InvalidID {
             get {
@@ -105,7 +105,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to اللغة غير مدعومة..
+        ///   Looks up a localized string similar to The language is not supported.
         /// </summary>
         internal static string LanguageNotSupported {
             get {
@@ -114,7 +114,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم أرشفة المنتج بنجاح.
+        ///   Looks up a localized string similar to The product was successfully archived.
         /// </summary>
         internal static string ProductArchived {
             get {
@@ -123,7 +123,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لم يتم العثور على المنتج..
+        ///   Looks up a localized string similar to The product was not found.
         /// </summary>
         internal static string ProductNotFound {
             get {
@@ -132,7 +132,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم استعادة المنتج بنجاح..
+        ///   Looks up a localized string similar to The product was successfully restored.
         /// </summary>
         internal static string ProductRestored {
             get {
@@ -141,7 +141,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يرجى إدخال اسم المنتج أو اسم المورّد على الأقل..
+        ///   Looks up a localized string similar to Please provide at least the supplier name, or the name of the product.
         /// </summary>
         internal static string SearchInputRequired {
             get {
@@ -150,7 +150,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم تعيين المورد للمنتج بنجاح..
+        ///   Looks up a localized string similar to The supplier was successfully assigned to the product.
         /// </summary>
         internal static string SupplierAssigned {
             get {
@@ -159,7 +159,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم حذف المورّد بنجاح..
+        ///   Looks up a localized string similar to The supplier was successfully deleted.
         /// </summary>
         internal static string SupplierDeleted {
             get {
@@ -168,7 +168,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لم يتم العثور على المورد..
+        ///   Looks up a localized string similar to The supplier was not found.
         /// </summary>
         internal static string SupplierNotFound {
             get {
@@ -177,7 +177,7 @@ namespace Warehouse.Presentation.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to حدث خطأ غير متوقع.
+        ///   Looks up a localized string similar to An unexpected error occured.
         /// </summary>
         internal static string UnexpectedError {
             get {

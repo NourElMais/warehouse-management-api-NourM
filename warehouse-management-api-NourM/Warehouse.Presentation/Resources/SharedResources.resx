@@ -18,46 +18,46 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="InvalidID" xml:space="preserve">
-        <value>The entered ID is not valid.</value>
+    <data name="EmptyImageViolation" xml:space="preserve">
+        <value>Please provide an image</value>
     </data>
-    <data name="ProductNotFound" xml:space="preserve">
-        <value>The product was not found</value>
+    <data name="ImageSizeViolation" xml:space="preserve">
+        <value>The image size should be 2 MB maximum</value>
     </data>
-    <data name="ProductArchived" xml:space="preserve">
-        <value>The product was archived</value>
-    </data>
-    <data name="SupplierNotFound" xml:space="preserve">
-        <value>Supplier was not found</value>
-    </data>
-    <data name="SupplierAssigned" xml:space="preserve">
-        <value>Supplier was assigned</value>
-    </data>
-    <data name="ProductRestored" xml:space="preserve">
-        <value>The product was restored</value>
+    <data name="ImageTypeViolation" xml:space="preserve">
+        <value>Only jpg and png images are accepted</value>
     </data>
     <data name="ImageUploaded" xml:space="preserve">
-        <value>Image was successfully uploaded</value>
+        <value>The image was successfully uploaded</value>
+    </data>
+    <data name="InvalidID" xml:space="preserve">
+        <value>The provided ID is not valid</value>
     </data>
     <data name="LanguageNotSupported" xml:space="preserve">
         <value>The language is not supported</value>
     </data>
-    <data name="ImageSizeViolation" xml:space="preserve">
-        <value>Image size cannot exceed 2 MB.</value>
+    <data name="ProductArchived" xml:space="preserve">
+        <value>The product was successfully archived</value>
     </data>
-    <data name="ImageTypeViolation" xml:space="preserve">
-        <value>Only JPG and PNG images are allowed</value>
+    <data name="ProductNotFound" xml:space="preserve">
+        <value>The product was not found</value>
     </data>
-    <data name="EmptyImageViolation" xml:space="preserve">
-        <value>Please provide an image.</value>
+    <data name="ProductRestored" xml:space="preserve">
+        <value>The product was successfully restored</value>
+    </data>
+    <data name="SearchInputRequired" xml:space="preserve">
+        <value>Please provide at least the supplier name, or the name of the product</value>
+    </data>
+    <data name="SupplierAssigned" xml:space="preserve">
+        <value>The supplier was successfully assigned to the product</value>
     </data>
     <data name="SupplierDeleted" xml:space="preserve">
         <value>The supplier was successfully deleted</value>
     </data>
-    <data name="SearchInputRequired" xml:space="preserve">
-        <value>Please provide at least the product name or supplier name.</value>
+    <data name="SupplierNotFound" xml:space="preserve">
+        <value>The supplier was not found</value>
     </data>
     <data name="UnexpectedError" xml:space="preserve">
-        <value>An unexpected error occurred</value>
+        <value>An unexpected error occured</value>
     </data>
 </root>

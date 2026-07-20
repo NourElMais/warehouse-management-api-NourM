@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Warehouse.Application.Suppliers.Commands;
 using Warehouse.Application.Suppliers.Queries;
 using Warehouse.Presentation.Contracts;
+using Warehouse.Presentation.Resources;
 
 namespace Warehouse.Presentation.Controllers;
 
@@ -34,7 +35,7 @@ public class SuppliersController : ControllerBase
     {
         if (!Guid.TryParse(id, out var guid))
         {
-            return BadRequest(_localizer["InvalidID"].Value);
+            return BadRequest(SharedResources.InvalidID);
         }
 
         var supplier = await _mediator.Send(new GetSupplierByIdQuery(id), cancellationToken);
@@ -65,12 +66,12 @@ public class SuppliersController : ControllerBase
     {
         if (!Guid.TryParse(id, out var guid))
         {
-            return BadRequest(_localizer["InvalidID"].Value);
+            return BadRequest(SharedResources.InvalidID);
         }
 
         var supplier = await _mediator.Send(new DeactivateSupplierCommand(id), cancellationToken);
 
-        return Ok(_localizer["SupplierDeleted"].Value);
+        return Ok(SharedResources.SupplierDeleted);
     }
 
     // 5. Supplier statistics

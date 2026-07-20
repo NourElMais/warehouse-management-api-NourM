@@ -2,6 +2,7 @@
 using Warehouse.Application.Exceptions;
 using Warehouse.Domain.Exceptions;
 using Warehouse.Presentation.Contracts;
+using Warehouse.Presentation.Resources;
 
 namespace Warehouse.Presentation.Middleware;
 

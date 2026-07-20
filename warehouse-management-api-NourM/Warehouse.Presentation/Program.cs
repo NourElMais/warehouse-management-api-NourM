@@ -41,8 +41,7 @@ builder.Services.AddHealthChecks()
         name: "PostgreSQL")
     .AddCheck<RedisRetryHealthCheck>("redis");
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(
-    ConnectionMultiplexer.Connect(redisConnection));
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
 
 // whenever someone uses ILogger, Serilog will handle it.
 builder.Host.UseSerilog();

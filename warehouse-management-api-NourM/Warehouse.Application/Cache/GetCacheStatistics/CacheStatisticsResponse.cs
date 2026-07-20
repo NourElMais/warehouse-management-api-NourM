@@ -3,7 +3,7 @@
 public class CacheStatisticsResponse
 {
     
-    public List<string> CachedKeys { get; set; }
+    public HashSet<string> CachedKeys { get; set; }
 
     public int HitCount { get; set; }
 

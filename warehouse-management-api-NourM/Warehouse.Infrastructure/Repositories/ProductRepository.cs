@@ -2,10 +2,10 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.VisualBasic;
 using Warehouse.Application.Interfaces;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
+using Warehouse.Infrastructure.Caching;
 
 namespace Warehouse.Infrastructure.Repositories;
 
@@ -14,6 +14,7 @@ public class ProductRepository : IProductRepository
     private readonly WarehouseDbContext _db;
     private readonly IDistributedCache _cache;
     private readonly ICacheStatisticsService _cacheStatistics;
+
     public ProductRepository(WarehouseDbContext context, IDistributedCache cache, ICacheStatisticsService cacheStatistics)
     {
         _db = context;
@@ -22,78 +23,92 @@ public class ProductRepository : IProductRepository
     }
 
     public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
-    {  
-        string cacheKey = "Products";
+    {
+        string cacheKey = CacheKeys.Products;
 
-        string? cachedValue = await _cache.GetStringAsync(cacheKey, cancellationToken);
+        string? cachedValue =
+            await _cache.GetStringAsync(cacheKey, cancellationToken);
 
         if (cachedValue is not null)
         {
             _cacheStatistics.RecordHit(cacheKey);
-            return JsonSerializer.Deserialize<List<Product>>(cachedValue);
+
+            return JsonSerializer.Deserialize<List<Product>>(cachedValue) ?? new List<Product>();
         }
 
-        _cacheStatistics.RecordMiss(cacheKey);
-        List<Product> products =await _db.Products.Include(product => product.Supplier).ToListAsync(cancellationToken);
+        _cacheStatistics.RecordMiss();
+
+        List<Product> products = await _db.Products.Include(product => product.Supplier).ToListAsync(cancellationToken);
+
         var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+
+        string cacheValue = JsonSerializer.Serialize(products, options);
+
+        await _cache.SetStringAsync(
+            cacheKey,
+            cacheValue,
+            new DistributedCacheEntryOptions
             {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles
-            };
+                AbsoluteExpirationRelativeToNow =
+                    TimeSpan.FromMinutes(5)
+            },
+            cancellationToken);
 
-            string cacheValue = JsonSerializer.Serialize(products, options);
+        _cacheStatistics.RecordRefresh(cacheKey);
 
-            await _cache.SetStringAsync(cacheKey, cacheValue,
-                new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                },
-                cancellationToken);
-            _cacheStatistics.RecordRefresh(cacheKey);
-            return products;
-        }
-    
+        return products;
+    }
 
     public async Task<Product?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        string cacheKey = $"Product:{id}";
+        string cacheKey = CacheKeys.Product(id);
 
         string? cachedValue = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
         if (cachedValue is not null)
         {
             _cacheStatistics.RecordHit(cacheKey);
+
             return JsonSerializer.Deserialize<Product>(cachedValue);
         }
 
-        _cacheStatistics.RecordMiss(cacheKey);
+        _cacheStatistics.RecordMiss();
+
         Product? product = await _db.Products.Include(product => product.Supplier).FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
 
-        if (product is not null)
+        if (product is null)
         {
-            // IgnoreCycles prevents serialization errors caused by circular references
-            // because in this app, Product points to Supplier and vice versa...
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles
-            };
-            string cacheValue = JsonSerializer.Serialize(product,options);
-
-            await _cache.SetStringAsync(cacheKey, cacheValue,
-                new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                },
-                cancellationToken);
-            _cacheStatistics.RecordRefresh(cacheKey);
+            return null;
         }
-        
+
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles
+        };
+
+        string cacheValue = JsonSerializer.Serialize(product, options);
+
+        await _cache.SetStringAsync(
+            cacheKey,
+            cacheValue,
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow =
+                    TimeSpan.FromMinutes(5)
+            },
+            cancellationToken);
+
+        _cacheStatistics.RecordRefresh(cacheKey);
 
         return product;
     }
 
     public async Task<List<Product>> SearchAsync(string? name, string? supplier, CancellationToken cancellationToken)
     {
-        IQueryable<Product> query = _db.Products.Include(product => product.Supplier).AsQueryable();
+        IQueryable<Product> query = _db.Products.Include(product => product.Supplier);
 
         if (!string.IsNullOrWhiteSpace(name))
         {
@@ -108,22 +123,28 @@ public class ProductRepository : IProductRepository
         return await query.ToListAsync(cancellationToken);
     }
 
-    //invalidating the cache whenever related data changes.
     public async Task AddAsync(Product product, CancellationToken cancellationToken)
     {
         await _db.Products.AddAsync(product, cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
-        await _cache.RemoveAsync("Products",cancellationToken);
-        _cacheStatistics.RemoveKey("Products");
+
+        await _cache.RemoveAsync(CacheKeys.Products, cancellationToken);
+
+        _cacheStatistics.RemoveKey(CacheKeys.Products);
     }
 
     public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
     {
         _db.Products.Update(product);
         await _db.SaveChangesAsync(cancellationToken);
-        await _cache.RemoveAsync("Products",cancellationToken);
-        await _cache.RemoveAsync($"Product:{product.Id}", cancellationToken);
-        _cacheStatistics.RemoveKey("Products");
-        _cacheStatistics.RemoveKey($"Product:{product.Id}");
+
+        string productCacheKey = CacheKeys.Product(product.Id);
+
+        await _cache.RemoveAsync(CacheKeys.Products, cancellationToken);
+
+        await _cache.RemoveAsync(productCacheKey, cancellationToken);
+
+        _cacheStatistics.RemoveKey(CacheKeys.Products);
+        _cacheStatistics.RemoveKey(productCacheKey);
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Warehouse.Application.Interfaces;
 using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
+using Warehouse.Infrastructure.Caching;
 
 namespace Warehouse.Infrastructure.Repositories;
 
@@ -23,7 +24,7 @@ public class SupplierRepository : ISupplierRepository
 
     public async Task<List<Supplier>> GetAllAsync(CancellationToken cancellationToken)
     {
-        string cacheKey = "Suppliers";
+        string cacheKey = CacheKeys.Suppliers;
         string? cachedValue = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
         if (cachedValue is not null)
@@ -31,7 +32,7 @@ public class SupplierRepository : ISupplierRepository
             _cacheStatistics.RecordHit(cacheKey);
             return JsonSerializer.Deserialize<List<Supplier>>(cachedValue);
         }
-        _cacheStatistics.RecordMiss(cacheKey);
+        _cacheStatistics.RecordMiss();
 
         List<Supplier> suppliers = await _db.Suppliers.ToListAsync(cancellationToken);
         
@@ -54,7 +55,7 @@ public class SupplierRepository : ISupplierRepository
 
     public async Task<Supplier?> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
-        string cacheKey = $"Supplier:{id}";
+        string cacheKey = CacheKeys.Supplier(id);
 
         string? cachedValue = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
@@ -64,7 +65,7 @@ public class SupplierRepository : ISupplierRepository
             return JsonSerializer.Deserialize<Supplier>(cachedValue);
         }
 
-        _cacheStatistics.RecordMiss(cacheKey);
+        _cacheStatistics.RecordMiss();
         Supplier? supplier = await _db.Suppliers.FirstOrDefaultAsync(supplier => supplier.Id == id, cancellationToken);
 
         if (supplier is not null)
@@ -91,8 +92,8 @@ public class SupplierRepository : ISupplierRepository
     {
         await _db.Suppliers.AddAsync(supplier, cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
-        await _cache.RemoveAsync("Suppliers", cancellationToken);
-        _cacheStatistics.RemoveKey("Suppliers");
+        await _cache.RemoveAsync(CacheKeys.Suppliers, cancellationToken);
+        _cacheStatistics.RemoveKey(CacheKeys.Suppliers);
         
     }
 
@@ -100,9 +101,9 @@ public class SupplierRepository : ISupplierRepository
     {
         _db.Suppliers.Update(supplier);
         await _db.SaveChangesAsync(cancellationToken);
-        await _cache.RemoveAsync("Suppliers", cancellationToken);
-        await _cache.RemoveAsync($"Supplier:{supplier.Id}", cancellationToken);
-        _cacheStatistics.RemoveKey("Suppliers");
-        _cacheStatistics.RemoveKey($"Supplier:{supplier.Id}");
+        await _cache.RemoveAsync(CacheKeys.Suppliers, cancellationToken);
+        await _cache.RemoveAsync(CacheKeys.Supplier(supplier.Id), cancellationToken);
+        _cacheStatistics.RemoveKey(CacheKeys.Suppliers);
+        _cacheStatistics.RemoveKey(CacheKeys.Supplier(supplier.Id));
     }
 }

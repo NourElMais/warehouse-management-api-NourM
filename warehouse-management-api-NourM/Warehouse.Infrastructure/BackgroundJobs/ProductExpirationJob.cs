@@ -22,9 +22,11 @@ public class ProductExpirationJob
 
         DateTime thirtyDaysFromToday = today.AddDays(30);
 
-        List<Product> expiredProducts = await _db.Products.Where(product => product.ExpiryDate < today).ToListAsync(cancellationToken);
-
-        List<Product> soonToExpireProducts = await _db.Products.Where(product => product.ExpiryDate >= today && product.ExpiryDate <= thirtyDaysFromToday).ToListAsync(cancellationToken);
+        //We query the db once, then seperate them using c# code
+        List<Product> products = await _db.Products.Where(p => p.ExpiryDate <= today.AddDays(7)).ToListAsync();
+        List<Product> expiredProducts = products.Where(p => p.ExpiryDate < today).ToList();
+        List<Product> soonToExpireProducts = products.Where(p => p.ExpiryDate >= today).ToList();
+        
         _logger.LogInformation("Expired products: {ExpiredCount}", expiredProducts.Count);
 
         _logger.LogInformation("Soon to expire products: {SoonToExpireCount}", soonToExpireProducts.Count);

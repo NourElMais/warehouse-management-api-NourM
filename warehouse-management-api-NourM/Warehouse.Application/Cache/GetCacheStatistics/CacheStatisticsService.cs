@@ -4,7 +4,7 @@ namespace Warehouse.Application.Cache.CacheStatistics;
 
 public class CacheStatisticsService:ICacheStatisticsService
 {
-    private readonly List<string> _cachedKeys = new List<string>();
+    private readonly HashSet<string> _cachedKeys = new();
 
     private int _hitCount;
 
@@ -15,13 +15,11 @@ public class CacheStatisticsService:ICacheStatisticsService
     public void RecordHit(string key)
     {
         _hitCount++;
-        if (!_cachedKeys.Contains(key))
-        {
-            _cachedKeys.Add(key);
-        }
+        _cachedKeys.Add(key);
+        
     }
 
-    public void RecordMiss(string key)
+    public void RecordMiss()
     {
         _missCount++;
         
@@ -30,10 +28,7 @@ public class CacheStatisticsService:ICacheStatisticsService
     // Called after data is loaded from the database and stored in Redis.
     public void RecordRefresh(string key)
     {
-        if (!_cachedKeys.Contains(key))
-        {
-            _cachedKeys.Add(key);
-        }
+        _cachedKeys.Add(key);
         _lastCacheRefreshTime = DateTime.UtcNow;
     }
 

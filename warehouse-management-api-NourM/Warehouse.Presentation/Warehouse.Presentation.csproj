@@ -76,4 +76,10 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\Frontend\app.js" />
+      <None Include="wwwroot\Frontend\index.html" />
+      <None Include="wwwroot\Frontend\styles.css" />
+    </ItemGroup>
+
 </Project>

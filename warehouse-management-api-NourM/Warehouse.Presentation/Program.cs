@@ -205,9 +205,14 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 };
+app.UseDefaultFiles(); //lets ASP.NET open index.html automatically.
+app.UseStaticFiles(); //allows the browser to load HTML, CSS, and JavaScript files.
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.InjectJavascript("/Frontend/swaggerAuth.js");
+});
 
 app.UseRequestLocalization(localizationOptions);
 //Middlewares sequence:

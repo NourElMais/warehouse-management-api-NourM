@@ -7,6 +7,7 @@ using Warehouse.Application.Cache;
 using Warehouse.Application.Products.Commands;
 using Warehouse.Application.Products.GetProductsStatistics;
 using Warehouse.Application.Products.Queries;
+using Warehouse.Application.Products.Queries.GetProductImageQuery;
 using Warehouse.Infrastructure.Storage;
 using Warehouse.Presentation.Contracts;
 using Warehouse.Presentation.Resources;
@@ -210,16 +211,7 @@ public class ProductsController : ControllerBase
         return Ok(stats);
     }
     
-    [AllowAnonymous]
-    [HttpGet("debug-claims")]
-    public IActionResult DebugClaims()
-    {
-        return Ok(User.Claims.Select(c => new
-        {
-            c.Type,
-            c.Value
-        }));
-    }
+    
     
     //Endpoint to make the role=admin
     // [HttpPost("make-admin")]
@@ -249,6 +241,17 @@ public class ProductsController : ControllerBase
     //
     //     return Ok("User now has the user role.");
     // }
+    
+    [Authorize(Policy = "UserOrAdmin")]
+    [HttpGet("{id}/image")]
+    public async Task<IActionResult> GetProductImage([FromRoute] string id, CancellationToken cancellationToken)
+    {
+        var image = await _mediator.Send(new GetProductImageQuery(id), cancellationToken);
+
+        var stream = await _storageService.DownloadAsync(image.FilePath, cancellationToken);
+
+        return File(stream, "image/png");
+    }
         
 }
 

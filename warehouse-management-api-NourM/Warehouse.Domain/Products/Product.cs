@@ -126,4 +126,9 @@ public class Product
         IsArchived = false;
         LastUpdatedAt = DateTime.UtcNow;
     }
+    
+    public void AddImage(ProductImage image)
+    {
+        ProductImages.Add(image);
+    }
 }

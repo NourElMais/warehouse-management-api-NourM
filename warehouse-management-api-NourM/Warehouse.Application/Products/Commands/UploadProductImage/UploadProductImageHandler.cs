@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Warehouse.Application.Exceptions;
+using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure.Storage;
 
@@ -41,11 +42,10 @@ public class UploadProductImageHandler
         if (request.FileSize > 2 * 1024 * 1024)
             return UploadProductImageResult.FileTooLarge;
         
-        var imagePath = await _storageService.UploadAsync(
-            request.FileStream,
-            request.FileName,
-            cancellationToken);
-        
+        var imagePath = await _storageService.UploadAsync(request.FileStream, request.FileName, cancellationToken);
+        var productImage = new ProductImage(request.ProductId, request.FileName, imagePath);
+        product.AddImage(productImage);
+        await _productRepository.AddImageAsync(productImage, cancellationToken);
         _logger.LogInformation(
             "Image {FileName} uploaded for product {ProductId}",
             request.FileName,

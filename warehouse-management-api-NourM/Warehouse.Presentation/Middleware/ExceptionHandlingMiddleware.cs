@@ -1,6 +1,8 @@
-﻿using Warehouse.Application.Exceptions;
+﻿using Microsoft.Extensions.Localization;
+using Warehouse.Application.Exceptions;
 using Warehouse.Domain.Exceptions;
 using Warehouse.Presentation.Contracts;
+using Warehouse.Presentation.Resources;
 
 namespace Warehouse.Presentation.Middleware;
 
@@ -8,11 +10,12 @@ public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    private readonly IStringLocalizer<SharedResources> _localizer;
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IStringLocalizer<SharedResources> localizer)
     {
         _next = next; //continue to the next middleware or controller.
         _logger = logger;//to save the real exception details in the backend logs (for the developper to fix the error)
+        _localizer = localizer;
     }
 
     // this method runs for every http request
@@ -25,34 +28,33 @@ public class ExceptionHandlingMiddleware
         }
         catch (NotFoundException exception)
         {
-            _logger.LogError(exception, "Resource not found " + context.Items["CorrelationId"]);
+            _logger.LogError(exception, "Resource not found {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode = StatusCodes.Status404NotFound;
 
-            //returns JSON to Swagger.
             await context.Response.WriteAsJsonAsync(new ApiErrorResponse
             {
                 ErrorCode = "NOT_FOUND",
-                Message = exception.Message,
+                Message = _localizer[exception.Message].Value,
                 TraceId = context.TraceIdentifier
             });
         }
         catch (BusinessRuleException exception)
         {
-            _logger.LogWarning(exception, "Business rule violation " + context.Items["CorrelationId"]);
+            _logger.LogWarning(exception, "Business rule violation {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
             await context.Response.WriteAsJsonAsync(new ApiErrorResponse
             {
                 ErrorCode = "BUSINESS_RULE_VIOLATION",
-                Message = exception.Message,
+                Message = _localizer[exception.Message].Value,
                 TraceId = context.TraceIdentifier
             });
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            _logger.LogError(e, "Unexpected server error " + context.Items["CorrelationId"]);
+            _logger.LogError(exception, "Unexpected server error {CorrelationId}", context.Items["CorrelationId"]);
 
             context.Response.StatusCode =
                 StatusCodes.Status500InternalServerError;
@@ -60,9 +62,10 @@ public class ExceptionHandlingMiddleware
             await context.Response.WriteAsJsonAsync(new ApiErrorResponse
             {
                 ErrorCode = "INTERNAL_SERVER_ERROR",
-                Message = "An unexpected error occurred.",
+                Message = _localizer["UnexpectedError"].Value,
                 TraceId = context.TraceIdentifier
             });
         }
     }
+    
 }

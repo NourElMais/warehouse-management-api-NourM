@@ -25,7 +25,7 @@ public class GetProductByIdHandler
 
         if (product is null)
         {
-            throw new NotFoundException("The product was not found");
+            throw new NotFoundException("ProductNotFound");
         }
        return _mapper.Map<ProductViewModel>(product);
     }

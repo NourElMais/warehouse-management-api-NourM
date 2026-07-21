@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Repositories;
 using Warehouse.Domain.Suppliers;
@@ -10,10 +11,12 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supp
 {
     private readonly ISupplierRepository _supplierRepository;
     private readonly IMapper _mapper;
-    public CreateSupplierHandler(ISupplierRepository supplierRepository, IMapper mapper)
+    private  readonly ILogger<CreateSupplierHandler> _logger;
+    public CreateSupplierHandler(ISupplierRepository supplierRepository, IMapper mapper, ILogger<CreateSupplierHandler> logger)
     {
         _supplierRepository = supplierRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<SupplierViewModel> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
@@ -26,7 +29,7 @@ public class CreateSupplierHandler : IRequestHandler<CreateSupplierCommand, Supp
         );
 
         await _supplierRepository.AddAsync(supplier, cancellationToken);
-
+        _logger.LogInformation("Supplier {SupplierId} created successfully", supplier.Id);
         return _mapper.Map<SupplierViewModel>(supplier);
         
     }

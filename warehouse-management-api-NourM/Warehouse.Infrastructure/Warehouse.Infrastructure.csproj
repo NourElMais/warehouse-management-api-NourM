@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Warehouse.Application\Warehouse.Application.csproj" />
       <ProjectReference Include="..\Warehouse.Domain\Warehouse.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     </ItemGroup>
 

@@ -22,7 +22,7 @@ public class GetSupplierByIdHandler
         var supplier = await _supplierRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (supplier is null)
-            throw new NotFoundException("The supplier was not found.");
+            throw new NotFoundException("SupplierNotFound");
 
         return _mapper.Map<SupplierViewModel>(supplier);
     }

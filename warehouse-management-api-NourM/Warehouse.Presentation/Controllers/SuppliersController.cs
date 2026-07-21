@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Warehouse.Application.Suppliers.Commands;
 using Warehouse.Application.Suppliers.Queries;
 using Warehouse.Presentation.Contracts;
+using Warehouse.Presentation.Resources;
 
 namespace Warehouse.Presentation.Controllers;
 
@@ -11,9 +13,10 @@ namespace Warehouse.Presentation.Controllers;
 public class SuppliersController : ControllerBase
 {
     private readonly IMediator _mediator;
-
-    public SuppliersController(IMediator mediator)
+    private readonly IStringLocalizer<SharedResources> _localizer;
+    public SuppliersController(IMediator mediator, IStringLocalizer<SharedResources> localizer)
     {
+        _localizer = localizer;
         _mediator = mediator;
     }
 
@@ -32,7 +35,7 @@ public class SuppliersController : ControllerBase
     {
         if (!Guid.TryParse(id, out var guid))
         {
-            return BadRequest("The provided Id is not valid");
+            return BadRequest(SharedResources.InvalidID);
         }
 
         var supplier = await _mediator.Send(new GetSupplierByIdQuery(id), cancellationToken);
@@ -63,12 +66,12 @@ public class SuppliersController : ControllerBase
     {
         if (!Guid.TryParse(id, out var guid))
         {
-            return BadRequest("The provided Id is not valid");
+            return BadRequest(SharedResources.InvalidID);
         }
 
         var supplier = await _mediator.Send(new DeactivateSupplierCommand(id), cancellationToken);
 
-        return Ok("Supplier Deleted (Deactivated)");
+        return Ok(SharedResources.SupplierDeleted);
     }
 
     // 5. Supplier statistics

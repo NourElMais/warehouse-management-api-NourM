@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="InvalidID" xml:space="preserve">
+        <value>L'identifiant saisi n'est pas valide</value>
+    </data>
+    <data name="ProductNotFound" xml:space="preserve">
+        <value>Produit introuvable.</value>
+    </data>
+    <data name="ProductArchived" xml:space="preserve">
+        <value>Le produit a été archivé avec succès.</value>
+    </data>
+    <data name="SupplierNotFound" xml:space="preserve">
+        <value>Fournisseur introuvable.</value>
+    </data>
+    <data name="SupplierAssigned" xml:space="preserve">
+        <value>Le fournisseur a été attribué au produit avec succès.</value>
+    </data>
+    <data name="ProductRestored" xml:space="preserve">
+        <value>Le produit a été restauré avec succès.</value>
+    </data>
+    <data name="ImageUploaded" xml:space="preserve">
+        <value>L'image a été téléchargée avec succès.</value>
+    </data>
+    <data name="LanguageNotSupported" xml:space="preserve">
+        <value>La langue n'est pas prise en charge.</value>
+    </data>
+    <data name="ImageSizeViolation" xml:space="preserve">
+        <value>La taille de l'image ne doit pas dépasser 2 MB.</value>
+    </data>
+    <data name="ImageTypeViolation" xml:space="preserve">
+        <value>Seules les images au format JPG et PNG sont autorisées.</value>
+    </data>
+    <data name="EmptyImageViolation" xml:space="preserve">
+        <value>Veuillez fournir une image.</value>
+    </data>
+    <data name="SupplierDeleted" xml:space="preserve">
+        <value>Le fournisseur a été supprimé avec succès.</value>
+    </data>
+    <data name="SearchInputRequired" xml:space="preserve">
+        <value>Veuillez fournir au moins le nom du produit ou le nom du fournisseur.</value>
+    </data>
+    <data name="UnexpectedError" xml:space="preserve">
+        <value>Une erreur inattendue s'est produite.</value>
+    </data>
+</root>

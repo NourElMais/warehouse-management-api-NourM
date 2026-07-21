@@ -184,7 +184,9 @@ public class ProductsController : ControllerBase
         if (image is null)
             return BadRequest(SharedResources.EmptyImageViolation);
         
-        var result = await _mediator.Send(new UploadProductImageCommand(id, image.FileName, image.Length), cancellationToken);
+        await using var stream = image.OpenReadStream();
+
+        var result = await _mediator.Send(new UploadProductImageCommand(id, image.FileName, image.Length, stream), cancellationToken);
 
         if (result == UploadProductImageResult.EmptyImage)
             return BadRequest(SharedResources.EmptyImageViolation);
@@ -195,11 +197,7 @@ public class ProductsController : ControllerBase
         if (result == UploadProductImageResult.FileTooLarge)
             return BadRequest(SharedResources.ImageSizeViolation);
 
-        await using var stream = image.OpenReadStream();
-
-        var imageUrl = await _storageService.UploadAsync(stream, image.FileName, cancellationToken);
-
-        return Ok(SharedResources.ImageUploaded +"\nURL: " + imageUrl);
+        return Ok(SharedResources.ImageUploaded);
         
     }
     

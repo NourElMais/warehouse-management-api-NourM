@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Warehouse.Application.Inventory.Queries.GetInventoryDashboard;
 
 namespace Warehouse.Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class InventoryController : ControllerBase
@@ -15,6 +17,7 @@ public class InventoryController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpGet("dashboard")]
     public async Task<ActionResult> GetDashboard(CancellationToken cancellationToken)
     {

@@ -1,4 +1,6 @@
 using System.Globalization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Hangfire;
 using Hangfire.PostgreSql;
 using HealthChecks.UI.Client;
@@ -30,6 +32,12 @@ using Microsoft.OpenApi;
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+//This creates a connection between the API and Firebase
+//It verifies that the backend is truly valid, and thus that it is allowed to perform administrative actions like assigning roles
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(@"C:\Users\HCES\Downloads\warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json")
+});
 var builder = WebApplication.CreateBuilder(args);
 
 //Things that will be checked by the health check:
@@ -136,11 +144,20 @@ builder.Services
 
             ValidateLifetime = true,
 
-            ValidateIssuerSigningKey = true
+            ValidateIssuerSigningKey = true,
+
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" //for the API to be able to read the role inside the payload
         };
     });
 
-builder.Services.AddAuthorization();
+//We add policies, so we prevent a user from executing an admin only endpoint for example.
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
+
+    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("user", "admin"));
+});
+
 //Localization:To enable the localization service in the app
 builder.Services.AddLocalization(options =>
 {

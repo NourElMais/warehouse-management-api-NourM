@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Warehouse.Application.Suppliers.Commands;
@@ -21,6 +22,7 @@ public class SuppliersController : ControllerBase
     }
 
     // 1. Get all suppliers
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet]
     public async Task<ActionResult> GetAllSuppliers(CancellationToken cancellationToken)
     {
@@ -30,6 +32,7 @@ public class SuppliersController : ControllerBase
     }
 
     // 2. Get supplier by Id
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetSupplierById([FromRoute] string id, CancellationToken cancellationToken)
     {
@@ -44,6 +47,7 @@ public class SuppliersController : ControllerBase
     }
 
     // 3. Create supplier
+    [Authorize(Policy = "Admin")]
     [HttpPost]
     public async Task<ActionResult> CreateSupplier([FromBody] CreateSupplierRequest request, CancellationToken cancellationToken)
     {
@@ -61,6 +65,7 @@ public class SuppliersController : ControllerBase
     }
 
     // 4. Deactivate supplier
+    [Authorize(Policy = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteSupplier([FromRoute] string id, CancellationToken cancellationToken)
     {
@@ -75,6 +80,7 @@ public class SuppliersController : ControllerBase
     }
 
     // 5. Supplier statistics
+    [Authorize(Policy = "Admin")]
     [HttpGet("statistics")]
     public async Task<ActionResult> GetSupplierStatistics(CancellationToken cancellationToken)
     {

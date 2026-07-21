@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FirebaseAdmin.Auth;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -29,13 +30,18 @@ public class ProductsController : ControllerBase
 // so that if the client cancels the request (for example if he closes the browser),
 // every layer is notified and can stop its work instead of wasting resources.
 
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet]
     public async Task<ActionResult> GetProducts(CancellationToken cancellationToken, [FromQuery] bool onlyAvailable = false)
     {
+        var role = User.FindFirst("role")?.Value;
+
+        Console.WriteLine("ROLE FROM TOKEN: " + role);
         var products = await _mediator.Send(new ListProductsQuery(onlyAvailable), cancellationToken);
         return Ok(products);
     }
 
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("{id}")]
     public async Task<ActionResult> GetProductById([FromRoute] string id, CancellationToken cancellationToken)
     {
@@ -47,6 +53,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("search")]
     public async Task<ActionResult> GetProductsBySearch([FromQuery] string? name, [FromQuery] string? supplier, CancellationToken cancellationToken)
     {
@@ -57,6 +64,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
     {
@@ -76,6 +84,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost("{id}/quantity")]
     public async Task<ActionResult> UpdateQuantity([FromRoute] string id, [FromBody] UpdateProductQuantityRequest request, CancellationToken cancellationToken)
     {
@@ -86,7 +95,8 @@ public class ProductsController : ControllerBase
         
         return Ok(product);
     }
-
+    
+    [Authorize(Policy = "Admin")]
     [HttpPost("{id}/price")]
     public async Task<ActionResult> UpdatePrice([FromRoute] string id, [FromBody] UpdateProductPriceRequest request, CancellationToken cancellationToken)
     {
@@ -97,6 +107,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduct([FromRoute] string id, CancellationToken cancellationToken)
     {
@@ -107,6 +118,7 @@ public class ProductsController : ControllerBase
         return Ok(SharedResources.ProductArchived);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost("{id}/assign-supplier/{supplierId}")]
     public async Task<ActionResult> AssignSupplierToProduct([FromRoute] string id, [FromRoute] string supplierId, CancellationToken cancellationToken)
     {
@@ -121,6 +133,7 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost("{id}/restore")]
     public async Task<ActionResult> RestoreProduct([FromRoute] string id, CancellationToken cancellationToken)
     {
@@ -131,21 +144,24 @@ public class ProductsController : ControllerBase
 
         return Ok(product);
     }
-
+    
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("low-stock")]
     public async Task<ActionResult> GetLowStockProducts(CancellationToken cancellationToken, [FromQuery] int threshold = 5)
     {
         var products = await _mediator.Send(new GetLowStockProductsQuery(threshold), cancellationToken);
         return Ok(products);
     }
-
+    
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("statistics")]
     public async Task<ActionResult> GetProductStatistics(CancellationToken cancellationToken)
     {
         var statistics = await _mediator.Send(new GetProductsStatisticsQuery(), cancellationToken);
         return Ok(statistics);
     }
-
+    
+    [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("server-time")]
     public async Task<ActionResult> GetServerTime(CancellationToken cancellationToken, [FromHeader(Name = "Accept-Language")] string language)
     {
@@ -156,6 +172,7 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost("{id}/image")]
     public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile? image, CancellationToken cancellationToken)
     {
@@ -187,13 +204,55 @@ public class ProductsController : ControllerBase
 
         return Ok(SharedResources.ImageUploaded);
     }
-    // Challenge– Cache Statistics Endpoint 
+    
+    // Challenge– Cache Statistics Endpoint
+    [Authorize(Policy = "Admin")]
     [HttpGet("cache-statistics")]
     public async Task<IActionResult> GetCacheStatistics(CancellationToken cancellationToken)
     {
         var stats = await _mediator.Send(new GetCacheStatisticsQuery(), cancellationToken);
         return Ok(stats);
     }
+    
+    [AllowAnonymous]
+    [HttpGet("debug-claims")]
+    public IActionResult DebugClaims()
+    {
+        return Ok(User.Claims.Select(c => new
+        {
+            c.Type,
+            c.Value
+        }));
+    }
+    
+    //Endpoint to make the role=admin
+    // [HttpPost("make-admin")]
+    // public async Task<IActionResult> MakeAdmin()
+    // {
+    //     string uid = "PqaFzzBm8tTtbiC7fFfyReYjA7V2"; //UID of the admin stored in Firebase
+    //
+    //     await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(uid, new Dictionary<string, object>
+    //         {
+    //             { "role", "admin" }
+    //         });
+    //
+    //     return Ok("User is now an admin.");
+    // }
+    
+    // [HttpPost("make-user")]
+    // public async Task<IActionResult> MakeUser()
+    // {
+    //     string uid = "ggBglcg4vYPEMv6C7zR0eVxreuE2";
+    //
+    //     await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(
+    //         uid,
+    //         new Dictionary<string, object>
+    //         {
+    //             { "role", "user" }
+    //         });
+    //
+    //     return Ok("User now has the user role.");
+    // }
         
 }
 

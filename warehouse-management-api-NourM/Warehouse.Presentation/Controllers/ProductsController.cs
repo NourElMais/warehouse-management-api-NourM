@@ -7,6 +7,7 @@ using Warehouse.Application.Cache;
 using Warehouse.Application.Products.Commands;
 using Warehouse.Application.Products.GetProductsStatistics;
 using Warehouse.Application.Products.Queries;
+using Warehouse.Infrastructure.Storage;
 using Warehouse.Presentation.Contracts;
 using Warehouse.Presentation.Resources;
 
@@ -19,11 +20,13 @@ public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IStringLocalizer<SharedResources> _localizer;
+    private readonly IStorageService _storageService;
 
-    public ProductsController(IMediator mediator, IStringLocalizer<SharedResources> localizer)
+    public ProductsController(IMediator mediator, IStringLocalizer<SharedResources> localizer, IStorageService storageService)
     {
         _mediator = mediator;
         _localizer = localizer;
+        _storageService = storageService;
     }
 // ASP.NET creates a CancellationToken for each HTTP request,
 // so we pass it through all application layers (Controller → MediatR → Handler → Repository → EF Core)
@@ -192,17 +195,12 @@ public class ProductsController : ControllerBase
         if (result == UploadProductImageResult.FileTooLarge)
             return BadRequest(SharedResources.ImageSizeViolation);
 
-        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+        await using var stream = image.OpenReadStream();
 
-        if (!Directory.Exists(uploadsFolder))
-            Directory.CreateDirectory(uploadsFolder);
+        var imageUrl = await _storageService.UploadAsync(stream, image.FileName, cancellationToken);
 
-        var filePath = Path.Combine(uploadsFolder, image.FileName);
-
-        await using var stream = new FileStream(filePath, FileMode.Create);
-        await image.CopyToAsync(stream, cancellationToken);
-
-        return Ok(SharedResources.ImageUploaded);
+        return Ok(SharedResources.ImageUploaded +"\nURL: " + imageUrl);
+        
     }
     
     // Challenge– Cache Statistics Endpoint

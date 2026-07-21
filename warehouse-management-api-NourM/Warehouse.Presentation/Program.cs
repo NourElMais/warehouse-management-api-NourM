@@ -27,6 +27,8 @@ using Warehouse.Presentation.Mapping;
 using Warehouse.Presentation.Middleware;
 using Warehouse.Presentation.Swagger;
 using Microsoft.OpenApi;
+using Minio;
+using Warehouse.Infrastructure.Storage;
 
 //serilog creates a new file every day.
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
@@ -107,6 +109,18 @@ builder.Services.AddControllers(options =>
 // Register repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddSingleton<IMinioClient>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    return new MinioClient()
+        .WithEndpoint(configuration["MinIO:Endpoint"])
+        .WithCredentials(
+            configuration["MinIO:AccessKey"],
+            configuration["MinIO:SecretKey"])
+        .Build();
+});
+builder.Services.AddScoped<IStorageService, MinioStorageService>();
 
 // Register MediatR handlers from Application project
 builder.Services.AddMediatR(cfg =>

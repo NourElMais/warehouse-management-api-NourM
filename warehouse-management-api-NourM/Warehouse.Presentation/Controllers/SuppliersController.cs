@@ -11,6 +11,7 @@ namespace Warehouse.Presentation.Controllers;
 
 [ApiController]
 [Route("api/suppliers")]
+[Authorize]
 public class SuppliersController : ControllerBase
 {
     private readonly IMediator _mediator;

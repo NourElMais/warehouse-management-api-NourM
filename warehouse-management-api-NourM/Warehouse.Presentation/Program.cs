@@ -1,12 +1,17 @@
 using System.Globalization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Hangfire;
 using Hangfire.PostgreSql;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.ModelBuilder;
+using Microsoft.OpenApi;
 using Serilog;
 using StackExchange.Redis;
 using Warehouse.Application.Cache.CacheStatistics;
@@ -21,11 +26,20 @@ using Warehouse.Presentation.Filters;
 using Warehouse.Presentation.Mapping;
 using Warehouse.Presentation.Middleware;
 using Warehouse.Presentation.Swagger;
+using Microsoft.OpenApi;
+using Minio;
+using Warehouse.Infrastructure.Storage;
 
 //serilog creates a new file every day.
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+//This creates a connection between the API and Firebase
+//It verifies that the backend is truly valid, and thus that it is allowed to perform administrative actions like assigning roles
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(@"C:\Users\HCES\Downloads\warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json")
+});
 var builder = WebApplication.CreateBuilder(args);
 
 //Things that will be checked by the health check:
@@ -68,6 +82,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.OperationFilter<AcceptLanguageHeaderFilter>();
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter Firebase JWT token"
+    });
+
+    options.AddSecurityRequirement(document =>
+        new OpenApiSecurityRequirement
+        {
+            [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+        });
 });
 
 //Register filters
@@ -79,6 +109,18 @@ builder.Services.AddControllers(options =>
 // Register repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddSingleton<IMinioClient>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    return new MinioClient()
+        .WithEndpoint(configuration["MinIO:Endpoint"])
+        .WithCredentials(
+            configuration["MinIO:AccessKey"],
+            configuration["MinIO:SecretKey"])
+        .Build();
+});
+builder.Services.AddScoped<IStorageService, MinioStorageService>();
 
 // Register MediatR handlers from Application project
 builder.Services.AddMediatR(cfg =>
@@ -92,6 +134,42 @@ builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile<ProductProfile>();
     config.AddProfile<SupplierProfile>();
+});
+
+//Firebase setup
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.MetadataAddress =
+            "https://securetoken.google.com/warehouse-api-nourm/.well-known/openid-configuration";
+
+        options.Audience = "warehouse-api-nourm";
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer =
+                "https://securetoken.google.com/warehouse-api-nourm",
+
+            ValidateAudience = true,
+            ValidAudience =
+                "warehouse-api-nourm",
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" //for the API to be able to read the role inside the payload
+        };
+    });
+
+//We add policies, so we prevent a user from executing an admin only endpoint for example.
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
+
+    options.AddPolicy("UserOrAdmin", policy => policy.RequireRole("user", "admin"));
 });
 
 //Localization:To enable the localization service in the app
@@ -144,7 +222,9 @@ builder.Services.AddScoped<ProductExpirationJob>();
 //Register the cache service
 //Assumption: one shared statistics object for the whole application.
 builder.Services.AddSingleton<ICacheStatisticsService, CacheStatisticsService>();
-
+Console.WriteLine(
+    builder.Configuration["Firebase:ProjectId"]
+);
 var app = builder.Build();
 //Log to see when the application started running
 Log.Information("Warehouse Management API started successfully.");
@@ -156,15 +236,26 @@ var localizationOptions = new RequestLocalizationOptions
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 };
+app.UseDefaultFiles(); //lets ASP.NET open index.html automatically.
+app.UseStaticFiles(); //allows the browser to load HTML, CSS, and JavaScript files.
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.InjectJavascript("/Frontend/swaggerAuth.js");
+});
 
 app.UseRequestLocalization(localizationOptions);
 //Middlewares sequence:
 app.UseMiddleware<RequestTimingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+//registering authentication and authorization
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
 app.MapHealthChecks("/health", new HealthCheckOptions
 {

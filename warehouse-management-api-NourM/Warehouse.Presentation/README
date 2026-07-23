@@ -393,5 +393,50 @@ The aim of this lab is to  improve reliability, maintainability, and performance
 - Challenge 2 was not implemented as I already had a middleware (RequestTimingMiddleware), that tracks the time it takes each endpoint to execute. 
 - Screenshots are available in the screenshots folder.
 
+# Session 7 (JHonny Abou Rjeily)
 
+## Implemented Features
+The aim of this lab was to secure the Warehouse API by adding authentication and authorization using Firebase,
+and to integrate object storage using MinIO for handling files (instead of storing them in wwwroot)
 
+### 1- Authentication with Firebase
+- Integrated Firebase Authentication with the .NET 8 API using JWT Bearer authentication.
+- Protected API endpoints using the [Authorize] attribute, ensuring that only authenticated users can access the application.
+
+### 2- Authorization with Roles
+- Implemented role-based authorization using Firebase Custom Claims.
+- Added two user roles:
+  - `admin` → allowed to perform management operations such as creating, updating, and deleting products.
+  - `user`  → allowed to access read-only endpoints.
+- Created authorization policies (`Admin` and `UserOrAdmin`) to control access to different API endpoints.
+
+### 3- MinIO Object Storage Setup
+- Added MinIO as an object storage provider using Docker Compose.
+- Created a dedicated bucket for storing warehouse assets, called `warehouse-images`.
+- Added MinIO configuration to the API settings, including endpoint, access key, secret key, bucket name, and SSL configuration.
+
+### 4- Storage Service
+- Created a storage service abstraction to handle file operations without exposing MinIO details to controllers.
+- Implemented file upload and download using MinIO.
+
+### 5- Product Image Management
+- Generated unique object names using GUIDs to prevent file overwriting (if we save 2 images with the sames they overwrite each other, but with this method they do not).
+- Stored image files in MinIO while storing image metadata in the database -> to be able to retrieve the images.
+
+### 6- Product Image Retrieval
+- Added an endpoint to retrieve product images using the product ID.
+- The API retrieves image information from the database and downloads the corresponding file from MinIO.
+
+## API Endpoints Added
+
+### Products
+- `POST /api/products/{id}/image`
+  - Uploads a product image and stores it in MinIO.
+
+- `GET /api/products/{id}/image`
+  - Retrieves the product image from MinIO.
+
+## Notes
+- In the products controller, I commented out 2 endpoints --> these were used to set the roles to admin and user, using the UID that i got from firebase.
+- Image files are stored in MinIO, while the database stores only the required metadata.
+- Screenshots are available in the screenshots folder.

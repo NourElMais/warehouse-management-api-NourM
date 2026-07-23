@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Warehouse.Application.Interfaces;
+using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure.Caching;
@@ -146,5 +147,16 @@ public class ProductRepository : IProductRepository
 
         _cacheStatistics.RemoveKey(CacheKeys.Products);
         _cacheStatistics.RemoveKey(productCacheKey);
+    }
+    
+    public async Task AddImageAsync(ProductImage image, CancellationToken cancellationToken)
+    {
+        await _db.ProductImages.AddAsync(image, cancellationToken);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+    
+    public async Task<ProductImage?> GetImageAsync(string productId, CancellationToken cancellationToken)
+    {
+        return await _db.ProductImages.FirstOrDefaultAsync(image => image.ProductId == productId, cancellationToken);
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warehouse.Notifications.Domain", "Warehouse.Notifications.Domain\Warehouse.Notifications.Domain.csproj", "{F6D0ED27-3A75-49AF-B871-90A66B544539}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Domain", "NotificationService.Domain\NotificationService.Domain.csproj", "{F6D0ED27-3A75-49AF-B871-90A66B544539}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Presentation", "NotificationService.Presentation\NotificationService.Presentation.csproj", "{A140E262-DC92-4215-98CC-78CAEED17344}"
 EndProject

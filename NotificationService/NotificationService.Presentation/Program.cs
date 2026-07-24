@@ -1,5 +1,8 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.Interfaces;
+using NotificationService.Application.Notifications.Queries.GetAllNotifications;
+using NotificationService.Application.Notifications.Queries.GetNotificationById;
 using NotificationService.Infrastructure.Data;
 using NotificationService.Infrastructure.Repositories;
 
@@ -16,6 +19,8 @@ builder.Services.AddDbContext<NotificationDbContext>(options => options.UseNpgsq
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllNotificationsQuery).Assembly));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

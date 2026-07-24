@@ -1,4 +1,4 @@
-namespace Warehouse.Notifications.Api;
+namespace NotificationService.Presentation;
 
 public class WeatherForecast
 {

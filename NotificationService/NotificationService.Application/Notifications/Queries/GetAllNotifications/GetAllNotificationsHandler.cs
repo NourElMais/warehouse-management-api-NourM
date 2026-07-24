@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using NotificationService.Application.Interfaces;
 using Warehouse.Notifications.Domain.Entities;
 
@@ -13,7 +16,7 @@ public class GetAllNotificationsHandler: IRequestHandler<GetAllNotificationsQuer
         _notificationRepository = notificationRepository;
     }
     
-    public async Task <List<Notification>> Handle(GetAllNotificationsQuery request, CancellationToken cancellationToken)
+    public async Task<List<Notification>> Handle(GetAllNotificationsQuery request, CancellationToken cancellationToken)
     {
         return await _notificationRepository.GetAllAsync(cancellationToken);
     }

@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using NotificationService.Application.Interfaces;
-using NotificationService.Application.Notifications.Commands.CreateNotification;
 using NotificationService.Application.Notifications.Commands.MarkNotifAsRead;
 using NotificationService.Application.Notifications.Queries.GetAllNotifications;
 using NotificationService.Application.Notifications.Queries.GetNotificationById;
-using Warehouse.Notifications.Domain.Entities;
 
 namespace NotificationService.Presentation.Controllers;
 

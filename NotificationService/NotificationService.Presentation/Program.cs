@@ -1,5 +1,9 @@
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NotificationService.Application.Interfaces;
 using NotificationService.Application.Notifications.Queries.GetAllNotifications;
 using NotificationService.Application.Notifications.Queries.GetNotificationById;

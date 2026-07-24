@@ -14,7 +14,7 @@ public class Notification
 
     public string Status { get; set; } = "Unread"; //default status of the notif
 
-    public Guid? RelatedEntityId { get; set; } //id of the entity that the notification is tackling
+    public string RelatedEntityId { get; set; } //id of the entity that the notification is tackling
 
     public string? RelatedEntityType { get; set; } //for example Product, Supplier...
 

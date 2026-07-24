@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using Warehouse.Notifications.Domain.Entities;
 
 namespace NotificationService.Application.Notifications.Queries.GetNotificationById;

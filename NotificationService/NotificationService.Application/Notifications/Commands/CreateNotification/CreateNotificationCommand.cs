@@ -9,10 +9,10 @@ public class CreateNotificationCommand:IRequest<Notification>
     public string Title { get; }
     public string Type { get; }
     public string Message { get; }
-    public Guid RelatedEntityId { get; }
+    public string RelatedEntityId { get; }
     public string RelatedEntityType { get; }
 
-    public CreateNotificationCommand(string Severity,string Title, string Type, string Message, Guid RelatedEntityId, string RelatedEntityType)
+    public CreateNotificationCommand(string Severity,string Title, string Type, string Message, string RelatedEntityId, string RelatedEntityType)
     {
         this.Severity = Severity;
         this.Title = Title;

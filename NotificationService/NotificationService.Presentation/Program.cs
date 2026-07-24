@@ -4,6 +4,7 @@ using NotificationService.Application.Interfaces;
 using NotificationService.Application.Notifications.Queries.GetAllNotifications;
 using NotificationService.Application.Notifications.Queries.GetNotificationById;
 using NotificationService.Infrastructure.Data;
+using NotificationService.Infrastructure.Messaging;
 using NotificationService.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +21,8 @@ builder.Services.AddDbContext<NotificationDbContext>(options => options.UseNpgsq
 
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllNotificationsQuery).Assembly));
-
-var app = builder.Build();
+builder.Services.AddHostedService<StockLowConsumer>(); //Start StockLowConsumer automatically when the Notification Service starts.
+var app = builder.Build(); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

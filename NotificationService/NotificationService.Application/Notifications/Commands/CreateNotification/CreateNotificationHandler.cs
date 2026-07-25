@@ -18,13 +18,13 @@ public class CreateNotificationHandler: IRequestHandler<CreateNotificationComman
     public async Task<Notification> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
     {
         var notification = new Notification {
-            Type = request.Type,
-            Title = request.Title,
-            Message = request.Message,
-            Severity = request.Severity,
+            Type = request.Request.Type,
+            Title = request.Request.Title,
+            Message = request.Request.Message,
+            Severity = request.Request.Severity,
             Status = "Unread",
-            RelatedEntityId = request.RelatedEntityId,
-            RelatedEntityType = request.RelatedEntityType,
+            RelatedEntityId = request.Request.RelatedEntityId,
+            RelatedEntityType = request.Request.RelatedEntityType,
         };
 
         await _notificationRepository.AddAsync(notification, cancellationToken);

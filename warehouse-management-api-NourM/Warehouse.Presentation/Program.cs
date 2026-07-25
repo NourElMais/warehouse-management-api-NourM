@@ -28,6 +28,7 @@ using Warehouse.Presentation.Middleware;
 using Warehouse.Presentation.Swagger;
 using Microsoft.OpenApi;
 using Minio;
+using Warehouse.Infrastructure.Messaging;
 using Warehouse.Infrastructure.Storage;
 
 //serilog creates a new file every day.
@@ -218,6 +219,7 @@ builder.Services.AddHangfire(configuration =>
 builder.Services.AddHangfireServer();
 
 builder.Services.AddScoped<ProductExpirationJob>();
+builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 
 //Register the cache service
 //Assumption: one shared statistics object for the whole application.

@@ -1,8 +1,10 @@
 namespace Warehouse.Application.IntegrationEvents;
 
-public class StockLowDetected
+public class LowStockDetectedEvent
 {
     public string ProductId { get; set; }
+    
+    public Guid EventId { get; set; } = Guid.NewGuid();
 
     public string ProductName { get; set; } 
 

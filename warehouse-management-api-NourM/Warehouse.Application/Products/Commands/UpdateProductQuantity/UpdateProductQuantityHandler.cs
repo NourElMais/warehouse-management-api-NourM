@@ -39,7 +39,7 @@ public class UpdateProductQuantityHandler
         
         if (product.QuantityInStock <= 5)
         {
-            var stockLowEvent = new StockLowDetected()
+            var stockLowEvent = new LowStockDetectedEvent()
             {
                 ProductId = product.Id,
                 ProductName = product.Name,

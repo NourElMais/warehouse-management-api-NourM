@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NotificationService.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotificationService.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    partial class NotificationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260725132845_SeedNotificationPreferences")]
+    partial class SeedNotificationPreferences
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,9 +79,8 @@ namespace NotificationService.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Severity")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Severity")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -92,19 +94,19 @@ namespace NotificationService.Infrastructure.Data.Migrations
                         {
                             Id = new Guid("8bc1eebf-f71d-46ec-b5b5-fd86553d6efe"),
                             NotificationType = "LowStock",
-                            Severity = "Warning"
+                            Severity = 1
                         },
                         new
                         {
                             Id = new Guid("6f71ffff-9acc-4c7b-8553-5e82664864a0"),
                             NotificationType = "FileUploaded",
-                            Severity = "Information"
+                            Severity = 0
                         },
                         new
                         {
                             Id = new Guid("10203a03-79bb-4d68-925d-ce6114ea0fad"),
                             NotificationType = "ProductCreated",
-                            Severity = "Information"
+                            Severity = 0
                         });
                 });
 #pragma warning restore 612, 618

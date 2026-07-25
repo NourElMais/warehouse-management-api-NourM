@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,13 @@ builder.Services.AddHostedService<StockLowConsumer>(); //Start StockLowConsumer 
 builder.Services.AddHostedService<WarehouseFileUploadedConsumer>();
 builder.Services.AddHostedService<ProductCreatedConsumer>();
 builder.Services.AddScoped<INotificationPreferenceRepository, NotificationPreferenceRepository>();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters
+            .Add(new JsonStringEnumConverter());
+    });
 var app = builder.Build(); 
 
 // Configure the HTTP request pipeline.

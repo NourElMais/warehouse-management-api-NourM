@@ -35,12 +35,11 @@ public class UpdateProductQuantityHandler
         product.UpdateQuantity(command.NewQuantity);
         await _productRepository.UpdateAsync(product, cancellationToken);
 
-        _logger.LogInformation(
-            "Product {ProductId} quantity updated from {OldQuantity} to {NewQuantity}", command.ProductId, oldQuantity, product.QuantityInStock);
+        _logger.LogInformation("Product {ProductId} quantity updated from {OldQuantity} to {NewQuantity}", command.ProductId, oldQuantity, product.QuantityInStock);
         
         if (product.QuantityInStock <= 5)
         {
-            var stockLowEvent = new LowStockDetectedEvent()
+            var stockLowEvent = new StockLowDetected()
             {
                 ProductId = product.Id,
                 ProductName = product.Name,

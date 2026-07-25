@@ -1,0 +1,280 @@
+2026-07-25 08:43:34.854 +03:00 [INF] Warehouse Management API started successfully.
+2026-07-25 08:43:37.209 +03:00 [INF] Start installing Hangfire SQL objects...
+2026-07-25 08:43:37.507 +03:00 [INF] Hangfire SQL objects installed.
+2026-07-25 08:43:38.559 +03:00 [INF] User profile is available. Using 'C:\Users\HCES\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-07-25 08:43:38.735 +03:00 [INF] Initializing UI Database
+2026-07-25 08:43:41.357 +03:00 [INF] Saving healthchecks configuration to database
+2026-07-25 08:43:41.721 +03:00 [INF] Saved 1 entities to in-memory store.
+2026-07-25 08:43:41.860 +03:00 [INF] Starting Hangfire Server using job storage: 'PostgreSQL Server: Host: localhost, DB: WarehouseDb, Schema: hangfire'
+2026-07-25 08:43:41.860 +03:00 [INF] Using the following options for PostgreSQL job storage:
+2026-07-25 08:43:41.861 +03:00 [INF]     Queue poll interval: 00:00:15.
+2026-07-25 08:43:41.862 +03:00 [INF]     Invisibility timeout: 00:30:00.
+2026-07-25 08:43:41.862 +03:00 [INF]     Use sliding invisibility timeout: False.
+2026-07-25 08:43:41.862 +03:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 20
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2026-07-25 08:43:41.908 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/ - null null
+2026-07-25 08:43:42.989 +03:00 [INF] Server nourpc:9712:46259bc0 successfully announced in 35.0383 ms
+2026-07-25 08:43:43.010 +03:00 [INF] Server nourpc:9712:46259bc0 is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2026-07-25 08:43:43.085 +03:00 [INF] Server nourpc:9712:46259bc0 all the dispatchers started
+2026-07-25 08:43:43.769 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:43:43.779 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:43:43.779 +03:00 [INF] Request GET / took 584.0814 ms
+2026-07-25 08:43:43.809 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/ - 404 null null 1933.7998ms
+2026-07-25 08:43:43.810 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44343/, Response status code: 404
+2026-07-25 08:43:43.895 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-25 08:43:43.895 +03:00 [INF] Hosting environment: Development
+2026-07-25 08:43:43.895 +03:00 [INF] Content root path: C:\Users\HCES\RiderProjects\warehouse-management-api-NourM\warehouse-management-api-NourM\Warehouse.Presentation
+2026-07-25 08:43:43.901 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:43:43.917 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:43:44.152 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:43:44.171 +03:00 [INF] Request GET /health took 259.5577 ms
+2026-07-25 08:43:44.187 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 285.2812ms
+2026-07-25 08:43:44.187 +03:00 [INF] Received HTTP response headers after 398.6042ms - 200
+2026-07-25 08:43:44.189 +03:00 [INF] End processing HTTP request after 450.2115ms - 200
+2026-07-25 08:43:45.253 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:43:47.056 +03:00 [INF] Executed DbCommand (43ms) [Parameters=[@__AddDays_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."CreatedAt", p."Description", p."ExpiryDate", p."IsArchived", p."LastUpdatedAt", p."Name", p."Price", p."QuantityInStock", p."SKU", p."SupplierId"
+FROM "Products" AS p
+WHERE p."ExpiryDate" <= @__AddDays_0
+2026-07-25 08:43:47.323 +03:00 [INF] Expired products: 2
+2026-07-25 08:43:47.324 +03:00 [INF] Soon to expire products: 0
+2026-07-25 08:43:47.329 +03:00 [INF] Expired product names: ["Keyboard","Laptop"]
+2026-07-25 08:43:47.341 +03:00 [INF] Soon to expire product names: []
+2026-07-25 08:43:47.397 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__archiveLimit_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."CreatedAt", p."Description", p."ExpiryDate", p."IsArchived", p."LastUpdatedAt", p."Name", p."Price", p."QuantityInStock", p."SKU", p."SupplierId"
+FROM "Products" AS p
+WHERE p."ExpiryDate" < @__archiveLimit_0 AND NOT (p."IsArchived")
+2026-07-25 08:43:55.421 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:43:55.421 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:43:55.434 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:43:55.450 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:43:55.458 +03:00 [INF] Received HTTP response headers after 36.2841ms - 200
+2026-07-25 08:43:55.459 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:43:55.459 +03:00 [INF] End processing HTTP request after 38.2696ms - 200
+2026-07-25 08:43:55.459 +03:00 [INF] Request GET /health took 16.7976 ms
+2026-07-25 08:43:55.460 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 26.736ms
+2026-07-25 08:43:55.574 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:43:56.836 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.html - null null
+2026-07-25 08:43:57.065 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.html - 304 null null 229.0076ms
+2026-07-25 08:43:57.080 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.css - null null
+2026-07-25 08:43:57.080 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - null null
+2026-07-25 08:43:57.080 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/Frontend/swaggerAuth.js - null null
+2026-07-25 08:43:57.096 +03:00 [INF] The file /Frontend/swaggerAuth.js was not modified
+2026-07-25 08:43:57.097 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/Frontend/swaggerAuth.js - 304 null text/javascript 16.9468ms
+2026-07-25 08:43:57.103 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - null null
+2026-07-25 08:43:57.121 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - 304 null null 41.1297ms
+2026-07-25 08:43:57.121 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.css - 304 null null 41.412ms
+2026-07-25 08:43:57.131 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - 304 null null 27.9761ms
+2026-07-25 08:43:57.151 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.js - null null
+2026-07-25 08:43:57.151 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - null null
+2026-07-25 08:43:57.154 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.js - 304 null null 3.3667ms
+2026-07-25 08:43:57.155 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/Frontend/ - null null
+2026-07-25 08:43:57.158 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - 304 null null 6.8167ms
+2026-07-25 08:43:57.172 +03:00 [INF] The file /Frontend/index.html was not modified
+2026-07-25 08:43:57.173 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/Frontend/index.html - 304 null text/html 18.2894ms
+2026-07-25 08:43:57.187 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/Frontend/app.js - null null
+2026-07-25 08:43:57.187 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/Frontend/styles.css - null null
+2026-07-25 08:43:57.188 +03:00 [INF] The file /Frontend/app.js was not modified
+2026-07-25 08:43:57.188 +03:00 [INF] The file /Frontend/styles.css was not modified
+2026-07-25 08:43:57.189 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/Frontend/app.js - 304 null text/javascript 1.3095ms
+2026-07-25 08:43:57.189 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/Frontend/styles.css - 304 null text/css 1.3879ms
+2026-07-25 08:43:57.200 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/images/warehouse.png - null null
+2026-07-25 08:43:57.201 +03:00 [INF] The file /images/warehouse.png was not modified
+2026-07-25 08:43:57.202 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/images/warehouse.png - 304 null image/png 2.8219ms
+2026-07-25 08:43:58.119 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/favicon.ico - null null
+2026-07-25 08:43:58.124 +03:00 [INF] Request GET /favicon.ico took 0.3248 ms
+2026-07-25 08:43:58.125 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/favicon.ico - 404 null null 6.9126ms
+2026-07-25 08:43:58.126 +03:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44343/favicon.ico, Response status code: 404
+2026-07-25 08:44:01.298 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.html - null null
+2026-07-25 08:44:01.304 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.html - 304 null null 5.068ms
+2026-07-25 08:44:01.319 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.css - null null
+2026-07-25 08:44:01.319 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - null null
+2026-07-25 08:44:01.319 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - null null
+2026-07-25 08:44:01.321 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - null null
+2026-07-25 08:44:01.322 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - 304 null null 2.5694ms
+2026-07-25 08:44:01.323 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.js - null null
+2026-07-25 08:44:01.325 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.css - 304 null null 9.9575ms
+2026-07-25 08:44:01.327 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - 304 null null 12.1806ms
+2026-07-25 08:44:01.328 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - 304 null null 6.8262ms
+2026-07-25 08:44:01.328 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.js - 304 null null 4.6956ms
+2026-07-25 08:44:01.545 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/v1/swagger.json - null null
+2026-07-25 08:44:02.346 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 800.5615ms
+2026-07-25 08:44:05.185 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.html - null null
+2026-07-25 08:44:05.188 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.html - 304 null null 2.8357ms
+2026-07-25 08:44:05.225 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.css - null null
+2026-07-25 08:44:05.227 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - null null
+2026-07-25 08:44:05.228 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/index.js - null null
+2026-07-25 08:44:05.228 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-bundle.js - 304 null null 1.8256ms
+2026-07-25 08:44:05.229 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.css - 304 null null 3.8792ms
+2026-07-25 08:44:05.230 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/index.js - 304 null null 1.7602ms
+2026-07-25 08:44:05.230 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - null null
+2026-07-25 08:44:05.231 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - null null
+2026-07-25 08:44:05.232 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui.css - 304 null null 2.3501ms
+2026-07-25 08:44:05.232 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/swagger-ui-standalone-preset.js - 304 null null 1.5758ms
+2026-07-25 08:44:05.325 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/v1/swagger.json - null null
+2026-07-25 08:44:05.337 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/swagger/favicon-32x32.png - null null
+2026-07-25 08:44:05.343 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/favicon-32x32.png - 304 null null 8.1705ms
+2026-07-25 08:44:05.392 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 67.7463ms
+2026-07-25 08:44:05.591 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:05.592 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:05.593 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:05.594 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:05.600 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:05.601 +03:00 [INF] Request GET /health took 6.6568 ms
+2026-07-25 08:44:05.601 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.2357ms
+2026-07-25 08:44:05.603 +03:00 [INF] Received HTTP response headers after 11.6034ms - 200
+2026-07-25 08:44:05.604 +03:00 [INF] End processing HTTP request after 12.5061ms - 200
+2026-07-25 08:44:05.608 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:44:15.619 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:15.620 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:15.622 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:15.623 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:15.628 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:15.629 +03:00 [INF] Request GET /health took 6.5515 ms
+2026-07-25 08:44:15.629 +03:00 [INF] Received HTTP response headers after 9.0215ms - 200
+2026-07-25 08:44:15.629 +03:00 [INF] End processing HTTP request after 9.8195ms - 200
+2026-07-25 08:44:15.630 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.5582ms
+2026-07-25 08:44:15.634 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:44:18.172 +03:00 [INF] Request starting HTTP/2 GET https://localhost:44343/api/products?onlyAvailable=false - null null
+2026-07-25 08:44:19.921 +03:00 [INF] Executing endpoint 'Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation)'
+2026-07-25 08:44:20.049 +03:00 [INF] Route matched with {action = "GetProducts", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] GetProducts(System.Threading.CancellationToken, Boolean) on controller Warehouse.Presentation.Controllers.ProductsController (Warehouse.Presentation).
+2026-07-25 08:44:20.075 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software MediatR. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-07-25 08:44:20.155 +03:00 [INF] Executing action Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation)
+2026-07-25 08:44:20.221 +03:00 [INF] Executing action method Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation) - Validation state: "Valid"
+2026-07-25 08:44:20.802 +03:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-07-25 08:44:21.162 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."CreatedAt", p."Description", p."ExpiryDate", p."IsArchived", p."LastUpdatedAt", p."Name", p."Price", p."QuantityInStock", p."SKU", p."SupplierId", s."Id", s."ContactEmail", s."Country", s."IsActive", s."Name", s."PhoneNumber"
+FROM "Products" AS p
+INNER JOIN "Suppliers" AS s ON p."SupplierId" = s."Id"
+2026-07-25 08:44:21.474 +03:00 [INF] Executed action method Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 1241.2975ms.
+2026-07-25 08:44:21.503 +03:00 [INF] Executed action Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation)
+2026-07-25 08:44:21.561 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[Warehouse.Application.ViewModels.ProductViewModel, Warehouse.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-25 08:44:21.672 +03:00 [INF] Executed action Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation) in 1609.1744ms
+2026-07-25 08:44:21.672 +03:00 [INF] Executed endpoint 'Warehouse.Presentation.Controllers.ProductsController.GetProducts (Warehouse.Presentation)'
+2026-07-25 08:44:21.673 +03:00 [INF] Request GET /api/products took 3490.0442 ms
+2026-07-25 08:44:21.674 +03:00 [INF] Request finished HTTP/2 GET https://localhost:44343/api/products?onlyAvailable=false - 200 null application/json; charset=utf-8 3502.8914ms
+2026-07-25 08:44:25.648 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:25.648 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:25.650 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:25.651 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:25.657 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:25.657 +03:00 [INF] Request GET /health took 5.7748 ms
+2026-07-25 08:44:25.657 +03:00 [INF] Received HTTP response headers after 8.2417ms - 200
+2026-07-25 08:44:25.657 +03:00 [INF] End processing HTTP request after 8.8651ms - 200
+2026-07-25 08:44:25.657 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.2888ms
+2026-07-25 08:44:25.668 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:44:35.680 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:35.681 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:35.683 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:35.684 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:35.691 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:35.691 +03:00 [INF] Received HTTP response headers after 9.9902ms - 200
+2026-07-25 08:44:35.691 +03:00 [INF] Request GET /health took 7.7186 ms
+2026-07-25 08:44:35.692 +03:00 [INF] End processing HTTP request after 11.0406ms - 200
+2026-07-25 08:44:35.693 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 10.1512ms
+2026-07-25 08:44:35.700 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:44:45.713 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:45.713 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:45.714 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:45.715 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:45.718 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:45.718 +03:00 [INF] Received HTTP response headers after 4.6254ms - 200
+2026-07-25 08:44:45.718 +03:00 [INF] Request GET /health took 3.3782 ms
+2026-07-25 08:44:45.718 +03:00 [INF] End processing HTTP request after 5.0467ms - 200
+2026-07-25 08:44:45.718 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.2753ms
+2026-07-25 08:44:45.720 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:44:55.734 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:55.734 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:44:55.735 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:44:55.736 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:44:55.740 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:44:55.740 +03:00 [INF] Received HTTP response headers after 5.8721ms - 200
+2026-07-25 08:44:55.740 +03:00 [INF] Request GET /health took 4.5372 ms
+2026-07-25 08:44:55.740 +03:00 [INF] End processing HTTP request after 6.7194ms - 200
+2026-07-25 08:44:55.741 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.1382ms
+2026-07-25 08:44:55.767 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:05.771 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:05.771 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:05.776 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:05.777 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:05.784 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:05.784 +03:00 [INF] Received HTTP response headers after 12.6468ms - 200
+2026-07-25 08:45:05.784 +03:00 [INF] Request GET /health took 7.5581 ms
+2026-07-25 08:45:05.785 +03:00 [INF] End processing HTTP request after 13.761ms - 200
+2026-07-25 08:45:05.790 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 15.3166ms
+2026-07-25 08:45:05.796 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:15.808 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:15.808 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:15.809 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:15.810 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:15.817 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:15.817 +03:00 [INF] Request GET /health took 7.0808 ms
+2026-07-25 08:45:15.817 +03:00 [INF] Received HTTP response headers after 8.5785ms - 200
+2026-07-25 08:45:15.817 +03:00 [INF] End processing HTTP request after 9.1401ms - 200
+2026-07-25 08:45:15.817 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.0628ms
+2026-07-25 08:45:15.822 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:25.834 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:25.835 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:25.836 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:25.836 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:25.840 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:25.840 +03:00 [INF] Request GET /health took 4.4514 ms
+2026-07-25 08:45:25.840 +03:00 [INF] Received HTTP response headers after 5.7124ms - 200
+2026-07-25 08:45:25.840 +03:00 [INF] End processing HTTP request after 6.172ms - 200
+2026-07-25 08:45:25.841 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.0513ms
+2026-07-25 08:45:25.843 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:35.851 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:35.852 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:35.853 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:35.854 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:35.859 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:35.859 +03:00 [INF] Request GET /health took 5.7221 ms
+2026-07-25 08:45:35.859 +03:00 [INF] Received HTTP response headers after 7.2738ms - 200
+2026-07-25 08:45:35.859 +03:00 [INF] End processing HTTP request after 8.067ms - 200
+2026-07-25 08:45:35.861 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.9808ms
+2026-07-25 08:45:35.863 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:45.865 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:45.865 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:45.882 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:45.883 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:45.888 +03:00 [INF] Received HTTP response headers after 22.8088ms - 200
+2026-07-25 08:45:45.889 +03:00 [INF] End processing HTTP request after 23.77ms - 200
+2026-07-25 08:45:45.888 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:45.889 +03:00 [INF] Request GET /health took 7.0232 ms
+2026-07-25 08:45:45.891 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.8188ms
+2026-07-25 08:45:45.893 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 08:45:52.261 +03:00 [INF] Request starting HTTP/2 POST https://localhost:44343/api/products/cb3360d0-5337-4a13-b3e6-961aab4f84cc/image - multipart/form-data; boundary=----WebKitFormBoundarygoEhwEEkhj3Q6MCk 177899
+2026-07-25 08:45:52.279 +03:00 [INF] Executing endpoint 'Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation)'
+2026-07-25 08:45:52.299 +03:00 [INF] Route matched with {action = "UploadImage", controller = "Products"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] UploadImage(System.String, Microsoft.AspNetCore.Http.IFormFile, System.Threading.CancellationToken) on controller Warehouse.Presentation.Controllers.ProductsController (Warehouse.Presentation).
+2026-07-25 08:45:52.515 +03:00 [INF] Executing action Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation)
+2026-07-25 08:45:52.515 +03:00 [INF] Executing action method Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation) - Validation state: "Valid"
+2026-07-25 08:45:53.185 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__id_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT p."Id", p."CreatedAt", p."Description", p."ExpiryDate", p."IsArchived", p."LastUpdatedAt", p."Name", p."Price", p."QuantityInStock", p."SKU", p."SupplierId", s."Id", s."ContactEmail", s."Country", s."IsActive", s."Name", s."PhoneNumber"
+FROM "Products" AS p
+INNER JOIN "Suppliers" AS s ON p."SupplierId" = s."Id"
+WHERE p."Id" = @__id_0
+LIMIT 1
+2026-07-25 08:45:53.982 +03:00 [INF] Executed DbCommand (11ms) [Parameters=[@p0='?', @p1='?', @p2='?', @p3='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "ProductImages" ("Id", "FileName", "FilePath", "ProductId")
+VALUES (@p0, @p1, @p2, @p3);
+2026-07-25 08:45:54.628 +03:00 [INF] Image HP Monitor.png uploaded for product cb3360d0-5337-4a13-b3e6-961aab4f84cc
+2026-07-25 08:45:54.633 +03:00 [INF] Executed action method Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 2117.2001ms.
+2026-07-25 08:45:54.634 +03:00 [INF] Executed action Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation)
+2026-07-25 08:45:54.641 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2026-07-25 08:45:54.642 +03:00 [INF] Executed action Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation) in 2342.5762ms
+2026-07-25 08:45:54.642 +03:00 [INF] Executed endpoint 'Warehouse.Presentation.Controllers.ProductsController.UploadImage (Warehouse.Presentation)'
+2026-07-25 08:45:54.642 +03:00 [INF] Request POST /api/products/cb3360d0-5337-4a13-b3e6-961aab4f84cc/image took 2377.1436 ms
+2026-07-25 08:45:54.650 +03:00 [INF] Request finished HTTP/2 POST https://localhost:44343/api/products/cb3360d0-5337-4a13-b3e6-961aab4f84cc/image - 200 null text/plain; charset=utf-8 2389.0266ms
+2026-07-25 08:45:55.912 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:55.912 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 08:45:55.913 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 08:45:55.914 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 08:45:55.917 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 08:45:55.917 +03:00 [INF] Request GET /health took 3.8095 ms
+2026-07-25 08:45:55.917 +03:00 [INF] Received HTTP response headers after 5.4493ms - 200
+2026-07-25 08:45:55.917 +03:00 [INF] End processing HTTP request after 5.7956ms - 200
+2026-07-25 08:45:55.918 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.7007ms
+2026-07-25 08:45:55.919 +03:00 [INF] Saved 3 entities to in-memory store.

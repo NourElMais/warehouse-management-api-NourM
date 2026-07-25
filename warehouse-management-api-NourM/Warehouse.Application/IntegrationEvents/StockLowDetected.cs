@@ -1,6 +1,6 @@
 namespace Warehouse.Application.IntegrationEvents;
 
-public class LowStockDetectedEvent
+public class StockLowDetected
 {
     public string ProductId { get; set; }
 

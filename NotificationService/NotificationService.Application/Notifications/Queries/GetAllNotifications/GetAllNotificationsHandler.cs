@@ -18,6 +18,6 @@ public class GetAllNotificationsHandler: IRequestHandler<GetAllNotificationsQuer
     
     public async Task<List<Notification>> Handle(GetAllNotificationsQuery request, CancellationToken cancellationToken)
     {
-        return await _notificationRepository.GetAllAsync(cancellationToken);
+        return await _notificationRepository.GetAllAsync(request.Type, request.Severity, request.Status, cancellationToken);
     }
 }

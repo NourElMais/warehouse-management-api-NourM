@@ -3,8 +3,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NotificationService.Application.IntegrationEvents;
 using NotificationService.Application.Interfaces;
 using RabbitMQ.Client;
@@ -16,27 +18,51 @@ namespace NotificationService.Infrastructure.Messaging;
 public class StockLowConsumer : BackgroundService
 {
     private readonly IServiceScopeFactory _scopeFactory;
-    public StockLowConsumer(IServiceScopeFactory scopeFactory)
+    private readonly ILogger<StockLowConsumer> _logger;
+    private readonly IConfiguration _configuration;
+    public StockLowConsumer(IServiceScopeFactory scopeFactory, ILogger<StockLowConsumer> logger, IConfiguration configuration)
     {
         _scopeFactory = scopeFactory;
+        _logger = logger;
+        _configuration = configuration;
     }
+
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        var connectionFactory = new ConnectionFactory()
+        while (!cancellationToken.IsCancellationRequested)
         {
-            HostName = "localhost",
-            UserName = "warehouse",
-            Password = "warehouse"
+            try
+            {
+                await StartConsumerAsync(cancellationToken);
+
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogWarning($"RabbitMQ is unavailable. Retrying in 5 seconds. Error: {exception.Message}");
+
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
+            }
+
+        }
+    }
+    private async Task StartConsumerAsync(CancellationToken cancellationToken)
+    {
+        var connectionFactory = new ConnectionFactory
+        {
+            HostName = _configuration["RabbitMQ:HostName"],
+            UserName = _configuration["RabbitMQ:UserName"],
+            Password = _configuration["RabbitMQ:Password"]
         };
 
-        await using var
-            connection =
-                await connectionFactory
-                    .CreateConnectionAsync(cancellationToken); //connects the Notification Service to RabbitMQ.
+        var connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
 
-        await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
+        var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-        //creates a queue called: stock.low.queue
         await channel.QueueDeclareAsync(
             queue: "stock.low.queue",
             durable: true,
@@ -44,14 +70,14 @@ public class StockLowConsumer : BackgroundService
             autoDelete: false,
             cancellationToken: cancellationToken);
 
-        //we bind the queue to the exchange
-        //Whenever the exchange warehouse.events receives a message with routing key stock.low, put it into stock.low.queue
         await channel.QueueBindAsync(
             queue: "stock.low.queue",
             exchange: "warehouse.events",
             routingKey: "stock.low",
             cancellationToken: cancellationToken);
-        var consumer = new AsyncEventingBasicConsumer(channel); //this creates the rabbitmq consumer.
+
+        var consumer = new AsyncEventingBasicConsumer(channel);
+
         consumer.ReceivedAsync += OnMessageReceivedAsync;
 
         await channel.BasicConsumeAsync(
@@ -59,9 +85,9 @@ public class StockLowConsumer : BackgroundService
             autoAck: true,
             consumer: consumer,
             cancellationToken: cancellationToken);
-        
-        await Task.Delay(Timeout.Infinite, cancellationToken); //keeps the background service alive
     }
+
+   
 
     private async Task OnMessageReceivedAsync(object sender, BasicDeliverEventArgs eventArgs)
     {
@@ -94,10 +120,9 @@ public class StockLowConsumer : BackgroundService
 
         await repository.AddAsync(notification, CancellationToken.None);
 
-        Console.WriteLine(stockLowEvent.ProductName);
-        Console.WriteLine(stockLowEvent.QuantityInStock);
-
-        await Task.CompletedTask;
+        _logger.LogInformation("Low-stock notification created for product {ProductName}. Quantity: {Quantity}",
+            stockLowEvent.ProductName,
+            stockLowEvent.QuantityInStock);
     }
 }
 

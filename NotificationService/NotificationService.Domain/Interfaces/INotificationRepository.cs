@@ -4,8 +4,7 @@ namespace NotificationService.Application.Interfaces;
 
 public interface INotificationRepository
 {
-    Task<List<Notification>> GetAllAsync(CancellationToken cancellationToken);
-
+    Task<List<Notification>> GetAllAsync(string? type, string? severity, string? status, CancellationToken cancellationToken);
     Task<Notification?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task AddAsync(Notification notification, CancellationToken cancellationToken);

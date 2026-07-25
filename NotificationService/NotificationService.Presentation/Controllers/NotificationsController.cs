@@ -21,9 +21,9 @@ public class NotificationsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllNotif(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllNotif([FromQuery] string?  type, [FromQuery] string? severity,[FromQuery] string? status, CancellationToken cancellationToken)
     {
-        var notif = await _mediator.Send(new GetAllNotificationsQuery(), cancellationToken);
+        var notif = await _mediator.Send(new GetAllNotificationsQuery(type,severity,status,cancellationToken), cancellationToken);
         return Ok(notif);
     }
 

@@ -19,10 +19,28 @@ public class NotificationRepository : INotificationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<List<Notification>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<List<Notification>> GetAllAsync(string? type, string? severity, string? status, CancellationToken cancellationToken)
     {
-        return await _dbContext.Notifications.OrderByDescending(notification => notification.CreatedAt).ToListAsync(cancellationToken);
+        IQueryable<Notification> query = _dbContext.Notifications;
+
+        if (!string.IsNullOrWhiteSpace(type))
+        {
+            query = query.Where(n => n.Type.ToLower() == type.ToLower());
+        }
+
+        if (!string.IsNullOrWhiteSpace(severity))
+        {
+            query = query.Where(n => n.Severity.ToLower() == severity.ToLower());
+        }
+
+        if (!string.IsNullOrWhiteSpace(status))
+        {
+            query = query.Where(n => n.Status.ToLower() == status.ToLower());
+        }
+
+        return await query.ToListAsync(cancellationToken);
     }
+    
 
     public async Task<Notification?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {

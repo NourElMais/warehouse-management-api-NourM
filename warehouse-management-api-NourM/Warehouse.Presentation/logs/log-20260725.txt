@@ -9490,3 +9490,643 @@ WHERE p."ExpiryDate" < @__archiveLimit_0 AND NOT (p."IsArchived")
 2026-07-25 13:27:41.405 +03:00 [INF] End processing HTTP request after 12.2235ms - 200
 2026-07-25 13:27:41.406 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 9.9167ms
 2026-07-25 13:27:41.410 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:27:51.422 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:27:51.422 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:27:51.423 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:27:51.423 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:27:51.428 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:27:51.428 +03:00 [INF] Request GET /health took 4.869 ms
+2026-07-25 13:27:51.428 +03:00 [INF] Received HTTP response headers after 6.2147ms - 200
+2026-07-25 13:27:51.428 +03:00 [INF] End processing HTTP request after 6.5807ms - 200
+2026-07-25 13:27:51.429 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.5004ms
+2026-07-25 13:27:51.431 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:01.436 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:01.437 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:01.437 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:01.438 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:01.440 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:01.440 +03:00 [INF] Request GET /health took 2.8674 ms
+2026-07-25 13:28:01.440 +03:00 [INF] Received HTTP response headers after 3.644ms - 200
+2026-07-25 13:28:01.440 +03:00 [INF] End processing HTTP request after 3.9372ms - 200
+2026-07-25 13:28:01.441 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 3.3352ms
+2026-07-25 13:28:01.441 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:11.459 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:11.459 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:11.464 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:11.465 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:11.469 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:11.469 +03:00 [INF] Request GET /health took 3.9232 ms
+2026-07-25 13:28:11.469 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.9931ms
+2026-07-25 13:28:11.469 +03:00 [INF] Received HTTP response headers after 10.5754ms - 200
+2026-07-25 13:28:11.469 +03:00 [INF] End processing HTTP request after 11.0006ms - 200
+2026-07-25 13:28:11.470 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:21.480 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:21.481 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:21.482 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:21.482 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:21.486 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:21.486 +03:00 [INF] Request GET /health took 4.4585 ms
+2026-07-25 13:28:21.486 +03:00 [INF] Received HTTP response headers after 5.6537ms - 200
+2026-07-25 13:28:21.487 +03:00 [INF] End processing HTTP request after 6.4783ms - 200
+2026-07-25 13:28:21.487 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.6012ms
+2026-07-25 13:28:21.489 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:31.496 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:31.498 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:31.500 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:31.501 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:31.509 +03:00 [INF] Received HTTP response headers after 10.8746ms - 200
+2026-07-25 13:28:31.509 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:31.511 +03:00 [INF] End processing HTTP request after 14.98ms - 200
+2026-07-25 13:28:31.511 +03:00 [INF] Request GET /health took 10.2879 ms
+2026-07-25 13:28:31.513 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 12.5775ms
+2026-07-25 13:28:31.520 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:41.533 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:41.533 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:41.534 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:41.535 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:41.542 +03:00 [INF] Received HTTP response headers after 8.9036ms - 200
+2026-07-25 13:28:41.542 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:41.543 +03:00 [INF] End processing HTTP request after 9.7316ms - 200
+2026-07-25 13:28:41.543 +03:00 [INF] Request GET /health took 8.2508 ms
+2026-07-25 13:28:41.544 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 9.4351ms
+2026-07-25 13:28:41.545 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:28:51.554 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:51.554 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:28:51.558 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:28:51.559 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:28:51.566 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:28:51.566 +03:00 [INF] Request GET /health took 6.9179 ms
+2026-07-25 13:28:51.566 +03:00 [INF] Received HTTP response headers after 11.3414ms - 200
+2026-07-25 13:28:51.566 +03:00 [INF] End processing HTTP request after 12.0896ms - 200
+2026-07-25 13:28:51.566 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.5006ms
+2026-07-25 13:28:51.568 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:01.577 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:01.578 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:01.579 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:01.580 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:01.583 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:01.584 +03:00 [INF] Request GET /health took 3.9713 ms
+2026-07-25 13:29:01.584 +03:00 [INF] Received HTTP response headers after 5.9242ms - 200
+2026-07-25 13:29:01.584 +03:00 [INF] End processing HTTP request after 6.3679ms - 200
+2026-07-25 13:29:01.584 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.9628ms
+2026-07-25 13:29:01.595 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:11.606 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:11.607 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:11.610 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:11.610 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:11.615 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:11.615 +03:00 [INF] Request GET /health took 5.4292 ms
+2026-07-25 13:29:11.615 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.104ms
+2026-07-25 13:29:11.615 +03:00 [INF] Received HTTP response headers after 7.619ms - 200
+2026-07-25 13:29:11.616 +03:00 [INF] End processing HTTP request after 9.4168ms - 200
+2026-07-25 13:29:11.617 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:21.623 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:21.624 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:21.633 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:21.634 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:21.639 +03:00 [INF] Received HTTP response headers after 14.8809ms - 200
+2026-07-25 13:29:21.639 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:21.639 +03:00 [INF] End processing HTTP request after 15.6691ms - 200
+2026-07-25 13:29:21.639 +03:00 [INF] Request GET /health took 5.7502 ms
+2026-07-25 13:29:21.640 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 15.2577ms
+2026-07-25 13:29:21.642 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:31.653 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:31.653 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:31.654 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:31.654 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:31.659 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:31.659 +03:00 [INF] Request GET /health took 4.9113 ms
+2026-07-25 13:29:31.659 +03:00 [INF] Received HTTP response headers after 6.4784ms - 200
+2026-07-25 13:29:31.660 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.8328ms
+2026-07-25 13:29:31.660 +03:00 [INF] End processing HTTP request after 7.0426ms - 200
+2026-07-25 13:29:31.664 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:41.671 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:41.671 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:41.672 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:41.672 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:41.677 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:41.677 +03:00 [INF] Request GET /health took 5.3586 ms
+2026-07-25 13:29:41.678 +03:00 [INF] Received HTTP response headers after 6.7769ms - 200
+2026-07-25 13:29:41.678 +03:00 [INF] End processing HTTP request after 7.4101ms - 200
+2026-07-25 13:29:41.678 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.0309ms
+2026-07-25 13:29:41.688 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:29:51.696 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:51.696 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:29:51.697 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:29:51.698 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:29:51.703 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:29:51.703 +03:00 [INF] Request GET /health took 5.5259 ms
+2026-07-25 13:29:51.704 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.2498ms
+2026-07-25 13:29:51.707 +03:00 [INF] Received HTTP response headers after 10.4905ms - 200
+2026-07-25 13:29:51.707 +03:00 [INF] End processing HTTP request after 11.0522ms - 200
+2026-07-25 13:29:51.711 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:01.722 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:01.723 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:01.724 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:01.724 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:01.728 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:01.728 +03:00 [INF] Received HTTP response headers after 5.2805ms - 200
+2026-07-25 13:30:01.728 +03:00 [INF] Request GET /health took 3.8303 ms
+2026-07-25 13:30:01.728 +03:00 [INF] End processing HTTP request after 5.8922ms - 200
+2026-07-25 13:30:01.729 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.7648ms
+2026-07-25 13:30:01.730 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:11.743 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:11.743 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:11.758 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:11.758 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:11.762 +03:00 [INF] Received HTTP response headers after 18.0043ms - 200
+2026-07-25 13:30:11.762 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:11.762 +03:00 [INF] End processing HTTP request after 19.0213ms - 200
+2026-07-25 13:30:11.762 +03:00 [INF] Request GET /health took 3.8181 ms
+2026-07-25 13:30:11.763 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.8135ms
+2026-07-25 13:30:11.764 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:21.766 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:21.766 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:21.767 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:21.768 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:21.771 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:21.771 +03:00 [INF] Received HTTP response headers after 4.8647ms - 200
+2026-07-25 13:30:21.772 +03:00 [INF] End processing HTTP request after 5.3828ms - 200
+2026-07-25 13:30:21.772 +03:00 [INF] Request GET /health took 3.9109 ms
+2026-07-25 13:30:21.772 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.6007ms
+2026-07-25 13:30:21.775 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:31.788 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:31.791 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:31.797 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:31.798 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:31.805 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:31.806 +03:00 [INF] Received HTTP response headers after 12.9925ms - 200
+2026-07-25 13:30:31.806 +03:00 [INF] Request GET /health took 7.7149 ms
+2026-07-25 13:30:31.806 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 10.6064ms
+2026-07-25 13:30:31.806 +03:00 [INF] End processing HTTP request after 17.6947ms - 200
+2026-07-25 13:30:31.816 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:41.831 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:41.831 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:41.833 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:41.833 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:41.838 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:41.838 +03:00 [INF] Request GET /health took 5.0021 ms
+2026-07-25 13:30:41.838 +03:00 [INF] Received HTTP response headers after 6.8528ms - 200
+2026-07-25 13:30:41.839 +03:00 [INF] End processing HTTP request after 7.4379ms - 200
+2026-07-25 13:30:41.839 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.6693ms
+2026-07-25 13:30:41.841 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:30:51.858 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:51.858 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:30:51.860 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:30:51.861 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:30:51.865 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:30:51.865 +03:00 [INF] Request GET /health took 4.221 ms
+2026-07-25 13:30:51.865 +03:00 [INF] Received HTTP response headers after 6.9638ms - 200
+2026-07-25 13:30:51.865 +03:00 [INF] End processing HTTP request after 7.3929ms - 200
+2026-07-25 13:30:51.866 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.1837ms
+2026-07-25 13:30:51.868 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:01.882 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:01.883 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:01.891 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:01.892 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:01.896 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:01.896 +03:00 [INF] Request GET /health took 4.6153 ms
+2026-07-25 13:31:01.896 +03:00 [INF] Received HTTP response headers after 13.6669ms - 200
+2026-07-25 13:31:01.896 +03:00 [INF] End processing HTTP request after 14.0841ms - 200
+2026-07-25 13:31:01.897 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.2924ms
+2026-07-25 13:31:01.900 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:11.902 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:11.903 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:11.904 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:11.911 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:11.917 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:11.917 +03:00 [INF] Request GET /health took 9.1906 ms
+2026-07-25 13:31:11.917 +03:00 [INF] Received HTTP response headers after 14.2ms - 200
+2026-07-25 13:31:11.918 +03:00 [INF] End processing HTTP request after 15.275ms - 200
+2026-07-25 13:31:11.918 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 13.9793ms
+2026-07-25 13:31:11.920 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:21.918 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:21.918 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:21.919 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:21.920 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:21.924 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:21.924 +03:00 [INF] Request GET /health took 4.8051 ms
+2026-07-25 13:31:21.924 +03:00 [INF] Received HTTP response headers after 6.3323ms - 200
+2026-07-25 13:31:21.925 +03:00 [INF] End processing HTTP request after 6.857ms - 200
+2026-07-25 13:31:21.925 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.8017ms
+2026-07-25 13:31:21.927 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:31.940 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:31.940 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:31.942 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:31.942 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:31.947 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:31.947 +03:00 [INF] Received HTTP response headers after 6.6341ms - 200
+2026-07-25 13:31:31.947 +03:00 [INF] End processing HTTP request after 7.3336ms - 200
+2026-07-25 13:31:31.947 +03:00 [INF] Request GET /health took 5.417 ms
+2026-07-25 13:31:31.948 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.7333ms
+2026-07-25 13:31:31.951 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:41.958 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:41.958 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:41.960 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:41.960 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:41.965 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:41.965 +03:00 [INF] Request GET /health took 4.9133 ms
+2026-07-25 13:31:41.965 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.6619ms
+2026-07-25 13:31:41.965 +03:00 [INF] Received HTTP response headers after 6.5383ms - 200
+2026-07-25 13:31:41.966 +03:00 [INF] End processing HTTP request after 7.792ms - 200
+2026-07-25 13:31:41.976 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:31:51.982 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:51.982 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:31:51.983 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:31:51.984 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:31:51.988 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:31:51.988 +03:00 [INF] Request GET /health took 4.4259 ms
+2026-07-25 13:31:51.988 +03:00 [INF] Received HTTP response headers after 5.6075ms - 200
+2026-07-25 13:31:51.988 +03:00 [INF] End processing HTTP request after 6.4323ms - 200
+2026-07-25 13:31:51.990 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.8705ms
+2026-07-25 13:31:51.991 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:01.998 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:01.998 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:01.999 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:02.000 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:02.004 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:02.004 +03:00 [INF] Request GET /health took 4.83 ms
+2026-07-25 13:32:02.005 +03:00 [INF] Received HTTP response headers after 6.2483ms - 200
+2026-07-25 13:32:02.005 +03:00 [INF] End processing HTTP request after 6.6447ms - 200
+2026-07-25 13:32:02.005 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.3668ms
+2026-07-25 13:32:02.006 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:12.022 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:12.023 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:12.030 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:12.030 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:12.035 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:12.035 +03:00 [INF] Request GET /health took 4.9252 ms
+2026-07-25 13:32:12.035 +03:00 [INF] Received HTTP response headers after 12.7051ms - 200
+2026-07-25 13:32:12.036 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.6453ms
+2026-07-25 13:32:12.036 +03:00 [INF] End processing HTTP request after 13.1967ms - 200
+2026-07-25 13:32:12.038 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:22.043 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:22.043 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:22.051 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:22.051 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:22.062 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:22.065 +03:00 [INF] Received HTTP response headers after 21.0609ms - 200
+2026-07-25 13:32:22.065 +03:00 [INF] Request GET /health took 13.8153 ms
+2026-07-25 13:32:22.065 +03:00 [INF] End processing HTTP request after 22.0877ms - 200
+2026-07-25 13:32:22.067 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 16.169ms
+2026-07-25 13:32:22.070 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:32.075 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:32.075 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:32.076 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:32.077 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:32.081 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:32.081 +03:00 [INF] Request GET /health took 4.497 ms
+2026-07-25 13:32:32.081 +03:00 [INF] Received HTTP response headers after 6.271ms - 200
+2026-07-25 13:32:32.082 +03:00 [INF] End processing HTTP request after 7.0482ms - 200
+2026-07-25 13:32:32.082 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.8103ms
+2026-07-25 13:32:32.084 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:42.098 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:42.098 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:42.100 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:42.100 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:42.106 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:42.106 +03:00 [INF] Request GET /health took 6.39 ms
+2026-07-25 13:32:42.106 +03:00 [INF] Received HTTP response headers after 8.0282ms - 200
+2026-07-25 13:32:42.107 +03:00 [INF] End processing HTTP request after 8.9957ms - 200
+2026-07-25 13:32:42.107 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.5022ms
+2026-07-25 13:32:42.109 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:32:52.122 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:52.122 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:32:52.126 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:32:52.126 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:32:52.132 +03:00 [INF] Received HTTP response headers after 9.5397ms - 200
+2026-07-25 13:32:52.132 +03:00 [INF] End processing HTTP request after 10.1853ms - 200
+2026-07-25 13:32:52.132 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:32:52.133 +03:00 [INF] Request GET /health took 6.6903 ms
+2026-07-25 13:32:52.133 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.8371ms
+2026-07-25 13:32:52.136 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:02.139 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:02.140 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:02.141 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:02.141 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:02.146 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:02.146 +03:00 [INF] Request GET /health took 4.731 ms
+2026-07-25 13:33:02.146 +03:00 [INF] Received HTTP response headers after 6.4612ms - 200
+2026-07-25 13:33:02.146 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.5357ms
+2026-07-25 13:33:02.146 +03:00 [INF] End processing HTTP request after 6.9451ms - 200
+2026-07-25 13:33:02.149 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:12.156 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:12.156 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:12.157 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:12.158 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:12.164 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:12.164 +03:00 [INF] Received HTTP response headers after 7.5986ms - 200
+2026-07-25 13:33:12.164 +03:00 [INF] End processing HTTP request after 8.4142ms - 200
+2026-07-25 13:33:12.164 +03:00 [INF] Request GET /health took 6.2515 ms
+2026-07-25 13:33:12.165 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.4364ms
+2026-07-25 13:33:12.167 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:22.181 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:22.181 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:22.182 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:22.182 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:22.187 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:22.187 +03:00 [INF] Request GET /health took 4.8693 ms
+2026-07-25 13:33:22.187 +03:00 [INF] Received HTTP response headers after 6.013ms - 200
+2026-07-25 13:33:22.187 +03:00 [INF] End processing HTTP request after 6.3908ms - 200
+2026-07-25 13:33:22.187 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.6525ms
+2026-07-25 13:33:22.189 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:32.197 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:32.198 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:32.199 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:32.199 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:32.204 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:32.204 +03:00 [INF] Request GET /health took 5.5259 ms
+2026-07-25 13:33:32.204 +03:00 [INF] Received HTTP response headers after 6.728ms - 200
+2026-07-25 13:33:32.205 +03:00 [INF] End processing HTTP request after 7.3232ms - 200
+2026-07-25 13:33:32.205 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.1323ms
+2026-07-25 13:33:32.207 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:42.222 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:42.222 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:42.223 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:42.223 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:42.228 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:42.228 +03:00 [INF] Request GET /health took 4.8635 ms
+2026-07-25 13:33:42.228 +03:00 [INF] Received HTTP response headers after 6.0477ms - 200
+2026-07-25 13:33:42.228 +03:00 [INF] End processing HTTP request after 6.462ms - 200
+2026-07-25 13:33:42.229 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.7442ms
+2026-07-25 13:33:42.232 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:33:52.238 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:52.238 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:33:52.239 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:33:52.240 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:33:52.246 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:33:52.246 +03:00 [INF] Received HTTP response headers after 8.1924ms - 200
+2026-07-25 13:33:52.247 +03:00 [INF] Request GET /health took 7.0255 ms
+2026-07-25 13:33:52.247 +03:00 [INF] End processing HTTP request after 9.1359ms - 200
+2026-07-25 13:33:52.248 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.4601ms
+2026-07-25 13:33:52.251 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:02.254 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:02.254 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:02.255 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:02.256 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:02.261 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:02.261 +03:00 [INF] Request GET /health took 5.4355 ms
+2026-07-25 13:34:02.261 +03:00 [INF] Received HTTP response headers after 6.6841ms - 200
+2026-07-25 13:34:02.262 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.193ms
+2026-07-25 13:34:02.261 +03:00 [INF] End processing HTTP request after 7.3094ms - 200
+2026-07-25 13:34:02.264 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:12.272 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:12.272 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:12.278 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:12.279 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:12.282 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:12.282 +03:00 [INF] Received HTTP response headers after 9.4052ms - 200
+2026-07-25 13:34:12.282 +03:00 [INF] End processing HTTP request after 10.0703ms - 200
+2026-07-25 13:34:12.282 +03:00 [INF] Request GET /health took 3.3092 ms
+2026-07-25 13:34:12.282 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.4203ms
+2026-07-25 13:34:12.292 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:22.301 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:22.301 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:22.302 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:22.303 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:22.308 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:22.309 +03:00 [INF] Request GET /health took 5.8108 ms
+2026-07-25 13:34:22.308 +03:00 [INF] Received HTTP response headers after 7.2118ms - 200
+2026-07-25 13:34:22.309 +03:00 [INF] End processing HTTP request after 8.1162ms - 200
+2026-07-25 13:34:22.309 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.8263ms
+2026-07-25 13:34:22.311 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:32.322 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:32.322 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:32.324 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:32.325 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:32.331 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:32.331 +03:00 [INF] Request GET /health took 6.9183 ms
+2026-07-25 13:34:32.331 +03:00 [INF] Received HTTP response headers after 9.02ms - 200
+2026-07-25 13:34:32.332 +03:00 [INF] End processing HTTP request after 9.5841ms - 200
+2026-07-25 13:34:32.332 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.8595ms
+2026-07-25 13:34:32.333 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:42.331 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:42.332 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:42.333 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:42.333 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:42.337 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:42.337 +03:00 [INF] Request GET /health took 4.1501 ms
+2026-07-25 13:34:42.337 +03:00 [INF] Received HTTP response headers after 5.526ms - 200
+2026-07-25 13:34:42.337 +03:00 [INF] End processing HTTP request after 5.9802ms - 200
+2026-07-25 13:34:42.337 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 4.6956ms
+2026-07-25 13:34:42.339 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:34:52.343 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:52.343 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:34:52.346 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:34:52.346 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:34:52.352 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:34:52.352 +03:00 [INF] Received HTTP response headers after 9.0271ms - 200
+2026-07-25 13:34:52.353 +03:00 [INF] End processing HTTP request after 9.9241ms - 200
+2026-07-25 13:34:52.353 +03:00 [INF] Request GET /health took 6.1825 ms
+2026-07-25 13:34:52.354 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.3929ms
+2026-07-25 13:34:52.357 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:02.362 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:02.363 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:02.364 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:02.364 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:02.370 +03:00 [INF] Received HTTP response headers after 7.7827ms - 200
+2026-07-25 13:35:02.370 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:02.371 +03:00 [INF] Request GET /health took 7.0966 ms
+2026-07-25 13:35:02.371 +03:00 [INF] End processing HTTP request after 8.4791ms - 200
+2026-07-25 13:35:02.372 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.9639ms
+2026-07-25 13:35:02.374 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:12.390 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:12.390 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:12.390 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:12.391 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:12.394 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:12.394 +03:00 [INF] Request GET /health took 3.0668 ms
+2026-07-25 13:35:12.394 +03:00 [INF] Received HTTP response headers after 3.8724ms - 200
+2026-07-25 13:35:12.394 +03:00 [INF] End processing HTTP request after 4.2295ms - 200
+2026-07-25 13:35:12.394 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 3.482ms
+2026-07-25 13:35:12.395 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:22.405 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:22.405 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:22.406 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:22.406 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:22.411 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:22.411 +03:00 [INF] Received HTTP response headers after 6.5003ms - 200
+2026-07-25 13:35:22.411 +03:00 [INF] Request GET /health took 5.2688 ms
+2026-07-25 13:35:22.411 +03:00 [INF] End processing HTTP request after 6.913ms - 200
+2026-07-25 13:35:22.412 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.1354ms
+2026-07-25 13:35:22.414 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:32.421 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:32.421 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:32.427 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:32.427 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:32.432 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:32.433 +03:00 [INF] Request GET /health took 5.3972 ms
+2026-07-25 13:35:32.433 +03:00 [INF] Received HTTP response headers after 10.9806ms - 200
+2026-07-25 13:35:32.433 +03:00 [INF] End processing HTTP request after 12.706ms - 200
+2026-07-25 13:35:32.434 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.7437ms
+2026-07-25 13:35:32.437 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:42.443 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:42.443 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:42.444 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:42.445 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:42.450 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:42.450 +03:00 [INF] Received HTTP response headers after 6.7547ms - 200
+2026-07-25 13:35:42.450 +03:00 [INF] Request GET /health took 5.2858 ms
+2026-07-25 13:35:42.450 +03:00 [INF] End processing HTTP request after 7.5016ms - 200
+2026-07-25 13:35:42.451 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.7379ms
+2026-07-25 13:35:42.453 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:35:52.461 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:52.461 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:35:52.462 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:35:52.463 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:35:52.468 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:35:52.468 +03:00 [INF] Request GET /health took 5.8026 ms
+2026-07-25 13:35:52.468 +03:00 [INF] Received HTTP response headers after 6.9092ms - 200
+2026-07-25 13:35:52.469 +03:00 [INF] End processing HTTP request after 7.6445ms - 200
+2026-07-25 13:35:52.469 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.8512ms
+2026-07-25 13:35:52.471 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:02.480 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:02.480 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:02.481 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:02.481 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:02.485 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:02.486 +03:00 [INF] Request GET /health took 4.5676 ms
+2026-07-25 13:36:02.486 +03:00 [INF] Received HTTP response headers after 5.7342ms - 200
+2026-07-25 13:36:02.486 +03:00 [INF] End processing HTTP request after 6.5326ms - 200
+2026-07-25 13:36:02.486 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.5599ms
+2026-07-25 13:36:02.488 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:12.494 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:12.494 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:12.503 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:12.504 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:12.510 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:12.510 +03:00 [INF] Request GET /health took 6.1976 ms
+2026-07-25 13:36:12.510 +03:00 [INF] Received HTTP response headers after 15.3056ms - 200
+2026-07-25 13:36:12.510 +03:00 [INF] End processing HTTP request after 16.0238ms - 200
+2026-07-25 13:36:12.510 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.6337ms
+2026-07-25 13:36:12.513 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:22.519 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:22.520 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:22.521 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:22.522 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:22.529 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:22.529 +03:00 [INF] Request GET /health took 7.5073 ms
+2026-07-25 13:36:22.529 +03:00 [INF] Received HTTP response headers after 8.7567ms - 200
+2026-07-25 13:36:22.529 +03:00 [INF] End processing HTTP request after 9.9345ms - 200
+2026-07-25 13:36:22.529 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.2185ms
+2026-07-25 13:36:22.531 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:32.536 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:32.536 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:32.538 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:32.538 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:32.552 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:32.552 +03:00 [INF] Request GET /health took 13.756 ms
+2026-07-25 13:36:32.552 +03:00 [INF] Received HTTP response headers after 15.5842ms - 200
+2026-07-25 13:36:32.552 +03:00 [INF] End processing HTTP request after 16.0628ms - 200
+2026-07-25 13:36:32.552 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 14.7031ms
+2026-07-25 13:36:32.554 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:42.569 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:42.569 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:42.571 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:42.572 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:42.576 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:42.576 +03:00 [INF] Request GET /health took 4.8116 ms
+2026-07-25 13:36:42.576 +03:00 [INF] Received HTTP response headers after 7.1108ms - 200
+2026-07-25 13:36:42.576 +03:00 [INF] End processing HTTP request after 7.6654ms - 200
+2026-07-25 13:36:42.577 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.3296ms
+2026-07-25 13:36:42.578 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:36:52.586 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:52.586 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:36:52.590 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:36:52.590 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:36:52.595 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:36:52.595 +03:00 [INF] Request GET /health took 4.8836 ms
+2026-07-25 13:36:52.595 +03:00 [INF] Received HTTP response headers after 8.8719ms - 200
+2026-07-25 13:36:52.595 +03:00 [INF] End processing HTTP request after 9.5099ms - 200
+2026-07-25 13:36:52.595 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.7589ms
+2026-07-25 13:36:52.597 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:02.604 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:02.604 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:02.606 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:02.606 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:02.612 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:02.612 +03:00 [INF] Request GET /health took 6.3226 ms
+2026-07-25 13:37:02.612 +03:00 [INF] Received HTTP response headers after 8.0627ms - 200
+2026-07-25 13:37:02.613 +03:00 [INF] End processing HTTP request after 8.6381ms - 200
+2026-07-25 13:37:02.613 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 7.4589ms
+2026-07-25 13:37:02.614 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:12.620 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:12.620 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:12.621 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:12.622 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:12.626 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:12.627 +03:00 [INF] Request GET /health took 4.9237 ms
+2026-07-25 13:37:12.627 +03:00 [INF] Received HTTP response headers after 6.5735ms - 200
+2026-07-25 13:37:12.627 +03:00 [INF] End processing HTTP request after 7.236ms - 200
+2026-07-25 13:37:12.627 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.8145ms
+2026-07-25 13:37:12.629 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:22.636 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:22.636 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:22.638 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:22.639 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:22.645 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:22.646 +03:00 [INF] Request GET /health took 7.635 ms
+2026-07-25 13:37:22.646 +03:00 [INF] Received HTTP response headers after 9.4089ms - 200
+2026-07-25 13:37:22.646 +03:00 [INF] End processing HTTP request after 10.5156ms - 200
+2026-07-25 13:37:22.647 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 8.824ms
+2026-07-25 13:37:22.648 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:32.652 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:32.652 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:32.653 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:32.654 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:32.658 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:32.658 +03:00 [INF] Request GET /health took 4.93 ms
+2026-07-25 13:37:32.658 +03:00 [INF] Received HTTP response headers after 6.1758ms - 200
+2026-07-25 13:37:32.659 +03:00 [INF] End processing HTTP request after 7.3161ms - 200
+2026-07-25 13:37:32.659 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.1506ms
+2026-07-25 13:37:32.662 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:42.665 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:42.665 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:42.666 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:42.666 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:42.671 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:42.671 +03:00 [INF] Request GET /health took 4.849 ms
+2026-07-25 13:37:42.671 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.3958ms
+2026-07-25 13:37:42.671 +03:00 [INF] Received HTTP response headers after 6.4969ms - 200
+2026-07-25 13:37:42.672 +03:00 [INF] End processing HTTP request after 7.0805ms - 200
+2026-07-25 13:37:42.681 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:37:52.692 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:52.693 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:37:52.694 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:37:52.694 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:37:52.697 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:37:52.697 +03:00 [INF] Request GET /health took 2.8738 ms
+2026-07-25 13:37:52.697 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 3.2286ms
+2026-07-25 13:37:52.697 +03:00 [INF] Received HTTP response headers after 3.9369ms - 200
+2026-07-25 13:37:52.697 +03:00 [INF] End processing HTTP request after 4.5324ms - 200
+2026-07-25 13:37:52.698 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:38:02.705 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:02.706 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:02.707 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:38:02.707 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:38:02.713 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:38:02.713 +03:00 [INF] Request GET /health took 5.7754 ms
+2026-07-25 13:38:02.713 +03:00 [INF] Received HTTP response headers after 7.2703ms - 200
+2026-07-25 13:38:02.713 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.465ms
+2026-07-25 13:38:02.713 +03:00 [INF] End processing HTTP request after 7.82ms - 200
+2026-07-25 13:38:02.715 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:38:12.721 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:12.721 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:12.725 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:38:12.725 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:38:12.730 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:38:12.730 +03:00 [INF] Received HTTP response headers after 8.3908ms - 200
+2026-07-25 13:38:12.730 +03:00 [INF] End processing HTTP request after 8.8386ms - 200
+2026-07-25 13:38:12.730 +03:00 [INF] Request GET /health took 4.8293 ms
+2026-07-25 13:38:12.730 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 5.4313ms
+2026-07-25 13:38:12.732 +03:00 [INF] Saved 3 entities to in-memory store.
+2026-07-25 13:38:22.747 +03:00 [INF] Start processing HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:22.747 +03:00 [INF] Sending HTTP request GET http://localhost:57810/health
+2026-07-25 13:38:22.748 +03:00 [INF] Request starting HTTP/1.1 GET http://localhost:57810/health - null null
+2026-07-25 13:38:22.749 +03:00 [INF] Executing endpoint 'Health checks'
+2026-07-25 13:38:22.754 +03:00 [INF] Executed endpoint 'Health checks'
+2026-07-25 13:38:22.754 +03:00 [INF] Received HTTP response headers after 6.3834ms - 200
+2026-07-25 13:38:22.754 +03:00 [INF] End processing HTTP request after 7.1852ms - 200
+2026-07-25 13:38:22.754 +03:00 [INF] Request GET /health took 4.9642 ms
+2026-07-25 13:38:22.754 +03:00 [INF] Request finished HTTP/1.1 GET http://localhost:57810/health - 200 null application/json 6.1636ms
+2026-07-25 13:38:22.756 +03:00 [INF] Saved 3 entities to in-memory store.

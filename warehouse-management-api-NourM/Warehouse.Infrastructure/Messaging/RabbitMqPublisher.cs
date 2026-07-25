@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using Warehouse.Application.Interfaces;
 
@@ -8,14 +9,15 @@ namespace Warehouse.Infrastructure.Messaging;
 public class RabbitMqPublisher : IRabbitMqPublisher
 {
     private readonly ConnectionFactory _connectionFactory; //creates connections to RabbitMQ
-
-    public RabbitMqPublisher()
+    private readonly IConfiguration _configuration;
+    public RabbitMqPublisher(IConfiguration configuration)
     {
+        _configuration = configuration;
         _connectionFactory = new ConnectionFactory
         {
-            HostName = "localhost",
-            UserName = "warehouse",
-            Password = "warehouse"
+            HostName = configuration["RabbitMQ:HostName"],
+            UserName = configuration["RabbitMQ:UserName"],
+            Password = configuration["RabbitMQ:Password"]
         };
     }
 

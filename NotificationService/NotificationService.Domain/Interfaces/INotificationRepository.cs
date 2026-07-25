@@ -11,4 +11,5 @@ public interface INotificationRepository
     Task AddAsync(Notification notification, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<bool> ExistsByEventIdAsync(Guid eventId, CancellationToken cancellationToken);
 }

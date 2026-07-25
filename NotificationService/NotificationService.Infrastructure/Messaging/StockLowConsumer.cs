@@ -77,8 +77,13 @@ public class StockLowConsumer : BackgroundService
         using var scope = _scopeFactory.CreateScope();
 
         var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
+        if (await repository.ExistsByEventIdAsync(stockLowEvent.EventId, CancellationToken.None))
+        {
+            return;
+        }
         var notification = new Notification
         {
+            EventId = stockLowEvent.EventId,
             Type = "LowStock",
             Title = "Low Stock Alert",
             Message = $"Product {stockLowEvent.ProductName} is low in stock. Quantity: {stockLowEvent.QuantityInStock}",

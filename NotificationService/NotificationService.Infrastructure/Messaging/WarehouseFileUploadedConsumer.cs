@@ -74,8 +74,14 @@ public class WarehouseFileUploadedConsumer : BackgroundService
         using var scope = _scopeFactory.CreateScope();
 
         var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
+        
+        if (await repository.ExistsByEventIdAsync(FileUpl.EventId, CancellationToken.None))
+        {
+            return;
+        }
         var notification = new Notification
         {
+            EventId = FileUpl.EventId,
             Type = "FileUploaded",
             Title = "Warehouse File Uploaded",
             Message = $"File '{FileUpl.FileName}' was uploaded for {FileUpl.RelatedEntityType}.",

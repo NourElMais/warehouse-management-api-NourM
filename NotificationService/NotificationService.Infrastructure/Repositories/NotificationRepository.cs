@@ -40,5 +40,9 @@ public class NotificationRepository : INotificationRepository
     {
        await _dbContext.SaveChangesAsync(cancellationToken); 
     }
-    
+
+    public async Task<bool> ExistsByEventIdAsync(Guid eventId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Notifications.AnyAsync(notification => notification.EventId == eventId, cancellationToken);
+    }
 }

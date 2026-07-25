@@ -4,6 +4,7 @@ public class Notification
 {
     public Guid Id { get; set; } = Guid.NewGuid(); //to identify the notification
 
+    public Guid EventId {get; set;}
     public string Type { get; set; } //specifies the nature of the notif (lowstock...)
 
     public string Title { get; set; }  // short title describing what the notif is about

@@ -7,9 +7,9 @@ namespace NotificationService.Application.Notifications.Queries.GetAllNotificati
 public class GetAllNotificationsQuery : IRequest<List<Notification>>
 {
     public string? Type { get; }
-    public string?Severity { get; }
+    public NotificationSeverity?Severity { get; }
     public string? Status { get; }
-    public GetAllNotificationsQuery(string? type, string? severity, string? status, CancellationToken cancellationToken)
+    public GetAllNotificationsQuery(string? type, NotificationSeverity? severity, string? status, CancellationToken cancellationToken)
     {
         Type = type;
         Severity = severity;

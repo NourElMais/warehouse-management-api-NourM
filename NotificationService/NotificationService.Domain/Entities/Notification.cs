@@ -11,7 +11,7 @@ public class Notification
 
     public string Message { get; set; }  //whole message
 
-    public string Severity { get; set; } //warning, info...
+    public NotificationSeverity Severity { get; set; } //warning, info...
 
     public string Status { get; set; } = "Unread"; //default status of the notif
 

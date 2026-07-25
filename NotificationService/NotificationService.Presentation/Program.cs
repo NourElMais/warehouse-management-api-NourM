@@ -28,6 +28,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAl
 builder.Services.AddHostedService<StockLowConsumer>(); //Start StockLowConsumer automatically when the Notification Service starts.
 builder.Services.AddHostedService<WarehouseFileUploadedConsumer>();
 builder.Services.AddHostedService<ProductCreatedConsumer>();
+builder.Services.AddScoped<INotificationPreferenceRepository, NotificationPreferenceRepository>();
 var app = builder.Build(); 
 
 // Configure the HTTP request pipeline.

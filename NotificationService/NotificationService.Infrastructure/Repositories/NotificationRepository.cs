@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NotificationService.Application.Interfaces;
 using NotificationService.Infrastructure.Data;
 using Warehouse.Notifications.Domain.Entities;
@@ -19,7 +14,7 @@ public class NotificationRepository : INotificationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<List<Notification>> GetAllAsync(string? type, string? severity, string? status, CancellationToken cancellationToken)
+    public async Task<List<Notification>> GetAllAsync(string? type, NotificationSeverity? severity, string? status, CancellationToken cancellationToken)
     {
         IQueryable<Notification> query = _dbContext.Notifications;
 
@@ -28,9 +23,9 @@ public class NotificationRepository : INotificationRepository
             query = query.Where(n => n.Type.ToLower() == type.ToLower());
         }
 
-        if (!string.IsNullOrWhiteSpace(severity))
+        if (severity.HasValue)
         {
-            query = query.Where(n => n.Severity.ToLower() == severity.ToLower());
+            query = query.Where(n => n.Severity == severity.Value);
         }
 
         if (!string.IsNullOrWhiteSpace(status))

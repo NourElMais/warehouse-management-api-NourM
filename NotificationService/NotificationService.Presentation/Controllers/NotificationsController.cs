@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotificationService.Application.Notifications.Commands.MarkNotifAsRead;
 using NotificationService.Application.Notifications.Queries.GetAllNotifications;
 using NotificationService.Application.Notifications.Queries.GetNotificationById;
+using Warehouse.Notifications.Domain.Entities;
 
 namespace NotificationService.Presentation.Controllers;
 
@@ -21,7 +22,7 @@ public class NotificationsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllNotif([FromQuery] string?  type, [FromQuery] string? severity,[FromQuery] string? status, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllNotif([FromQuery] string?  type, [FromQuery] NotificationSeverity? severity,[FromQuery] string? status, CancellationToken cancellationToken)
     {
         var notif = await _mediator.Send(new GetAllNotificationsQuery(type,severity,status,cancellationToken), cancellationToken);
         return Ok(notif);
@@ -35,6 +36,7 @@ public class NotificationsController : ControllerBase
             return BadRequest("Invalid notification id");
 
         var notif = await _mediator.Send(new GetNotificationByIdQuery(guid), cancellationToken);
+        
         if (notif is null)
         {
             return NotFound("The notification with the specified Id was not found");

@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NotificationService.Application.IntegrationEvents;
 using NotificationService.Application.Interfaces;
 using RabbitMQ.Client;
@@ -12,27 +14,53 @@ namespace NotificationService.Infrastructure.Messaging;
 
 public class WarehouseFileUploadedConsumer : BackgroundService
 {
-     private readonly IServiceScopeFactory _scopeFactory;
-     
-    public WarehouseFileUploadedConsumer(IServiceScopeFactory scopeFactory)
+    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly ILogger<WarehouseFileUploadedConsumer> _logger;
+    private readonly IConfiguration _configuration;
+
+    public WarehouseFileUploadedConsumer(IServiceScopeFactory scopeFactory, ILogger<WarehouseFileUploadedConsumer> logger, IConfiguration configuration)
     {
         _scopeFactory = scopeFactory;
+        _logger = logger;
+        _configuration = configuration;
     }
-    
+
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        var connectionFactory = new ConnectionFactory()
+        while (!cancellationToken.IsCancellationRequested)
         {
-            HostName = "localhost",
-            UserName = "warehouse",
-            Password = "warehouse"
+            try
+            {
+                await StartConsumerAsync(cancellationToken);
+
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogWarning($"RabbitMQ is unavailable. Retrying in 5 seconds. Error: {exception.Message}");
+
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
+            }
+        }
+    }
+
+    private async Task StartConsumerAsync(CancellationToken cancellationToken)
+    {
+        var connectionFactory = new ConnectionFactory
+        {
+            HostName = _configuration["RabbitMQ:HostName"],
+            UserName = _configuration["RabbitMQ:UserName"],
+            Password = _configuration["RabbitMQ:Password"]
         };
 
-        await using var connection = await connectionFactory.CreateConnectionAsync(cancellationToken); //connects the Notification Service to RabbitMQ.
+        var connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
 
-        await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
+        var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-        //creates a queue called: stock.low.queue
         await channel.QueueDeclareAsync(
             queue: "file.uploaded.queue",
             durable: true,
@@ -40,15 +68,14 @@ public class WarehouseFileUploadedConsumer : BackgroundService
             autoDelete: false,
             cancellationToken: cancellationToken);
 
-        //we bind the queue to the exchange
-        //Whenever the exchange warehouse.events receives a message with routing key stock.low, put it into stock.low.queue
         await channel.QueueBindAsync(
             queue: "file.uploaded.queue",
             exchange: "warehouse.events",
             routingKey: "file.uploaded",
             cancellationToken: cancellationToken);
-        
-        var consumer = new AsyncEventingBasicConsumer(channel); //this creates the rabbitmq consumer.
+
+        var consumer = new AsyncEventingBasicConsumer(channel);
+
         consumer.ReceivedAsync += OnMessageReceivedAsync;
 
         await channel.BasicConsumeAsync(
@@ -56,8 +83,6 @@ public class WarehouseFileUploadedConsumer : BackgroundService
             autoAck: true,
             consumer: consumer,
             cancellationToken: cancellationToken);
-        
-        await Task.Delay(Timeout.Infinite, cancellationToken); //keeps the background service alive
     }
 
     private async Task OnMessageReceivedAsync(object sender, BasicDeliverEventArgs eventArgs)
@@ -66,35 +91,44 @@ public class WarehouseFileUploadedConsumer : BackgroundService
 
         string json = Encoding.UTF8.GetString(body);
 
-        WarehouseFileUploadedEvent? FileUpl = JsonSerializer.Deserialize<WarehouseFileUploadedEvent>(json);//converts the JSON text into a real C# object, so we can access its properties
+        WarehouseFileUploadedEvent? fileUploadedEvent = JsonSerializer.Deserialize<WarehouseFileUploadedEvent>(json);
 
-        if (FileUpl is null)
-            return;
-        
-        using var scope = _scopeFactory.CreateScope();
-
-        var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
-        
-        if (await repository.ExistsByEventIdAsync(FileUpl.EventId, CancellationToken.None))
+        if (fileUploadedEvent is null)
         {
             return;
         }
+
+        using var scope = _scopeFactory.CreateScope();
+
+        var notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
+
+        var preferenceRepository = scope.ServiceProvider.GetRequiredService<INotificationPreferenceRepository>();
+
+        bool alreadyExists = await notificationRepository.ExistsByEventIdAsync(fileUploadedEvent.EventId, CancellationToken.None);
+
+        if (alreadyExists)
+        {
+            return;
+        }
+
+        var preference = await preferenceRepository.GetByTypeAsync("FileUploaded", CancellationToken.None);
+
         var notification = new Notification
         {
-            EventId = FileUpl.EventId,
+            EventId = fileUploadedEvent.EventId,
             Type = "FileUploaded",
             Title = "Warehouse File Uploaded",
-            Message = $"File '{FileUpl.FileName}' was uploaded for {FileUpl.RelatedEntityType}.",
-            Severity = FileUpl.Severity,
-            RelatedEntityId = FileUpl.RelatedEntityId,
-            RelatedEntityType = FileUpl.RelatedEntityType
+            Message = $"File '{fileUploadedEvent.FileName}' was uploaded for {fileUploadedEvent.RelatedEntityType}.",
+            Severity =preference?.Severity ?? NotificationSeverity.Information,
+            RelatedEntityId = fileUploadedEvent.RelatedEntityId,
+            RelatedEntityType = fileUploadedEvent.RelatedEntityType
         };
 
-        await repository.AddAsync(notification, CancellationToken.None);
+        await notificationRepository.AddAsync(notification, CancellationToken.None);
 
-        Console.WriteLine(FileUpl.FileName);
-        Console.WriteLine(FileUpl.RelatedEntityType);
-
-        await Task.CompletedTask;
+        _logger.LogInformation(
+            "File {FileName} was uploaded for {RelatedEntityType}",
+            fileUploadedEvent.FileName,
+            fileUploadedEvent.RelatedEntityType);
     }
 }

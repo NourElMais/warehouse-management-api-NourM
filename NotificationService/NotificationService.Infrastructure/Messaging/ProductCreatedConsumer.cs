@@ -104,17 +104,18 @@ public class ProductCreatedConsumer : BackgroundService
         {
             return;
         }
-        var notification = new Notification()
+        var preferenceRepository = scope.ServiceProvider.GetRequiredService<INotificationPreferenceRepository>();
+        var preference = await preferenceRepository.GetByTypeAsync("ProductCreated", CancellationToken.None);
+        var notification = new Notification
         {
             EventId = prodCreatedEvent.EventId,
             Type = "ProductCreated",
             Title = "Product Created",
             Message = $"Product {prodCreatedEvent.ProductName} has been created",
-            Severity = "Information",
+            Severity = preference?.Severity ?? NotificationSeverity.Information,
             RelatedEntityId = prodCreatedEvent.ProductId.ToString(),
             RelatedEntityType = "Product"
         };
-
         await repository.AddAsync(notification, CancellationToken.None);
 
         _logger.LogInformation("Product {ProductName} with id {id} has been created",  prodCreatedEvent.ProductName, prodCreatedEvent.ProductId);

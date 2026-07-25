@@ -107,13 +107,16 @@ public class StockLowConsumer : BackgroundService
         {
             return;
         }
+        var preferenceRepository = scope.ServiceProvider.GetRequiredService<INotificationPreferenceRepository>();
+        var preference = await preferenceRepository.GetByTypeAsync("LowStock", CancellationToken.None);
+        
         var notification = new Notification
         {
             EventId = stockLowEvent.EventId,
             Type = "LowStock",
             Title = "Low Stock Alert",
             Message = $"Product {stockLowEvent.ProductName} is low in stock. Quantity: {stockLowEvent.QuantityInStock}",
-            Severity = "Warning",
+            Severity = preference?.Severity ?? NotificationSeverity.Warning, //If preference exists, use its Severity; otherwise, use NotificationSeverity.Warning
             RelatedEntityId = stockLowEvent.ProductId.ToString(),
             RelatedEntityType = "Product"
         };

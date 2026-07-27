@@ -1,16 +1,13 @@
 using AutoMapper;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Moq;
 using Warehouse.Application.Products.Queries;
 using Warehouse.Application.ViewModels;
-using Warehouse.Domain.Exceptions;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
-using Warehouse.Domain.Suppliers;
 using Warehouse.Infrastructure.Storage;
 using Warehouse.Presentation.Controllers;
 using Warehouse.Presentation.Resources;

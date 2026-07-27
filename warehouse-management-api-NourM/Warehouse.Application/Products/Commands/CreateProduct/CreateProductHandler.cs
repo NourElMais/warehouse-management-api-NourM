@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Warehouse.Application.IntegrationEvents;
+using Warehouse.Application.Interfaces;
 using Warehouse.Application.ViewModels;
 using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
@@ -12,11 +14,13 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<CreateProductHandler> _logger;
-    public CreateProductHandler(IProductRepository productRepository, IMapper mapper, ILogger<CreateProductHandler> logger)
+    private readonly IRabbitMqPublisher _rabbitMqPublisher;
+    public CreateProductHandler(IProductRepository productRepository, IMapper mapper, ILogger<CreateProductHandler> logger, IRabbitMqPublisher rabbitMqPublisher)
     {
         _productRepository = productRepository;
         _mapper = mapper;
         _logger = logger;
+        _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     public async Task<ProductViewModel> Handle(CreateProductCommand command, CancellationToken cancellationToken)
@@ -32,7 +36,20 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Produc
         );
         
        await _productRepository.AddAsync(product, cancellationToken);
+       var productCreatedEvent = new ProductCreatedEvent
+       {
+           ProductId = Guid.Parse(product.Id),
+           ProductName = product.Name,
+           SKU = product.SKU
+       };
+
+       await _rabbitMqPublisher.PublishAsync(
+           "product.created",
+           productCreatedEvent,
+           cancellationToken);
+       
        _logger.LogInformation("Product {ProductId} created successfully", product.Id);
+       
        return _mapper.Map<ProductViewModel>(product);
     }
 }

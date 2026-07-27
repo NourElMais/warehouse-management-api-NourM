@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Warehouse.Application.Exceptions;
+using Warehouse.Application.IntegrationEvents;
+using Warehouse.Application.Interfaces;
 using Warehouse.Domain.ProductImages;
 using Warehouse.Domain.Repositories;
 using Warehouse.Infrastructure.Storage;
@@ -13,15 +15,14 @@ public class UploadProductImageHandler
     private readonly IProductRepository _productRepository;
     private readonly ILogger<UploadProductImageHandler> _logger;
     private readonly IStorageService _storageService;
+    private readonly IRabbitMqPublisher _publisher;
 
-    public UploadProductImageHandler(
-        IProductRepository productRepository,
-        ILogger<UploadProductImageHandler> logger,
-        IStorageService storageService)
+    public UploadProductImageHandler(IProductRepository productRepository, ILogger<UploadProductImageHandler> logger, IStorageService storageService, IRabbitMqPublisher publisher)
     {
         _productRepository = productRepository;
         _logger = logger;
         _storageService = storageService;
+        _publisher = publisher;
     }
 
     public async Task<UploadProductImageResult> Handle(UploadProductImageCommand request, CancellationToken cancellationToken)
@@ -46,6 +47,15 @@ public class UploadProductImageHandler
         var productImage = new ProductImage(request.ProductId, request.FileName, imagePath);
         product.AddImage(productImage);
         await _productRepository.AddImageAsync(productImage, cancellationToken);
+        var fileUploadedEvent = new WarehouseFileUploadedEvent
+        {
+            RelatedEntityId = request.ProductId.ToString(),
+            RelatedEntityType = "Product",
+            FileName = request.FileName,
+        };
+
+        await _publisher.PublishAsync("file.uploaded", fileUploadedEvent, cancellationToken);
+        
         _logger.LogInformation(
             "Image {FileName} uploaded for product {ProductId}",
             request.FileName,

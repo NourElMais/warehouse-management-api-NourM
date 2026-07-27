@@ -440,3 +440,37 @@ and to integrate object storage using MinIO for handling files (instead of stori
 - In the products controller, I commented out 2 endpoints --> these were used to set the roles to admin and user, using the UID that i got from firebase.
 - Image files are stored in MinIO, while the database stores only the required metadata.
 - Screenshots are available in the screenshots folder.
+
+
+# Session 8 (Jhonny Abou Rjeily)
+
+## Implemented Features
+
+RabbitMQ Integration
+- Integrated RabbitMQ into the solution using Docker Compose.
+- The publisher is in the Warehouse API, and its job is to publish integration events when important business actions occur, which are:
+   FileUploaded, Quantity in stock is low, a Product is created.
+
+Notification Service
+- Created this service in a seperate solution, to follow microservices architecture, as explained in the lecture.
+- It has 3 background consumers for each event, and they subscribe to RabbitMQ queues and process incoming events asynchronously.
+- Once the consumers receive the events, they create Notifications, that are stored in a dedicated PostgreSQL database (different from that of the Warehouse API).
+
+Notification Preferences (Bonus)
+- Added notification preferences to control how important each notification type is. 
+- The user can specify the seeverity of each notification type, and he can choose from a predefined set of values:Warning, Informational, Critical.
+
+## API Endpoints Added
+
+### Notifications
+- `GET /api/notifications`
+- `GET /api/notifications/{id}`
+- `PUT /api/notifications/{id}/read`
+
+### Notification Preferences (Bonus)
+- `GET /api/notificationpreferences`
+- `PUT /api/notificationpreferences/{notificationType}`
+
+## Notes
+- No further notes.
+- Please refer to the screenshots folder for screenshots.

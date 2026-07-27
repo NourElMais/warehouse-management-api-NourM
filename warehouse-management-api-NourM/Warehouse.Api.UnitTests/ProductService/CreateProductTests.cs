@@ -22,7 +22,7 @@ public class CreateProductTests
 
    private readonly CreateProductHandler _handler;
 
-   //Note: .Object: Gives the fake repository inside the mock
+   //Note: .Object: Gives the fake repository (or mapper, or ILogger) inside the mock
    //We create the Mock objects inside the constructor
    public CreateProductTests()
    {
@@ -30,8 +30,7 @@ public class CreateProductTests
       _mapperMock = new Mock<IMapper>();
       _loggerMock = new Mock<ILogger<CreateProductHandler>>();
       _publisherMock = new Mock<IRabbitMqPublisher>();
-      _handler = new CreateProductHandler(_productRepositoryMock.Object, _mapperMock.Object, _loggerMock.Object,
-         _publisherMock.Object
+      _handler = new CreateProductHandler(_productRepositoryMock.Object, _mapperMock.Object, _loggerMock.Object, _publisherMock.Object
       );
    }
 
@@ -51,12 +50,11 @@ public class CreateProductTests
       };
 
       // .SetUp: Define what the mock should do when the method is called.
-      // x represents the the object that will be returned by _productRepositoryMock.Object.
+      // x represents the object that will be returned by _productRepositoryMock.Object.
       _productRepositoryMock.Setup(x => x.AddAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
          .Returns(Task.CompletedTask);
 
-      _publisherMock.Setup(x =>
-            x.PublishAsync(It.IsAny<string>(), It.IsAny<ProductCreatedEvent>(), It.IsAny<CancellationToken>()))
+      _publisherMock.Setup(x => x.PublishAsync(It.IsAny<string>(), It.IsAny<ProductCreatedEvent>(), It.IsAny<CancellationToken>()))
          .Returns(Task.CompletedTask);
 
       var expectedResult = new ProductViewModel
@@ -75,8 +73,7 @@ public class CreateProductTests
       var result = await _handler.Handle(product, CancellationToken.None);
       result.Should().BeEquivalentTo(expectedResult);
    }
-
-
+   
    //Test2: duplicate SKU throws exception 
    [Fact]
    public async Task CreateProduct_duplicateSKU_ShouldFail()
@@ -93,7 +90,7 @@ public class CreateProductTests
       };
 
       // .SetUp: Define what the mock should do when the method is called.
-      // x represents the the object that will be returned by _productRepositoryMock.Object.
+      // x represents the object that will be returned by _productRepositoryMock.Object.
 
       var existingProduct = new Product("Ipad", "ipad/123", "Ipad 11", 400, 10, "e641e362-a1a1-44b0-bb25-f2d7cb296d31",
          new DateTime(2026, 7, 27));

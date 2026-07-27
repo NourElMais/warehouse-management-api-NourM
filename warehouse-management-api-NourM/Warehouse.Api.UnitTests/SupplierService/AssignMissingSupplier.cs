@@ -7,7 +7,7 @@ namespace Warehouse.Api.UnitTests.SupplierService;
 public class AssignMissingSupplier
 {
     [Fact]
-    public void AssignSupplier_ProductIsArchived_ShouldThrowException()
+    public void AssignSupplier_SupplierIsNotActive_ShouldThrowException()
     {
         var product = new Product(
             "Ipad",

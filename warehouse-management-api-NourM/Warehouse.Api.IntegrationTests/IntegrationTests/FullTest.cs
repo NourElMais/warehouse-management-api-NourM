@@ -1,6 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Warehouse.Api.IntegrationTests.TestUtilities.Builders;
+using Warehouse.Api.IntegrationTests.TestUtilities.Helpers;
+using Warehouse.Api.IntegrationTests.TestUtilities.TestData;
 using Warehouse.Application.ViewModels;
 using Warehouse.Presentation.Contracts;
 
@@ -14,28 +17,12 @@ public class FullTest : IClassFixture<CustomWebApplicationFactory>
         {
             _client = factory.CreateClient();
         }
-        //helper method that builds the HTTP request that will be sent to the API
-        private static MultipartFormDataContent CreateForm(byte[] bytes, string fileName)
-        {
-            var form = new MultipartFormDataContent();
-
-            var file = new ByteArrayContent(bytes);
-
-            form.Add(file, "image", fileName);
-            return form;
-        }
 
         [Fact]
         public async Task FullBusinessFlow_ShouldCompleteSuccessfully()
         {
             //1- Create Supplier
-            var supplierRequest = new CreateSupplierRequest
-            {
-                Name = "Rim",
-                Country = "Lebanon",
-                ContactEmail = "Rim@mail.com",
-                PhoneNumber = "81-123456"
-            };
+            var supplierRequest = SupplierBuilder.Create();
 
             var supplierResponse = await _client.PostAsJsonAsync("/api/suppliers", supplierRequest);
             Assert.Equal(HttpStatusCode.OK, supplierResponse.StatusCode);
@@ -45,23 +32,14 @@ public class FullTest : IClassFixture<CustomWebApplicationFactory>
             var supplierId = supplier.Id;
             
             //2- Create product
-            var productRequest = new CreateProductRequest
-            {
-                Name = "Ipad",
-                SKU = "ipad123",
-                Description = "Ipad 10 Air",
-                Price = 900,
-                QuantityInStock = 8,
-                SupplierId = "supplier-id1",
-                ExpiryDate = new DateTime(2028, 7, 27)
-            };
-
+            var productRequest = ProductBuilder.Create();
+            productRequest.SupplierId = TestData.SupplierId;
             var productResponse = await _client.PostAsJsonAsync("/api/products", productRequest);
             Assert.Equal(HttpStatusCode.OK, productResponse.StatusCode);
             var product = await productResponse.Content.ReadFromJsonAsync<ProductViewModel>();
-
+            
             Assert.NotNull(product);
-
+            
             var productId = product.Id;
 
             
@@ -70,11 +48,14 @@ public class FullTest : IClassFixture<CustomWebApplicationFactory>
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var getResponse = await _client.GetAsync($"/api/products/{productId}");
             Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
-            var content = await getResponse.Content.ReadAsStringAsync();
-            Assert.Contains(supplierId, content);
+            // var content = await getResponse.Content.ReadAsStringAsync();
+            // Assert.Contains(supplierId, content);
+            var assignedProduct = await getResponse.Content.ReadFromJsonAsync<ProductViewModel>();
+            Assert.NotNull(assignedProduct);
+            assignedProduct.SupplierId.Should().Be(supplierId);
             
             // 4- Upload image
-            using var form = CreateForm(new byte[] { 1, 2, 3 }, "ipad.jpg");
+            using var form =  MultiPartFormHelper.Create(new byte[] { 1, 2, 3 }, "ipad.jpg");
 
             var imageResponse = await _client.PostAsync($"/api/products/{productId}/image", form);
             Assert.Equal(HttpStatusCode.OK, imageResponse.StatusCode);
@@ -105,7 +86,7 @@ public class FullTest : IClassFixture<CustomWebApplicationFactory>
 
             // 8. verify archived state
             var res = await _client.GetAsync($"/api/products/{productId}");
-            Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
             var archivedProduct = await res.Content.ReadFromJsonAsync<ProductViewModel>();
 

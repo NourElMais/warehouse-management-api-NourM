@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using Warehouse.Domain.Products;
+using Warehouse.Api.IntegrationTests.TestUtilities.Builders;
+using Warehouse.Api.IntegrationTests.TestUtilities.TestData;
+using Warehouse.Application.ViewModels;
 using Warehouse.Presentation.Contracts;
 
 namespace Warehouse.Api.IntegrationTests.IntegrationTests;
@@ -27,7 +29,7 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task GetProductById_ShouldReturnOk()
     {
-        var response = await _client.GetAsync("/api/products/35feb37b-05e6-4b53-bb7b-264ecc8714c1");
+        var response = await _client.GetAsync($"/api/products/{TestData.LaptopId}");
         var content = await response.Content.ReadAsStringAsync();
 
         Assert.Contains("Laptop", content);
@@ -38,7 +40,7 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task GetProductByInvalidId_ShouldReturnNotFound()
     {
-        var response = await _client.GetAsync("/api/products/39feb37b-05e6-4b53-bb7b-264ecc8714c1");
+        var response = await _client.GetAsync($"/api/products/{TestData.InvalidProductId}");
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     
@@ -65,16 +67,7 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateProduct_ShouldReturnOk()
     {
-        var request = new CreateProductRequest
-        {
-            Name = "Ipad",
-            SKU = "ipad123",
-            Description = "Ipad 10 Air",
-            Price = 900,
-            QuantityInStock = 8,
-            SupplierId = "supplier-id1",
-            ExpiryDate = new DateTime(2028, 7, 27)
-        };
+        var request = ProductBuilder.Create();
 
         var response = await _client.PostAsJsonAsync("/api/products", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -90,9 +83,9 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateProduct_DuplicateSKU_ShouldReturnBadRequest()
     {
-        var prod = new Product("name", "lap/123", "desc", 1200, 23, "supplier-id1", DateTime.UtcNow.AddYears(2),
-            "35feb37b-05e6-4b53-bb7b-264ecc8904c1");
-        var response = await _client.PostAsJsonAsync("/api/products", prod);
+        var request = ProductBuilder.Create();
+        request.SKU = "lap/123";
+        var response = await _client.PostAsJsonAsync("/api/products", request);
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
     
@@ -104,12 +97,15 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
         {
             QuantityInStock = 20
         };
-        var response = await _client.PostAsJsonAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0/quantity", request);
-        var getResponse = await _client.GetAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0");
-        var content = await getResponse.Content.ReadAsStringAsync();
-
-        Assert.Contains("20", content);
+        var response = await _client.PostAsJsonAsync($"/api/products/{TestData.ProductId}/quantity", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var getResponse = await _client.GetAsync($"/api/products/{TestData.ProductId}");
+        Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+
+        var product = await getResponse.Content.ReadFromJsonAsync<ProductViewModel>();
+
+        Assert.NotNull(product);
+        Assert.Equal(20, product.QuantityInStock);
     }
     
     //Test9: price update works
@@ -120,27 +116,36 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
         {
             Price = 120
         };
-        var response = await _client.PostAsJsonAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0/price", request);
-        var getResponse = await _client.GetAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0");
-        var content = await getResponse.Content.ReadAsStringAsync();
-
-        Assert.Contains("120", content);
+        
+        var response = await _client.PostAsJsonAsync($"/api/products/{TestData.ProductId}/price", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
+        var getResponse = await _client.GetAsync($"/api/products/{TestData.ProductId}");
+        Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+        
+        var product = await getResponse.Content.ReadFromJsonAsync<ProductViewModel>();
+
+        Assert.NotNull(product);
+        Assert.Equal(120, product.Price);
     }
     
     //Test10: delete archives product and deleted product still exists but archived 
     [Fact]
     public async Task DeleteProduct_ShouldReturnOk()
     {
-        var response = await _client.DeleteAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0");
+        var response = await _client.DeleteAsync($"/api/products/{TestData.ProductId}");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var getResponse = await _client.GetAsync("/api/products/c50d9e28-60be-407d-a163-1af84755c3e0");
+        var getResponse = await _client.GetAsync($"/api/products/{TestData.ProductId}");
 
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 
-        var content = await getResponse.Content.ReadAsStringAsync();
+        // var content = await getResponse.Content.ReadAsStringAsync();
+        //
+        // Assert.Contains("\"isArchived\":true", content);
+        var product = await getResponse.Content.ReadFromJsonAsync<ProductViewModel>();
 
-        Assert.Contains("\"isArchived\":true", content);
+        Assert.NotNull(product);
+        Assert.True(product.IsArchived);
         
     }
     

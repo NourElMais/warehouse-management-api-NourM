@@ -1,6 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using Warehouse.Presentation.Contracts;
+using FluentAssertions;
+using Warehouse.Api.IntegrationTests.TestUtilities.Builders;
+using Warehouse.Api.IntegrationTests.TestUtilities.TestData;
+using Warehouse.Application.ViewModels;
 
 namespace Warehouse.Api.IntegrationTests.IntegrationTests;
 
@@ -17,13 +20,7 @@ public class SupplierEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task CreateSupplier_ShouldReturnOk()
     {
-        var request = new CreateSupplierRequest()
-        {
-            Name = "Nour",
-            Country = "Lebanon",
-            ContactEmail = "nour@email.com",
-            PhoneNumber = "03-421605"
-        };
+        var request = SupplierBuilder.Create();
 
         var response = await _client.PostAsJsonAsync("/api/suppliers", request);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -41,12 +38,17 @@ public class SupplierEndpointTests : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task DeactivateSupplier_ShouldReturnOk()
     {
-        var response = await _client.DeleteAsync("/api/suppliers/ba0d85a1-3913-4753-aeea-6504270e3ab1");
+        var response = await _client.DeleteAsync($"/api/suppliers/{TestData.SupplierId}");
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var getResponse = await _client.GetAsync("/api/suppliers/ba0d85a1-3913-4753-aeea-6504270e3ab1");
+        var getResponse = await _client.GetAsync($"/api/suppliers/{TestData.SupplierId}");
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);//if it succeeds then its still in the list
-        var content = await getResponse.Content.ReadAsStringAsync();
-        Assert.Contains("\"isActive\":false", content);
+        
+        // var content = await getResponse.Content.ReadAsStringAsync();
+        // Assert.Contains("\"isActive\":false", content);
+        
+        var supplier = await getResponse.Content.ReadFromJsonAsync<SupplierViewModel>();
+        Assert.NotNull(supplier);
+        supplier.IsActive.Should().Be(false);
     }
     
     //Test4: assign supplier to product 
@@ -54,17 +56,21 @@ public class SupplierEndpointTests : IClassFixture<CustomWebApplicationFactory>
     public async Task  AssignSupplierToProduct_ShouldReturnOK()
     {
 
-        const string productId = "c50d9e28-60be-407d-a163-1af84755c3e0";
+        const string productId = TestData.ProductId;
 
-        const string supplierId = "ba0d85a1-3913-4753-aeea-6504270e3ab1";
+        const string supplierId = TestData.SupplierId;
 
         var response = await _client.PostAsync($"/api/products/{productId}/assign-supplier/{supplierId}", null);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var getResponse = await _client.GetAsync($"/api/products/{productId}");
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
 
-        var content = await getResponse.Content.ReadAsStringAsync();
+        // var content = await getResponse.Content.ReadAsStringAsync();
+        //
+        // Assert.Contains(supplierId, content);
+        var product = await getResponse.Content.ReadFromJsonAsync<ProductViewModel>();
 
-        Assert.Contains(supplierId, content);
+        Assert.NotNull(product);
+        product.SupplierId.Should().Be(TestData.SupplierId);
     }
 }

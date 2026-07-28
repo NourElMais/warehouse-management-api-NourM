@@ -34,8 +34,4 @@
       <ProjectReference Include="..\Warehouse.Presentation\Warehouse.Presentation.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MiddlewareTests\" />
-    </ItemGroup>
-
 </Project>

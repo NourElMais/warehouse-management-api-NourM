@@ -14,7 +14,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Testing");
+        builder.UseEnvironment("Testing"); //will automatically read appsettings.Testing.json
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IProductRepository>();

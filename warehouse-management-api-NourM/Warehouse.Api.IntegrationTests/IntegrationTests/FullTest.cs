@@ -33,7 +33,6 @@ public class FullTest : IClassFixture<CustomWebApplicationFactory>
             
             //2- Create product
             var productRequest = ProductBuilder.Create();
-            productRequest.SupplierId = TestData.SupplierId;
             var productResponse = await _client.PostAsJsonAsync("/api/products", productRequest);
             Assert.Equal(HttpStatusCode.OK, productResponse.StatusCode);
             var product = await productResponse.Content.ReadFromJsonAsync<ProductViewModel>();

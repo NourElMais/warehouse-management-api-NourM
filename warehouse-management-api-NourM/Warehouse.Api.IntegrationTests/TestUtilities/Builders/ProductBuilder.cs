@@ -13,7 +13,8 @@ public class ProductBuilder
             Description = "Ipad Air",
             Price = 900,
             QuantityInStock = 8,
-            ExpiryDate = DateTime.UtcNow.AddYears(1)
+            ExpiryDate = DateTime.UtcNow.AddYears(1),
+            SupplierId =TestData.TestData.SupplierId
         };
     }
 }

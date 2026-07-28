@@ -7,13 +7,21 @@ using Warehouse.Application.ViewModels;
 
 namespace Warehouse.Api.IntegrationTests.IntegrationTests;
 
-public class SupplierEndpointTests : IClassFixture<CustomWebApplicationFactory>
+public class SupplierEndpointTests : IDisposable
 {
-    private readonly HttpClient _client; //like postmann or swagger
+    private readonly CustomWebApplicationFactory _factory;
+    private readonly HttpClient _client;
 
-    public SupplierEndpointTests(CustomWebApplicationFactory factory)
+    public SupplierEndpointTests()
     {
-        _client = factory.CreateClient();
+        _factory = new CustomWebApplicationFactory();
+        _client = _factory.CreateClient();
+    }
+
+    public void Dispose()
+    {
+        _client.Dispose();
+        _factory.Dispose();
     }
 
     //Test1: create supplier
@@ -57,7 +65,6 @@ public class SupplierEndpointTests : IClassFixture<CustomWebApplicationFactory>
     {
 
         const string productId = TestData.ProductId;
-
         const string supplierId = TestData.SupplierId;
 
         var response = await _client.PostAsync($"/api/products/{productId}/assign-supplier/{supplierId}", null);

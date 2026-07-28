@@ -29,4 +29,8 @@
       <ProjectReference Include="..\Warehouse.Presentation\Warehouse.Presentation.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="TestResults\" />
+    </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ public class CreateProductRequest
     public string Name { get; set; }
 
     [Required]
-    [StringLength(30)]
+    [StringLength(200)]
     public string SKU { get; set; }
 
     [Required]

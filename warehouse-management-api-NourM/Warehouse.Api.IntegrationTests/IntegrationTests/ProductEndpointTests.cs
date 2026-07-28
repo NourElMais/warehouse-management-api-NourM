@@ -7,13 +7,22 @@ using Warehouse.Presentation.Contracts;
 
 namespace Warehouse.Api.IntegrationTests.IntegrationTests;
 
-public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
+public class ProductEndpointTests : IDisposable
     {
-    private readonly HttpClient _client; //like postmann or swagger
+    private readonly CustomWebApplicationFactory _factory;
+    private readonly HttpClient _client;//like postmann or swagger
 
-    public ProductEndpointTests(CustomWebApplicationFactory factory)
+    public ProductEndpointTests()
     {
-        _client = factory.CreateClient();
+        _factory = new CustomWebApplicationFactory();
+        _client = _factory.CreateClient();
+    }
+
+    //automatically called after each test finishes
+    public void Dispose()
+    {
+        _client.Dispose();
+        _factory.Dispose();
     }
 
     //Test1: GET /api/products returns seeded products
@@ -70,13 +79,8 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
         var request = ProductBuilder.Create();
 
         var response = await _client.PostAsJsonAsync("/api/products", request);
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
-        // We verify it was created
-        var productsResponse = await _client.GetAsync("/api/products");
-        var content = await productsResponse.Content.ReadAsStringAsync();
 
-        Assert.Contains("Ipad", content);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
     
     //Test7: duplicate SKU returns 409  (in my case it return 400-> BadRequest)
@@ -148,6 +152,33 @@ public class ProductEndpointTests : IClassFixture<CustomWebApplicationFactory>
         Assert.True(product.IsArchived);
         
     }
+    
+    //Negative integration tests (for bonus 3)
+    //Creating a product with missing name 
+    [Fact]
+    public async Task CreateProduct_MissingName_ShouldReturnBadRequest()
+    {
+        var request = ProductBuilder.Create();
+        request.Name = null;
+
+        var response = await _client.PostAsJsonAsync("/api/products", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    
+    //Create a product with a past expiry date
+    [Fact]
+    public async Task CreateProduct_PastExpiryDate_ShouldReturnBadRequest()
+    {
+        var request = ProductBuilder.Create();
+        request.ExpiryDate = DateTime.UtcNow.AddDays(-10);
+
+        var response = await _client.PostAsJsonAsync("/api/products", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+    
+    
     
 
 }

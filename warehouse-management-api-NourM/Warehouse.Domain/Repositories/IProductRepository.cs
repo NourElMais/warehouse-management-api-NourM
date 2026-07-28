@@ -8,4 +8,5 @@ public interface IProductRepository: IRepository<Product>
     Task<List<Product>> SearchAsync(string? name, string? supplier, CancellationToken cancellationToken);
     Task AddImageAsync(ProductImage image, CancellationToken cancellationToken);
     Task<ProductImage?> GetImageAsync(string productId, CancellationToken cancellationToken);
+    Task<Product?> GetBySkuAsync(string sku, CancellationToken cancellationToken);
 }

@@ -4,7 +4,7 @@ using Warehouse.Domain.Products;
 
 namespace Warehouse.Domain.Suppliers;
 
-public class CreateSupplier
+public class Supplier
 {
     public string Id { get; private set; }
     public string Name { get; private set; }
@@ -15,11 +15,11 @@ public class CreateSupplier
     
     public virtual List<Product> Products { get; private set; } = new List<Product>();
 
-    private CreateSupplier()
+    private Supplier()
     {
         
     }
-    public CreateSupplier(
+    public Supplier(
         string name,
         string country,
         string contactEmail,

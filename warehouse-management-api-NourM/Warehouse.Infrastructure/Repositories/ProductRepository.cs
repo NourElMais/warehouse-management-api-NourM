@@ -159,4 +159,9 @@ public class ProductRepository : IProductRepository
     {
         return await _db.ProductImages.FirstOrDefaultAsync(image => image.ProductId == productId, cancellationToken);
     }
+    
+    public async Task<Product?> GetBySkuAsync(string sku, CancellationToken cancellationToken)
+    {
+        return await _db.Products.FirstOrDefaultAsync(p => p.SKU.ToLower() == sku.ToLower(), cancellationToken);
+    }
 }

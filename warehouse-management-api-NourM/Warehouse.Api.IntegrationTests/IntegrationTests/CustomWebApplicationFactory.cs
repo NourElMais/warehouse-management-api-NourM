@@ -19,6 +19,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             services.RemoveAll<IProductRepository>();
             services.AddSingleton<IProductRepository, FakeProductRepository>();
+            services.RemoveAll<ISupplierRepository>();
+            services.AddSingleton<ISupplierRepository, FakeSupplierRepository>();
 
             services.AddAuthorization(options =>
             {

@@ -68,6 +68,17 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
+    [Authorize(Policy = "UserOrAdmin")]
+    [HttpGet("expiring-soon")]
+    public async Task<ActionResult> GetExpiringSoonProducts([FromQuery] GetExpiringSoonProductsRequest request, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var products = await _mediator.Send(new GetExpiringSoonProductsQuery(request.DaysAhead), cancellationToken);
+        return Ok(products);
+    }
+
     [Authorize(Policy = "Admin")]
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)

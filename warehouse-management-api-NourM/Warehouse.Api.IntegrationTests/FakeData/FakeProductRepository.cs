@@ -52,6 +52,21 @@ public class FakeProductRepository:IProductRepository
         return Task.FromResult(products.ToList());
     }
 
+    public Task<List<Product>> GetExpiringSoonAsync(int daysAhead, CancellationToken cancellationToken)
+    {
+        DateTime today = DateTime.Today;
+        DateTime endDate = today.AddDays(daysAhead);
+
+        var products = _products
+            .Where(product => !product.IsArchived &&
+                              product.ExpiryDate >= today &&
+                              product.ExpiryDate <= endDate)
+            .OrderBy(product => product.ExpiryDate)
+            .ToList();
+
+        return Task.FromResult(products);
+    }
+
     public Task AddImageAsync(ProductImage image, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;

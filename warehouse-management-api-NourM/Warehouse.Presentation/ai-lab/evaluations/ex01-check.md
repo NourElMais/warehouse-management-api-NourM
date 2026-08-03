@@ -1,4 +1,4 @@
-# Exercise 01 - Architecture Evaluation
+# Exercise 01 - Evaluation
 
 ## Generated Feature
 

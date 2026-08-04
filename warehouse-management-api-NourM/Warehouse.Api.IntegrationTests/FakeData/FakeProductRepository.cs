@@ -7,9 +7,11 @@ namespace Warehouse.Api.IntegrationTests.FakeData;
 public class FakeProductRepository:IProductRepository
 {
     private readonly List<Product> _products;
+    private readonly List<ProductImage> _productImages;
 
     public FakeProductRepository()
     {
+        _productImages = [];
         _products=
         [
             new Product("Laptop","lap/123","Gaming laptop",1200,23,"supplier-id1",DateTime.UtcNow.AddYears(2),"35feb37b-05e6-4b53-bb7b-264ecc8714c1"),
@@ -69,12 +71,15 @@ public class FakeProductRepository:IProductRepository
 
     public Task AddImageAsync(ProductImage image, CancellationToken cancellationToken)
     {
+        _productImages.Add(image);
         return Task.CompletedTask;
     }
 
     public Task<ProductImage?> GetImageAsync(string productId, CancellationToken cancellationToken)
     {
-        return Task.FromResult<ProductImage?>(null);
+        var image = _productImages.FirstOrDefault(productImage => productImage.ProductId == productId);
+
+        return Task.FromResult(image);
     }
 
     public Task<Product?> GetBySkuAsync(string sku, CancellationToken cancellationToken)

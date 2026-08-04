@@ -167,6 +167,14 @@ public class ProductsController : ControllerBase
         var products = await _mediator.Send(new GetLowStockProductsQuery(threshold), cancellationToken);
         return Ok(products);
     }
+
+    [Authorize(Policy = "UserOrAdmin")]
+    [HttpGet("out-of-stock")]
+    public async Task<ActionResult> GetOutOfStockProducts(CancellationToken cancellationToken)
+    {
+        var products = await _mediator.Send(new GetOutOfStockProductsQuery(), cancellationToken);
+        return Ok(products);
+    }
     
     [Authorize(Policy = "UserOrAdmin")]
     [HttpGet("statistics")]

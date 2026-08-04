@@ -1,4 +1,4 @@
-## Exercise 02 Prompt
+# Exercise 02 Prompt
 
 There is a business logic issue: archived products can still be assigned to active suppliers.
 

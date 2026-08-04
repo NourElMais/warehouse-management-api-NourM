@@ -1,4 +1,4 @@
-# Exercise 01 Prompt
+## Exercise 01 Prompt
 
 Take a look at the existing project structure and generate a new feature for this project.
 Create a new endpoint: GET /api/products/expiring-soon

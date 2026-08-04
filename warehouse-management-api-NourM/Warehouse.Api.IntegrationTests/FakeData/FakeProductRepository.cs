@@ -15,7 +15,8 @@ public class FakeProductRepository:IProductRepository
         _products=
         [
             new Product("Laptop","lap/123","Gaming laptop",1200,23,"supplier-id1",DateTime.UtcNow.AddYears(2),"35feb37b-05e6-4b53-bb7b-264ecc8714c1"),
-            new Product("Mouse","mouse/123","Wireless mouse", 100, 8,"supplier-id2", DateTime.UtcNow.AddYears(1), "c50d9e28-60be-407d-a163-1af84755c3e0")
+            new Product("Mouse","mouse/123","Wireless mouse", 100, 8,"supplier-id2", DateTime.UtcNow.AddYears(1), "c50d9e28-60be-407d-a163-1af84755c3e0"),
+            new Product("Headset","head/123","Noise cancelling headset", 200, 0,"supplier-id3", DateTime.UtcNow.AddYears(1), "b3f3a7b2-2d0b-48db-a5dd-6ae2d8c3c111")
         ];
     }
 

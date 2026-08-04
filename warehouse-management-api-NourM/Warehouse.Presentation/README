@@ -507,4 +507,46 @@ The aim of this lab was to improve the quality of the Warehouse Management API b
 - For authentication when executing an endpoint, I configured the integration tests to authenticate using a valid Firebase token 
   before sending requests to these protected API endpoints, ensuring they tested the real authentication flow.
   
-  
+# Session 10 (Andrea Jabbour)
+
+## Implemented Features
+
+The aim of this lab was to explore how Generative AI can assist backend development by generating code, tests, documentation, and architectural designs,
+while ensuring that all outputs were reviewed before being integrated into the project.
+
+1- AI-Assisted Development
+- Used AI to generate a new API endpoint following the existing project architecture.
+
+2- AI Testing
+- Generated additional unit and integration tests using AI.
+
+3- AI Refactoring
+- Used AI to refactor an existing handler to improve readability and maintainability.
+
+4- AI Documentation
+- Generated API documentation, including endpoint summaries, request and response examples, and architecture notes.
+
+5- AI Architecture Design
+- Used AI to design a Shipment Tracking module by generating domain models, DTOs, services, controllers, and a proposed folder structure.
+
+6- AI Security Review
+- Reviewed AI-generated code for a file upload endpoint and identified security issues.
+
+7- Prompt Engineering
+- Compared weak and strong prompts to evaluate how prompt quality affects the generated code and documentation.
+
+## Challenges Faced
+
+- AI-generated code required manual corrections to better match the existing architecture and coding conventions, which took time to trace down all the changes.
+
+## Bonus Challenges
+
+### Challenge 1 – AI-Generated Endpoint
+- Used AI to generate, implement, and fully test a new `GET /api/products/out-of-stock` endpoint.
+
+### Challenge 4 – AI-Powered Error Monitoring
+- Created a `POST /api/alerts/bug` endpoint to report unhandled exceptions.
+- Built an n8n workflow that receives the exception, categorizes it using an LLM, and automatically creates a GitHub Issue containing the error details and suggested actions.
+
+## Notes
+No notes.

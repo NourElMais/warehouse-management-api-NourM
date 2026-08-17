@@ -68,6 +68,17 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
+    [Authorize(Policy = "UserOrAdmin")]
+    [HttpGet("expiring-soon")]
+    public async Task<ActionResult> GetExpiringSoonProducts([FromQuery] GetExpiringSoonProductsRequest request, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var products = await _mediator.Send(new GetExpiringSoonProductsQuery(request.DaysAhead), cancellationToken);
+        return Ok(products);
+    }
+
     [Authorize(Policy = "Admin")]
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
@@ -154,6 +165,14 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> GetLowStockProducts(CancellationToken cancellationToken, [FromQuery] int threshold = 5)
     {
         var products = await _mediator.Send(new GetLowStockProductsQuery(threshold), cancellationToken);
+        return Ok(products);
+    }
+
+    [Authorize(Policy = "UserOrAdmin")]
+    [HttpGet("out-of-stock")]
+    public async Task<ActionResult> GetOutOfStockProducts(CancellationToken cancellationToken)
+    {
+        var products = await _mediator.Send(new GetOutOfStockProductsQuery(), cancellationToken);
         return Ok(products);
     }
     

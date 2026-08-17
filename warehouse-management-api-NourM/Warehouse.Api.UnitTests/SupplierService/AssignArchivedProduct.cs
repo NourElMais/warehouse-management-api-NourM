@@ -7,7 +7,7 @@ namespace Warehouse.Api.UnitTests.SupplierService;
 
 public class AssignArchivedProduct
 {
-    //Checking if a product is archived is done in the Product class in the Domain layer, by the EnsureNotArchived() function
+    // Mapping a supplier to an archived product must be blocked by the domain entity itself.
     [Fact]
     public void AssignSupplier_ProductIsArchived_ShouldThrowException()
     {
@@ -30,6 +30,11 @@ public class AssignArchivedProduct
         );
 
         product.Archive();
-        Assert.Throws<BusinessRuleException>(() => product.AssignSupplier(supplier));
+
+        Action action = () => product.AssignSupplier(supplier);
+
+        action.Should()
+            .Throw<BusinessRuleException>()
+            .WithMessage("Archived products cannot be updated.");
     }
 }

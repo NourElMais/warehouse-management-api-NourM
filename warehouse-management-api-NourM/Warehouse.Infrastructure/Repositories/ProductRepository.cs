@@ -124,6 +124,20 @@ public class ProductRepository : IProductRepository
         return await query.ToListAsync(cancellationToken);
     }
 
+    public async Task<List<Product>> GetExpiringSoonAsync(int daysAhead, CancellationToken cancellationToken)
+    {
+        DateTime today = DateTime.UtcNow.Date;
+        DateTime endDate = today.AddDays(daysAhead);
+
+        return await _db.Products
+            .Include(product => product.Supplier)
+            .Where(product => !product.IsArchived &&
+                              product.ExpiryDate >= today &&
+                              product.ExpiryDate <= endDate)
+            .OrderBy(product => product.ExpiryDate)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task AddAsync(Product product, CancellationToken cancellationToken)
     {
         await _db.Products.AddAsync(product, cancellationToken);

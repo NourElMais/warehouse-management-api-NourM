@@ -70,6 +70,20 @@ public class ProductEndpointTests : IDisposable
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Contains("Mouse", content);
     }
+
+    [Fact]
+    public async Task GetOutOfStockProducts_ShouldReturnOnlyNonArchivedProductsWithZeroQuantity()
+    {
+        var response = await _client.GetAsync("/api/products/out-of-stock");
+        var products = await response.Content.ReadFromJsonAsync<List<ProductViewModel>>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(products);
+        Assert.Single(products!);
+        Assert.Equal("Headset", products[0].Name);
+        Assert.Equal(0, products[0].QuantityInStock);
+        Assert.False(products[0].IsArchived);
+    }
     
 
     //Test6: create product returns 201 (in my case it is 200)

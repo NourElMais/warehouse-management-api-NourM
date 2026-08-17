@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Warehouse.Application.Products.Queries;
+using Warehouse.Domain.Products;
 using Warehouse.Domain.Repositories;
 
 namespace Warehouse.Application.Products.GetProductsStatistics;
@@ -7,6 +8,7 @@ namespace Warehouse.Application.Products.GetProductsStatistics;
 public class GetProductsStatisticsHandler
     : IRequestHandler<GetProductsStatisticsQuery, GetProductsStatisticsResponse>
 {
+    private const int LowStockThreshold = 5;
     private readonly IProductRepository _productRepository;
 
     public GetProductsStatisticsHandler(IProductRepository productRepository)
@@ -20,6 +22,11 @@ public class GetProductsStatisticsHandler
     {
         var products = await _productRepository.GetAllAsync(cancellationToken);
 
+        return CreateStatistics(products);
+    }
+
+    private static GetProductsStatisticsResponse CreateStatistics(IEnumerable<Product> products)
+    {
         int totalProducts = 0;
         int activeProducts = 0;
         int archivedProducts = 0;
@@ -32,26 +39,24 @@ public class GetProductsStatisticsHandler
             if (product.IsArchived)
             {
                 archivedProducts++;
-            }
-            else
-            {
-                activeProducts++;
 
-                if (product.QuantityInStock <= 5)
-                {
-                    lowStockProducts++;
-                }
+                continue;
+            }
+
+            activeProducts++;
+
+            if (product.QuantityInStock <= LowStockThreshold)
+            {
+                lowStockProducts++;
             }
         }
 
-        var statistics = new GetProductsStatisticsResponse
+        return new GetProductsStatisticsResponse
         {
             TotalProducts = totalProducts,
             ActiveProducts = activeProducts,
             ArchivedProducts = archivedProducts,
             LowStockProducts = lowStockProducts
         };
-
-        return statistics;
     }
 }

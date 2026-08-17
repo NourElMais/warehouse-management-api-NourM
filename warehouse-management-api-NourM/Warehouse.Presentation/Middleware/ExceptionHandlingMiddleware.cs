@@ -8,14 +8,19 @@ namespace Warehouse.Presentation.Middleware;
 
 public class ExceptionHandlingMiddleware
 {
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
     private readonly IStringLocalizer<SharedResources> _localizer;
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IStringLocalizer<SharedResources> localizer)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IStringLocalizer<SharedResources> localizer,IHttpClientFactory httpClientFactory,
+        IConfiguration configuration)
     {
         _next = next; //continue to the next middleware or controller.
         _logger = logger;//to save the real exception details in the backend logs (for the developper to fix the error)
         _localizer = localizer;
+        _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
     }
 
     // this method runs for every http request
@@ -55,7 +60,7 @@ public class ExceptionHandlingMiddleware
         catch (Exception exception)
         {
             _logger.LogError(exception, "Unexpected server error {CorrelationId}", context.Items["CorrelationId"]);
-
+            await SendBugAlertAsync(context, exception);
             context.Response.StatusCode =
                 StatusCodes.Status500InternalServerError;
 
@@ -65,6 +70,37 @@ public class ExceptionHandlingMiddleware
                 Message = _localizer["UnexpectedError"].Value,
                 TraceId = context.TraceIdentifier
             });
+        }
+    }
+
+    private async Task SendBugAlertAsync(HttpContext context, Exception exception)
+    {
+        try
+        {
+            string? webhookUrl = _configuration["BugAlertWebhook:Url"];
+
+            if (string.IsNullOrWhiteSpace(webhookUrl))
+            {
+                return;
+            }
+
+            HttpClient client = _httpClientFactory.CreateClient();
+
+            var alert = new
+            {
+                message = exception.Message,
+                exceptionType = exception.GetType().Name,
+                endpoint = context.Request.Path.Value,
+                httpMethod = context.Request.Method,
+                occurredAt = DateTime.UtcNow
+            };
+
+            await client.PostAsJsonAsync(webhookUrl, alert);
+        }
+        catch (Exception alertException)
+        {
+            _logger.LogError(alertException, "Failed to send bug alert to n8n");
+            
         }
     }
     

@@ -221,7 +221,7 @@ builder.Services.AddHangfire(configuration =>
 });
 
 builder.Services.AddHangfireServer();
-
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<ProductExpirationJob>();
 builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 

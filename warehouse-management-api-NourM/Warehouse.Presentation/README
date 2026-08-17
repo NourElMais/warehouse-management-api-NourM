@@ -458,19 +458,53 @@ Notification Service
 
 Notification Preferences (Bonus)
 - Added notification preferences to control how important each notification type is. 
-- The user can specify the seeverity of each notification type, and he can choose from a predefined set of values:Warning, Informational, Critical.
+- The user can specify the severity of each notification type, and he can choose from a predefined set of values:Warning, Informational, Critical.
 
 ## API Endpoints Added
-
-### Notifications
-- `GET /api/notifications`
-- `GET /api/notifications/{id}`
-- `PUT /api/notifications/{id}/read`
-
-### Notification Preferences (Bonus)
-- `GET /api/notificationpreferences`
-- `PUT /api/notificationpreferences/{notificationType}`
+No API endpoints were added, this lab was just to test those endpoints.
 
 ## Notes
 - No further notes.
 - Please refer to the screenshots folder for screenshots.
+
+# Session 9 (Andrea Jabbour)
+
+## Implemented Features
+
+The aim of this lab was to improve the quality of the Warehouse Management API by automating testing (using unit and integration testing).
+
+1- Unit Testing
+- Wrote unit tests for the application layer(handlers) using xUnit.
+- To simulate the real database, logger, mapper, and soon, I used the Moq Library.
+
+2- Integration Testing
+- It was used to verify the API endpoints.
+- Tested product, supplier, image upload, Swagger, and complete business flow endpoints.
+- Used a custom WebApplicationFactory to create a separate testing version of the API for each test, 
+  allowing requests to be sent as if the application was running normally, but without using the real 
+  database. Each test had its own clean environment, and resources were automatically cleaned up after 
+  the test finished to ensure that tests remained independent and did not affect one another (when we click on RunALl)
+  
+3- Test Utilities
+- Created reusable builders (ProductBuilder and SupplierBuilder), to make testing files simpler and thinner.
+
+## Challenges Faced
+
+- Integration tests were affecting each other because they shared the same test factory and repository state. This was resolved by creating a new CustomWebApplicationFactory for each test.
+- Firebase initialization caused test failures because the default `FirebaseApp` was created multiple times. This was resolved by skipping Firebase initialization in the testing environment (I added a condition in Program.cs)
+
+## Bonus Challenges
+
+### Challenge 1 – Code Coverage
+- Integrated Coverlet to generate code coverage reports.
+- Measured how much of the application's code is covered by the automated tests.
+
+### Challenge 3 – Negative Integration Tests
+- Added 2 integration tests (inside \Warehouse.Api.IntegrationTests\IntegrationTests\ProductEndpointTests.cs) for invalid requests 
+ to verify that the API correctly returns validation errors and handles malformed input.
+
+## Notes
+- For authentication when executing an endpoint, I configured the integration tests to authenticate using a valid Firebase token 
+  before sending requests to these protected API endpoints, ensuring they tested the real authentication flow.
+  
+  

@@ -35,13 +35,18 @@ using Warehouse.Infrastructure.Storage;
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
+var builder = WebApplication.CreateBuilder(args);
 //This creates a connection between the API and Firebase
 //It verifies that the backend is truly valid, and thus that it is allowed to perform administrative actions like assigning roles
-FirebaseApp.Create(new AppOptions
+if (!builder.Environment.IsEnvironment("Testing") &&
+    FirebaseApp.DefaultInstance == null)
 {
-    Credential = GoogleCredential.FromFile(@"C:\Users\HCES\Downloads\warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json")
-});
-var builder = WebApplication.CreateBuilder(args);
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromFile(
+            @"C:\Users\HCES\Downloads\warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json")
+    });
+}
 
 //Things that will be checked by the health check:
 string databaseConnection =
@@ -137,7 +142,6 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<SupplierProfile>();
 });
 
-//Firebase setup
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -224,9 +228,7 @@ builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 //Register the cache service
 //Assumption: one shared statistics object for the whole application.
 builder.Services.AddSingleton<ICacheStatisticsService, CacheStatisticsService>();
-Console.WriteLine(
-    builder.Configuration["Firebase:ProjectId"]
-);
+
 var app = builder.Build();
 //Log to see when the application started running
 Log.Information("Warehouse Management API started successfully.");
@@ -278,3 +280,6 @@ RecurringJob.AddOrUpdate<ProductExpirationJob>("product-expiration-check", job =
     productExpirationCron);
 
 app.Run();
+public partial class Program
+{
+}

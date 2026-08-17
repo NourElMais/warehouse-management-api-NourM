@@ -17,9 +17,10 @@ public class RequestTimingMiddleware
         var endTime = DateTime.Now;
         var duration = endTime - startTime;
 
-        _logger.LogInformation("Request {Method} {Path} took {Duration} ms",
+        _logger.LogInformation("Request {Method} {Path} returned {StatusCode} in {Duration} ms",
             context.Request.Method,
             context.Request.Path,
+            context.Response.StatusCode,
             duration.TotalMilliseconds);
     }
 }

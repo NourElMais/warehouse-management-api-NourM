@@ -1,0 +1,96 @@
+services:
+  postgres:
+    image: postgres
+    container_name: warehouse-postgres
+    environment:
+      POSTGRES_DB: WarehouseDb
+      POSTGRES_USER: nour
+      POSTGRES_PASSWORD: pass123
+    networks:
+      - database-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U nour -d WarehouseDb" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  redis:
+    image: redis
+    container_name: warehouse-redis
+    networks:
+      - cache-network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: warehouse-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: warehouse
+      RABBITMQ_DEFAULT_PASS: warehouse
+    networks:
+      - messaging-network
+  minio:
+      image: minio/minio
+      container_name: warehouse-minio
+      command: server /data
+      environment:
+        MINIO_ROOT_USER: minioadmin
+        MINIO_ROOT_PASSWORD: minioadmin
+      healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+        interval: 5s
+        timeout: 3s
+        retries: 5
+      networks:
+        - storage-network 
+  backend:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: warehouse-backend
+      ports:
+        - "8080:8080"
+      environment:
+          ASPNETCORE_URLS: "http://+:8080"
+          ConnectionStrings__DefaultConnection: "Host=warehouse-postgres;Port=5432;Database=WarehouseDb;Username=nour;Password=pass123"
+          ConnectionStrings__Redis: "warehouse-redis:6379"
+          RabbitMQ__HostName: "warehouse-rabbitmq"
+          RabbitMQ__UserName: "warehouse"
+          RabbitMQ__Password: "warehouse"
+          MinIO__Endpoint: "warehouse-minio:9000"
+          MinIO__AccessKey: "minioadmin"
+          MinIO__SecretKey: "minioadmin"
+          MinIO__SSL: "false"
+          Firebase__CredentialsPath: "/app/firebase-credentials.json"
+      volumes:
+        - "C:/Users/HCES/Downloads/warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json:/app/firebase-credentials.json:ro"
+      depends_on:
+        postgres:
+          condition: service_healthy
+        redis:
+            condition: service_started
+        rabbitmq:
+            condition: service_started
+        minio:
+            condition: service_started
+      
+      networks:
+        - database-network
+        - cache-network
+        - messaging-network
+        - storage-network
+        
+  minio-init:
+      image: minio/mc
+      depends_on:
+        minio:
+          condition: service_healthy
+      entrypoint: >
+        /bin/sh -c "
+        mc alias set local http://warehouse-minio:9000 minioadmin minioadmin &&
+        mc mb -p local/warehouse-images
+        "
+      networks:
+        - storage-network
+networks:
+  database-network:
+  cache-network:
+  messaging-network:
+  storage-network:

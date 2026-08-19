@@ -43,8 +43,9 @@ if (!builder.Environment.IsEnvironment("Testing") &&
 {
     FirebaseApp.Create(new AppOptions
     {
-        Credential = GoogleCredential.FromFile(
-            @"C:\Users\HCES\Downloads\warehouse-api-nourm-firebase-adminsdk-fbsvc-5433787ab8.json")
+        Credential =GoogleCredential.FromFile(
+            builder.Configuration["Firebase:CredentialsPath"]
+        )
     });
 }
 
@@ -191,14 +192,15 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.InstanceName = "MyApp_";
 });
 
-builder.Services.AddHealthChecksUI(options =>
+builder.Services
+    .AddHealthChecksUI(setup =>
     {
-        options.AddHealthCheckEndpoint(
+        setup.AddHealthCheckEndpoint(
             "Warehouse API",
-            "/health");
-
-        options.SetEvaluationTimeInSeconds(10);
-    }).AddInMemoryStorage();
+            "http://localhost:8080/health"
+        );
+    })
+    .AddInMemoryStorage();
 
 //to tell ASP.NET that these are the only languages supported.
 var supportedCultures = new[]
@@ -230,6 +232,11 @@ builder.Services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 builder.Services.AddSingleton<ICacheStatisticsService, CacheStatisticsService>();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<WarehouseDbContext>();
+    dbContext.Database.Migrate();
+}
 //Log to see when the application started running
 Log.Information("Warehouse Management API started successfully.");
 

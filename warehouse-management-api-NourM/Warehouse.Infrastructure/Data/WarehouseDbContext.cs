@@ -22,5 +22,9 @@ public class WarehouseDbContext : DbContext
         modelBuilder.Entity<Product>();
 
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Product>().ToTable("products");
+        modelBuilder.Entity<Supplier>().ToTable("suppliers");
+        modelBuilder.Entity<ProductImage>().ToTable("productImages");
+        modelBuilder.Entity<StockMovement>().ToTable("stockMovements");
     }
 }

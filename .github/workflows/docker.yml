@@ -20,5 +20,5 @@ jobs:
         with:
           context: ./warehouse-management-api-NourM
           push: true
-          tags: warehouse-api-devops:latest
+          tags: tags: ${{ secrets.DOCKER_HUB_USERNAME }}/warehouse-api-devops:latest
 
